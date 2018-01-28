@@ -349,7 +349,7 @@
 				$num =getNumOfItemByItemIDAndMemeberID($mid,$i);
 				$price = getItemPriceByItemID($i);
 				$prop = getMajorprop($i);
-				$majorincome = $majorincome + $num *$price*$i;
+				$majorincome = $majorincome + $num *$price*$prop;
 				echo "<td id=\"Major\">$num</td>";
         			}
 			echo"<td id=\"Major\">$majorincome</td>";
@@ -431,7 +431,7 @@
             for($i = 1; $i <= $total_item; $i ++){
               echo "<th id=\"Performance\"> </th>";
             }
-            echo "<th id=\"Performance\">2378</th>";
+            echo "<th id=\"Performance\">$totalIncome</th>";
             echo "</tr>";
           ?>
         </table>
