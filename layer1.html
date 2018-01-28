@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <?php
+  /* 
+		Template Name: layout1 
+  */ 
+  session_start();
+	function getNameByMemberID($memberID){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Member=".$memberID);
+	return $result[0]->Name;
+	}
+	$myName = getNameByMemberID($_SESSION['username']);
+	function getBelowTeacherListFromName($Name){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Major=\"".$Name."\"");
+	$nameArray;
+	$size = sizeof($result);
+	for($x=0;$x<$size;$x++){
+		$nameArray[$x]=$result[$x]->Name;
+	}
+	return $nameArray;
+	}
+	function getTotalItemNumber(){
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT * FROM `Melody_items` ");
+
+	return sizeof($sum);
+	}
+	
+	function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+				global $wpdb;
+				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no");
+				if(sizeof($sum)==0)
+					return 0;
+				else 
+				{
+					$result;
+					for($x=0;$x<sizeof($sum);$x++){
+						$result = $result+ $sum[$x]->Number;
+						
+					}
+					return $result;
+				}
+			}
+	function getMemberIDFromName($Name){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor WHERE Name=\"$Name\"");
+	return $result[0]->Member;
+}
+	function alert($msg) {
+					echo "<script type='text/javascript'>alert('$msg');</script>";
+	}
+	function getItemNameByItemID($item_id)
+	{
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Item
+	FROM `Melody_items` WHERE item_no =$item_id");
+	return $sum[0]->Item;
+	}
+	function getItemPriceByItemID($item_id)
+	{
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Price
+		FROM `Melody_items` WHERE item_no =$item_id");
+		return $sum[0]->Price;
+	}
+	$totalItem = getTotalItemNumber();
+
+  ?>
+  
+  
+    <meta charset="utf-8">
+    <style>
+      * {
+          box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background-image: linear-gradient(white, grey);
+        height: 1000px;
+      }
+
+      /* Style the header */
+      .header {
+        background-color: #ffffff;
+        padding: 1px;
+        text-align: center;
+      }
+      .heading2 { color:  FF0000; }
+
+      /* Style the top navigation bar */
+      .topnav {
+        overflow: hidden;
+        background-color: #333;
+      }
+
+      /* Style the topnav links */
+      .topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      /* Change color on hover */
+      .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+
+      /* Create three equal columns that floats next to each other */
+      .column_left {
+          float: left;
+          width: 20%;
+          padding: 15px;
+      }
+      /* Create three equal columns that floats next to each other */
+      .column_center {
+          float: left;
+          width: 60%;
+          padding: 15px;
+      }
+      /* Create three equal columns that floats next to each other */
+      .column_right {
+          float: left;
+          width: 20%;
+          padding: 15px;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+          content: "";
+          display: table;
+          clear: both;
+      }
+
+      /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+      @media (max-width:600px) {
+          .column {
+              width: 100%;
+          }
+      }
+
+      .label_moving {
+        width: 500px;
+        background-color: red;
+        position: relative;
+        -webkit-animation-name: label_anim; /* Safari 4.0 - 8.0 */
+        -webkit-animation-duration: 8s; /* Safari 4.0 - 8.0 */
+        animation-name: label_anim;
+        animation-duration: 8s;
+        animation-iteration-count: 10;
+      }
+
+      /* Safari 4.0 - 8.0 */
+      @-webkit-keyframes label_anim {
+        0%    {background-color:red; left:0px; top:0px;}
+        100%  {background-color:yellow; left:1000px; top:0px;}
+      }
+
+      /* Standard syntax */
+      @keyframes label_anim {
+        0%    {background-color:red; left:0px; top:0px;}
+        100%  {background-color:yellow; left:1000px; top:0px;}
+      }
+
+      .left_img{
+        text-align: center;
+        margin-top:50px;
+        width: 150px; 
+        height: 200px;
+      }
+
+      .center_header {
+        margin: auto;
+        width: 60%;
+        border: 3px solid #ff4d4d;
+        padding: 10px;
+        background-color:#F5F5F5;
+        height:90px;
+        text-align:center;
+        margin-top:20px;
+        font-weight: 100;
+        font-size: 30px;
+      }
+      .center_container {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        grid-gap: 10px;
+        background-color: #d9d9d9;
+        padding: 10px;
+      }
+      .center_container > div {
+        background-color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        padding: 20px 0;
+        font-size: 20px;
+      }
+      .center_dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .center_dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .center_dropdown:hover .center_dropdown-content {
+        display: block;
+      }
+      .center_pc {
+        border-radius: 50%;
+        width:  100px;
+        height: 120px;
+      }
+      #center_table {
+        padding: 15px;
+        text-align: center;
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+      }
+
+      #center_table th {
+        font-weight: 100;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        padding: 12px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        text-align: center;
+        background-color: #cccccc;
+        color: white;
+      }
+
+      #center_table td{
+        font-size: 20px;
+        border: 1px solid #ddd;
+        padding:  12px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        text-align: center;
+        background-color: #cccccc;
+        color: black;
+      }
+
+      #right_table {
+        margin-top:20px;
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 30%;
+      }
+
+      #right_table th {
+        font-weight: 100;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        text-align: center;
+        background-color: #cccccc;
+        color: white;
+      }
+
+      #right_table td{
+        font-size: 15px;
+        border: 1px solid #ddd;
+        padding:  10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+        background-color: #cccccc;
+        color: black;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <img src="<?php echo get_template_directory_uri(); ?>/test/melody.jpg">
+    </div>
+
+    <div class="topnav">
+      <a href="#">Link</a>
+      <a href="#">Link</a>
+      <a href="#">Link</a>
+    </div>
+
+    <div class="label_moving">Hurry up! The cello already be sold 10!!</div>
+
+
+    <div class="row">
+      <div class="column_left">
+        <h2><?php echo "Hello ".$myName?></h2>
+        <img class="left_img" src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg"> 
+        <table id="right_table">
+          <tr id="right_table">
+            <th id="right_table">Item No</th>
+            <th id="right_table">Sold No</th>
+          </tr>
+		  <?php
+			for($i=1;$i<=$totalItem;$i++){
+				$iItemNumber = getNumOfItemByItemIDAndMemeberID($_SESSION['username'],$i);
+				echo"
+				<tr id=\"right_table\">
+				<td id=\"right_table\">$i</td>
+				<td id=\"right_table\">$iItemNumber</td>
+			  </tr>
+				";
+			}
+		  ?>
+        </table>
+      </div>
+
+      <div class="column_center">
+        <div class="center_header">
+          <p><b><?php echo $myName ?></b></p>
+        </div>
+        
+        <p></p>
+        <p></p>
+        <p></p>
+        <div class="center_container">
+		<?php 
+		session_start();
+		$subTeacherList = getBelowTeacherListFromName($myName);
+		$path =  get_template_directory_uri();
+		
+		for($x=0; $x<sizeof($subTeacherList);$x++){
+		$subTeacherid =getMemberIDFromName($subTeacherList[$x]);
+		$subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
+			echo"<div class=\"center_dropdown\">
+			";
+			echo $subTeacherList[$x];
+			echo "<div class=\"center_dropdown-content\">
+              <img class=\"center_pc\" src=$subpath>
+              <table id=\"center_table\">
+                <tr id=\"center_table\">
+			";
+			for($i=1;$i<=$totalItem;$i++)
+			{
+				echo"<th id=\"center_table\">Item$i</th>";
+			}
+			echo"<th id=\"center_table\">Total</th>
+			</tr>
+			<tr id=\"center_table\">";
+			for($i=1;$i<=$totalItem;$i++){
+				$re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
+				echo "<td id=\"center_table\">$re</td>";
+			}
+			echo"</tr>
+			</table>
+			</div>
+			</div>";
+			
+			}
+		?>
+            
+        </div>
+      </div>
+
+      <div class="column_right">
+        <table id="right_table">
+          <tr id="right_table">
+            <th id="right_table">Item</th>
+            <th id="right_table">Item_No</th>
+            <th id="right_table">Price</th>
+          </tr>
+		  <?php
+		  for($i=1;$i<=$totalItem;$i++){
+			$iName = getItemNameByItemID($i);
+			$iPrice = getItemPriceByItemID($i);
+			echo "
+				<tr id=\"right_table\">
+				<td id=\"right_table\">$iName</td>
+				<td id=\"right_table\">$i</td>
+				<td id=\"right_table\">$iPrice</td>
+			  </tr>
+			";
+		  }
+		  
+		  
+		  ?>
+        </table>
+      </div>
+    </div>
+
+  </body>
+</html>
