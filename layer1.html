@@ -67,6 +67,13 @@
 		return $sum[0]->Price;
 	}
 	$totalItem = getTotalItemNumber();
+	function getMinorOneprop($item_no)
+	{
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Minor1_proprotion FROM `Melody_items` WHERE Item_no = $item_no");
+		$result = $sum[0]->Minor1_proprotion;
+		return $result;
+	}
 
   ?>
   
@@ -355,10 +362,15 @@
 			echo"<th id=\"center_table\">Total</th>
 			</tr>
 			<tr id=\"center_table\">";
+			$contri = 0;
 			for($i=1;$i<=$totalItem;$i++){
 				$re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
 				echo "<td id=\"center_table\">$re</td>";
+				$price = getItemPriceByItemID($i);
+				$prop = getMinorOneprop($i);
+				$contri =$contri+$price *$re*$prop;
 			}
+			echo "<td id=\"center_table\">$contri</td>";
 			echo"</tr>
 			</table>
 			</div>
