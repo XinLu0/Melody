@@ -1,0 +1,129 @@
+<?php
+		/* 
+		Template Name: testing 
+		*/ 
+$UserID;
+// get password from member ID
+function getPasswordByMemberID($memberID){
+	global $wpdb;    
+	$result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Member=".$memberID);
+	return $result[0]->Password;
+	
+}
+
+function comparePassword($input,$fromDatabase){
+	return strcmp($input,$fromDatabase);
+}
+
+// get name from member ID
+function getNameByMemberID($memberID){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Member=".$memberID);
+	return $result[0]->Name;
+}
+
+// get Below Teacher List from Name
+function getBelowTeacherListFromName($Name){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Major=\"".$Name."\"");
+	$nameArray;
+	$size = sizeof($result);
+	for($x=0;$x<$size;$x++){
+		$nameArray[$x]=$result[$x]->Name;
+	}
+	return $nameArray;
+}
+
+function getMemberIDFromName($Name){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor WHERE Name=\"$Name\"");
+	return $result[0]->Member;
+}
+
+//get ItemName, Number, Price by Member ID where Datefrom to DateTo
+function getItemNameNumberPrice($Member, $DateFrom, $DateTo){
+	global $wpdb;
+	$temp = $wpdb->get_results( "SELECT Item, Number, Price FROM Melody_performance INNER JOIN Melody_items
+	 ON  Melody_performance.item_no = Melody_items.item_no WHERE Member = ".$Member. " AND Date >\"".$DateFrom."\" AND Date<\"".$DateTo."\""
+	 );
+	$resultItem = array();
+	$resultPrice = array();
+	$num = sizeof($temp);
+	for($x = 0; $x<$num;$x++){
+		if(!array_key_exists($temp[$x]->Item,$resultItem)){
+			$resultItem[$temp[$x]->Item]=1;
+		}
+		else {
+			$resultItem[$temp[$x]->Item]= $resultItem[$temp[$x]->Item]+1;
+		}
+		$resultPrice[$temp[$x]->Item]=$temp[$x]->Price;
+	}
+	$result = new stdClass();
+	$result->Item=$resultItem;
+	$result->Price=$resultPrice;
+	return $result;
+	
+}
+			function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+				global $wpdb;
+				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no");
+				if(sizeof($sum)==0)
+					return 0;
+				else 
+				{
+					$result;
+					for($x=0;$x<sizeof($sum);$x++){
+						$result = $result+ $sum[$x]->Number;
+						
+					}
+					return $result;
+				}
+			}
+
+function getTotalItemNumber(){
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT * FROM `Melody_items` ");
+
+	return sizeof($sum);
+}
+
+function getMajorprop($item_no)
+{
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT Major_proprotion FROM `Melody_items` WHERE Item_no = $item_no");
+	$result = $sum[0]->Major_proprotion;
+	return $result;
+}
+function getMinorOneprop($item_no)
+{
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT Minor1_proprotion FROM `Melody_items` WHERE Item_no = $item_no");
+	$result = $sum[0]->Minor1_proprotion;
+	return $result;
+}
+function getMinorTwoprop($item_no)
+{
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT Minor2_proprotion FROM `Melody_items` WHERE Item_no = $item_no");
+	$result = $sum[0]->Minor2_proprotion;
+	return $result;
+}
+				function alert($msg) {
+					echo "<script type='text/javascript'>alert('$msg');</script>";
+				}
+}
+function getItemNameByItemID($item_id)
+{
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT Item
+FROM `Melody_items` WHERE item_no =$item_id");
+return $sum[0]->Item;
+}
+function getItemPriceByItemID($item_id)
+{
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT Price
+FROM `Melody_items` WHERE item_no =$item_id");
+return $sum[0]->Price;
+}
+?>
