@@ -44,7 +44,7 @@ function getMemberIDFromName($Name){
 function getItemNameNumberPrice($Member, $DateFrom, $DateTo){
 	global $wpdb;
 	$temp = $wpdb->get_results( "SELECT Item, Number, Price FROM Melody_performance INNER JOIN Melody_items
-	 ON  Melody_performance.item_no = Melody_items.item_no WHERE Member = ".$Member. " AND Date >\"".$DateFrom."\" AND Date<\"".$DateTo."\""
+	 ON  Melody_performance.item_no = Melody_items.item_no WHERE Member = ".$Member. " AND Date >=\"".$DateFrom."\" AND Date<\"".$DateTo."\""
 	 );
 	$resultItem = array();
 	$resultPrice = array();
@@ -64,9 +64,13 @@ function getItemNameNumberPrice($Member, $DateFrom, $DateTo){
 	return $result;
 	
 }
-			function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 				global $wpdb;
-				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no");
+				global $dateFrom;
+				global $dateTo;
+				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+
+				
 				if(sizeof($sum)==0)
 					return 0;
 				else 
@@ -78,7 +82,7 @@ function getItemNameNumberPrice($Member, $DateFrom, $DateTo){
 					}
 					return $result;
 				}
-			}
+}
 
 function getTotalItemNumber(){
 	global $wpdb;
@@ -125,5 +129,14 @@ function getItemPriceByItemID($item_id)
 	$sum = $wpdb->get_results("SELECT Price
 FROM `Melody_items` WHERE item_no =$item_id");
 return $sum[0]->Price;
+}
+function getDatefromToByMonth($yyyymm){
+	$month = substr($yyyymm, -2);
+	$year = substr($yyyymm,0, 4);
+	$nextMonth = $month+1;
+	global $dateFrom;
+	$dateFrom = $year."-".$month."-01";
+	global $dateTo;
+	$dateTo = $year."-".$nextMonth."-01";
 }
 ?>
