@@ -3,9 +3,10 @@
   <head>
     <?php
   /* 
-    Template Name: layout1 
+    Template Name: layout2 
   */ 
   session_start();
+  $_SESSION['cMinor1']=1001;// to be deprecated
   function getNameByMemberID($memberID){
   global $wpdb;
   $result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Member=".$memberID);
@@ -74,6 +75,7 @@
     $result = $sum[0]->Minor1_proprotion;
     return $result;
   }
+  $currentMinor1 = $_SESSION['cMinor1'];
 
   ?>
     <meta charset="utf-8">
@@ -218,10 +220,18 @@
 
       .center_major {
         margin: auto;
-        width: 250px;
+        width: 300px;
         border: 1px solid green;
         border-radius: 35px;
         padding: 10px;
+      }
+
+      .center_major1 {
+        margin: auto;
+        width: 250px;
+        border: 1px solid green;
+        border-radius: 35px;
+        padding: 5px;
       }
 
       #center_line {
@@ -269,6 +279,15 @@
         text-align: center;
         padding: 20px 0;
         font-size: 20px;
+      }
+
+      div.gallery_major {
+        border: 1px solid green;
+        border-radius: 35px;
+        padding: 25px;
+        margin: 25px;
+        border: 1px solid #ccc;
+        width: 220px;
       }
 
       div.gallery {
@@ -353,7 +372,7 @@
       <div class="column_left">
         <h2 class="heading2"><?php echo "Hello ".$myName?></h2>
         <img class="left_img" src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg"> 
-        <table id="right_table">
+                <table id="right_table">
           <tr id="right_table">
             <th id="right_table">Item No</th>
             <th id="right_table">Sold No</th>
@@ -376,9 +395,47 @@
 
       <div class="column_center">
         <div class="center_major">
-          <div class="gallery">
-              <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg" width="300" height="200">
+          <div class="gallery_major">
+              <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg" width="170" height="220">
               <div class="desc"><?php echo $_SESSION['username']; ?></div>
+          </div>
+        </div>
+
+        <p></p>
+        <p></p>
+        <p></p>
+
+        <div class="center_major1">
+          <div class="gallery">
+              <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $currentMinor1; ?>.jpg" width="300" height="200">
+              <div class="desc"><?php echo $currentMinor1; ?></div>
+              <div class="gallery-dropdown-content">
+              <table id="center_table">
+                <tr id="center_table">
+                  <?php
+                  for($i=1;$i<=$totalItem;$i++){
+                    echo "<th id=\"center_table\">Item$i</th>";
+                  }
+                  echo "<th id=\"center_table\">Total</th>";
+
+                  ?>
+                  </tr>
+                  <tr id="center_table">
+                  <?php
+                  $contri = 0;
+                  for($i=1;$i<=$totalItem;$i++){
+                    $re = getNumOfItemByItemIDAndMemeberID($currentMinor1,$i);
+                    echo "<td id=\"center_table\">$re</td>";
+                    $price = getItemPriceByItemID($i);
+                    $prop = getMinorOneprop($i);
+                    $contri =$contri+$price *$re*$prop;
+                  }
+                  echo "<td id=\"center_table\">$contri</td>";
+                  ?>
+
+                </tr>
+              </table>
+            </div>  
           </div>
         </div>
 
@@ -396,16 +453,15 @@
         <p></p>
         <p></p>
 
-
-            <?php
-            $subTeacherList = getBelowTeacherListFromName($myName);
+        <?php
+            $subTeacherList = getBelowTeacherListFromName(getNameByMemberID($currentMinor1));
             $path =  get_template_directory_uri();
             for($x=0; $x<sizeof($subTeacherList);$x++){
               $subTeacherid =getMemberIDFromName($subTeacherList[$x]);
               $subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
               echo "<div class=\"center_minor\">
               <div class=\"gallery\">";
-              echo"<img src= $subpath width=\"300\" height=\"200\">
+              echo"<img src=$subpath width=\"300\" height=\"200\">
               ";
               echo "<div class=\"desc\">$subTeacherid</div>";
               echo"<div class=\"gallery-dropdown-content\">
@@ -437,10 +493,12 @@
                 ";
                 
                 }
-              ?>
-</div>
+        ?>
+        
+      </div>
 
-<div class="column_right">
+
+      <div class="column_right">
         <table id="right_table">
           <tr id="right_table">
             <th id="right_table">Item</th>
