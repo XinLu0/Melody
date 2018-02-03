@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <?php
   		/* 
@@ -123,7 +123,9 @@
         text-align: center;
       }
 
-      .heading2 { color:  FF0000; }
+      .heading2 {
+        color:  FF0000;
+      }
 
       /* Style the top navigation bar */
       .topnav {
@@ -149,30 +151,37 @@
 
       /* Create three equal columns that floats next to each other */
       .column_left {
-          float: left;
-          width: 20%;
-          padding: 15px;
+        float: left;
+        width: 20%;
+        padding: 15px;
       }
 
       /* Create three equal columns that floats next to each other */
       .column_center {
-          float: left;
-          width: 80%;
-          padding: 15px;
+        float: left;
+        width: 60%;
+        padding: 15px;
+      }
+
+      /* Create three equal columns that floats next to each other */
+      .column_right {
+        float: left;
+        width: 20%;
+        padding: 15px;
       }
 
       /* Clear floats after the columns */
       .row:after {
-          content: "";
-          display: table;
-          clear: both;
+        content: "";
+        display: table;
+        clear: both;
       }
 
       /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
       @media (max-width:600px) {
-          .column {
-              width: 100%;
-          }
+        .column {
+            width: 100%;
+        }
       }
 
       .left_img{
@@ -326,6 +335,7 @@
 
     <div class="topnav">
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Layer</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
       <a href="">Logout</a>
     </div>
 
@@ -341,24 +351,24 @@
         <p></p>
         <p></p>
         <p></p>
+
         <table id="right_table">
           <tr id="right_table">
-            <th id="right_table">Item</th>
-            <th id="right_table">Item_No</th>
-            <th id="right_table">Price</th>
+            <td id="right_table">Select Month</td>
           </tr>
-          <?php
-            $sum = getTotalItemNumber();
-            for($i = 1; $i <= $sum; $i ++){
-              $iName = getItemNameByItemID($i);
-              $iPrice = getItemPriceByItemID($i);
-              echo "<tr id=\"right_table\">";
-              echo "<td id=\"right_table\">$iName</td>";
-              echo "<td id=\"right_table\">$i</td>";
-              echo "<td id=\"right_table\">$iPrice</td>";
-              echo "</tr>";
-            }
-          ?>
+          <tr id="right_table">
+            <form action="#" method="post">
+              <select name="Month">
+                <option value="201801">2018/01</option>
+                <option value="201712">2017/12</option>
+                <option value="201711">2017/11</option>
+                <option value="201710">2017/10</option>
+                <option value="201709">2017/09</option>
+              </select>
+              <input type="submit" value="Submit the form"/>
+            </form>
+          </tr>
+
         </table>
       </div>
 
@@ -500,7 +510,29 @@
         </table>
       </div>
 
-      
+      <div class="column_right">
+        <table id="right_table">
+          <tr id="right_table">
+            <th id="right_table">Item</th>
+            <th id="right_table">Item_No</th>
+            <th id="right_table">Price</th>
+          </tr>
+
+          <?php
+            $sum = getTotalItemNumber();
+            for($i = 1; $i <= $sum; $i ++){
+              $iName = getItemNameByItemID($i);
+              $iPrice = getItemPriceByItemID($i);
+              echo "<tr id=\"right_table\">";
+              echo "<td id=\"right_table\">$iName</td>";
+              echo "<td id=\"right_table\">$i</td>";
+              echo "<td id=\"right_table\">$iPrice</td>";
+              echo "</tr>";
+            }
+          ?>
+        </table>
+      </div>
     </div>
+
   </body>
 </html>

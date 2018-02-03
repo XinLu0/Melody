@@ -128,42 +128,6 @@
         }
       }
 
-      .heading_left { 
-        margin-top:50px;
-        color:  #FF0000; 
-      }
-
-      .change_left_color{
-        width: 200px;
-        height: 300px;
-        text-align: center;
-        background-color: #F5F5F5;
-        -webkit-animation-name: color_change; /* Safari 4.0 - 8.0 */
-        -webkit-animation-duration: 6s; /* Safari 4.0 - 8.0 */
-        animation-name: color_change;
-        animation-duration: 6s;
-        animation-iteration-count: infinite;
-      }
-
-      /* Safari 4.0 - 8.0 */
-      @-webkit-keyframes color_change {
-        from {background-color: #F5F5F5;}
-        to {background-color: #F08080;}
-      }
-
-      /* Standard syntax */
-      @keyframes color_change {
-        from {background-color: #F5F5F5;}
-        to {background-color: #F08080;}
-      }
-
-      .left_img{
-        text-align: center;
-        margin-top:50px;
-        width: 150px; 
-        height: 200px;  
-      }
-
       .center_wrapper {
         text-align:left;
         margin:0 auto;
@@ -244,16 +208,12 @@
     </div>
 
     <div class="topnav">
-      <a href="">Contact Us</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
     </div>
 
     <div class="row">
 
       <div class="column_left">
-        <h2 class="heading_left">The Sales Champion</h2>
-        <div class="change_left_color">
-          <img class="left_img" src="<?php echo get_template_directory_uri(); ?>/test/blair.jpg">
-        </div>
       </div>
 
       <div class="column_center">
@@ -291,3 +251,5 @@
 
   </body>
 </html>
+<?php get_footer(); ?>
+

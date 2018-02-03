@@ -9,7 +9,7 @@
 
       function getNameByMemberID($memberID){
         global $wpdb;
-        $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID);
+        $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
         return $result[0]->Name;
       }
 
