@@ -17,6 +17,11 @@
   		//	exit;
   		//}
   		//$username = $_SESSION['username'];
+		if(isset($_POST['Month'])){
+			getDatefromToByMonth($_POST['Month']);
+		}else{
+			getDatefromToByCurrent();
+		}
   		$totalIncome=0;
   		function getItemPriceByItemID($item_id)
   		{
@@ -48,19 +53,25 @@
         return $result[0]->Name;
       }
 
-      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-        global $wpdb;
-        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no");
-        if(sizeof($sum)==0)
-          return 0;
-        else {
-          $result;
-          for($x = 0; $x < sizeof($sum); $x ++){
-            $result = $result+ $sum[$x]->Number;
-          }
-          return $result;
-        }
-      }
+function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+				global $wpdb;
+				global $dateFrom;
+				global $dateTo;
+				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+
+				
+				if(sizeof($sum)==0)
+					return 0;
+				else 
+				{
+					$result;
+					for($x=0;$x<sizeof($sum);$x++){
+						$result = $result+ $sum[$x]->Number;
+						
+					}
+					return $result;
+				}
+}
 
       function getBelowTeacherListFromName($Name){
         global $wpdb;
@@ -101,6 +112,28 @@
         $sum = $wpdb->get_results("SELECT Item FROM Melody_items WHERE item_no=$item_id");
         return $sum[0]->Item;
       }
+	  function getDatefromToByMonth($yyyymm){
+		$month = substr($yyyymm, -2);
+		$year = substr($yyyymm,0, 4);
+		$nextMonth = $month+1;
+		if($nextMonth>12)$nextMonth="01";
+		else if($nextMonth<10)$nextMonth="0".$nextMonth;
+		global $dateFrom;
+		$dateFrom = $year."-".$month."-01";
+		global $dateTo;
+		$dateTo = $year."-".$nextMonth."-01";
+	}
+	function getDatefromToByCurrent(){
+		$currentDate =date('Y-m-d');
+		$currentMonth = substr($currentDate,5,2);
+		$nextMonth = $currentMonth+1;
+		if($nextMonth>12)$nextMonth="01";
+		else if($nextMonth<10)$nextMonth="0".$nextMonth;
+		global $dateFrom;
+		global $dateTo;
+		$dateFrom = substr($currentDate,0,7)."-01";
+		$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
+	}
 
     ?>
 
@@ -357,11 +390,22 @@
           <tr id="right_table">
             <form action="#" method="post">
               <select name="Month">
-                <option value="201801">2018/01</option>
-                <option value="201712">2017/12</option>
-                <option value="201711">2017/11</option>
-                <option value="201710">2017/10</option>
-                <option value="201709">2017/09</option>
+			  <?php
+				$y = date('Y');
+				$m = date('m');
+				for($i = 0; $i<24 ; $i++){
+					echo "
+					<option value=\"$y$m\">$y/$m</option>
+					";
+					$m--;
+					if($m==0){
+					$m=12;
+					$y--;
+					}
+					if($m<10)$m="0".$m;
+					
+				}
+			  ?>
               </select>
               <input type="submit" value="Submit the form"/>
             </form>
