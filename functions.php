@@ -134,9 +134,22 @@ function getDatefromToByMonth($yyyymm){
 	$month = substr($yyyymm, -2);
 	$year = substr($yyyymm,0, 4);
 	$nextMonth = $month+1;
+	if($nextMonth>12)$nextMonth="01";
+	else if($nextMonth<10)$nextMonth="0".$nextMonth;
 	global $dateFrom;
 	$dateFrom = $year."-".$month."-01";
 	global $dateTo;
 	$dateTo = $year."-".$nextMonth."-01";
+}
+function getDatefromToByCurrent(){
+	$currentDate =date('Y-m-d');
+	$currentMonth = substr($currentDate,5,2);
+	$nextMonth = $currentMonth+1;
+	if($nextMonth>12)$nextMonth="01";
+	else if($nextMonth<10)$nextMonth="0".$nextMonth;
+	global $dateFrom;
+	global $dateTo;
+	$dateFrom = substr($currentDate,0,7)."-01";
+	$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
 }
 ?>
