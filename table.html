@@ -56,11 +56,11 @@
         return $result[0]->Name;
       }
 
-function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 				global $wpdb;
 				global $dateFrom;
 				global $dateTo;
-				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+				$sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
 
 				
 				if(sizeof($sum)==0)
@@ -74,7 +74,7 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 					}
 					return $result;
 				}
-}
+      }
 
       function getBelowTeacherListFromName($Name){
         global $wpdb;
@@ -115,28 +115,32 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
         $sum = $wpdb->get_results("SELECT Item FROM Melody_items WHERE item_no=$item_id");
         return $sum[0]->Item;
       }
-	  function getDatefromToByMonth($yyyymm){
-		$month = substr($yyyymm, -2);
-		$year = substr($yyyymm,0, 4);
-		$nextMonth = $month+1;
-		if($nextMonth>12)$nextMonth="01";
-		else if($nextMonth<10)$nextMonth="0".$nextMonth;
-		global $dateFrom;
-		$dateFrom = $year."-".$month."-01";
-		global $dateTo;
-		$dateTo = $year."-".$nextMonth."-01";
-	}
-	function getDatefromToByCurrent(){
-		$currentDate =date('Y-m-d');
-		$currentMonth = substr($currentDate,5,2);
-		$nextMonth = $currentMonth+1;
-		if($nextMonth>12)$nextMonth="01";
-		else if($nextMonth<10)$nextMonth="0".$nextMonth;
-		global $dateFrom;
-		global $dateTo;
-		$dateFrom = substr($currentDate,0,7)."-01";
-		$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
-	}
+
+      function getDatefromToByMonth($yyyymm){
+    		$month = substr($yyyymm, -2);
+    		$year = substr($yyyymm,0, 4);
+    		$nextMonth = $month+1;
+    		if($nextMonth > 12)
+          $nextMonth="01";
+    		else if($nextMonth < 10)
+          $nextMonth = "0".$nextMonth;
+    		global $dateFrom;
+    		$dateFrom = $year."-".$month."-01";
+    		global $dateTo;
+    		$dateTo = $year."-".$nextMonth."-01";
+    	}
+
+      function getDatefromToByCurrent(){
+    		$currentDate =date('Y-m-d');
+    		$currentMonth = substr($currentDate,5,2);
+    		$nextMonth = $currentMonth+1;
+    		if($nextMonth>12)$nextMonth="01";
+    		else if($nextMonth<10)$nextMonth="0".$nextMonth;
+    		global $dateFrom;
+    		global $dateTo;
+    		$dateFrom = substr($currentDate,0,7)."-01";
+    		$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
+    	}
 
     ?>
 
@@ -183,6 +187,17 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
       .topnav a:hover {
         background-color: #ddd;
         color: black;
+      }
+
+      .topnav button {
+        float: right;
+        display: block;
+        color: white;
+        background-color: #333;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        border: 0px;
       }
 
       /* Create three equal columns that floats next to each other */
@@ -372,10 +387,10 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
     <div class="topnav">
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Layer</a>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
-	  <a HREF="javascript:window.print()">print</a>
+      <a HREF="javascript:window.print()">print</a>
       <form action="#" method="get">
-		<button name="logout" value = 1>Logout</button>
-	  </form>
+        <button name="logout" value = 1>Logout</button>
+      </form>
     </div>
 
     <div class="row">
