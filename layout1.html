@@ -42,25 +42,22 @@
         return sizeof($sum);
       }
   
-function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-				global $wpdb;
+      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+        global $wpdb;
 				global $dateFrom;
 				global $dateTo;
-				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member=$memberID AND Item_no=$item_no");
 
-				
-				if(sizeof($sum)==0)
-					return 0;
-				else 
-				{
-					$result;
-					for($x=0;$x<sizeof($sum);$x++){
-						$result = $result+ $sum[$x]->Number;
-						
-					}
-					return $result;
-				}
-}
+        if(sizeof($sum) == 0)
+          return 0;
+        else {
+          $result;
+          for($x = 0; $x < sizeof($sum); $x++){
+            $result = $result + $sum[$x]->Number;
+          }
+          return $result;
+        }
+      }
 
       function getMemberIDFromName($Name){
         global $wpdb;
@@ -350,7 +347,27 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
         background-color: #cccccc;
         color: black;
       }
+      .minor_button {
+        background-color: lightgrey; 
+        color: black; 
+        border: 1px solid #4CAF50;
+        border-radius: 25px;
+        padding: 1px;
+        float: left;
+        width: 24.99999%;
+      }
+      @media only screen and (max-width: 700px){
+          .minor_button {
+              width: 49.99999%;
+              margin: 6px 0;
+          }
+      }
 
+      @media only screen and (max-width: 500px){
+          .minor_button {
+              width: 100%;
+          }
+      }
     </style>
   </head>
 
@@ -411,47 +428,49 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
         <p></p>
         <p></p>
 
-        <?php
-          $subTeacherList = getBelowTeacherListFromName($myName);
-          $path = get_template_directory_uri();
+        <form action="" method="post">
+          <?php
+            $subTeacherList = getBelowTeacherListFromName($myName);
+            $path = get_template_directory_uri();
 
-          for($x = 0; $x < sizeof($subTeacherList); $x++){
-            $subTeacherid = getMemberIDFromName($subTeacherList[$x]);
-            $subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
-            echo "<div class=\"center_minor\">";
-            echo "<div class=\"gallery\">";
-            echo "<img src= $subpath width=\"300\" height=\"200\">";
-            echo "<div class=\"desc\">$subTeacherid</div>";
-            echo "<div class=\"gallery-dropdown-content\">";
-            echo "<table id=\"center_table\">";
-            echo "<tr id=\"center_table\">";
+            for($x = 0; $x < sizeof($subTeacherList); $x++){
+              $subTeacherid = getMemberIDFromName($subTeacherList[$x]);
+              $subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
+              echo "<button class=\"minor_button\" type=\"submit\" name=\"Minor\" value=\"$subTeacherid\">";
+              echo "<div class=\"gallery\">";
+              echo "<img src= $subpath width=\"300\" height=\"200\">";
+              echo "<div class=\"desc\">$subTeacherid</div>";
+              echo "<div class=\"gallery-dropdown-content\">";
+              echo "<table id=\"center_table\">";
+              echo "<tr id=\"center_table\">";
 
-            for($i = 1; $i <= $totalItem; $i++)
-            {
-              echo "<th id=\"center_table\">Item$i</th>";
+              for($i = 1; $i <= $totalItem; $i++)
+              {
+                echo "<th id=\"center_table\">Item$i</th>";
+              }
+
+              echo "<th id=\"center_table\">Total</th>";
+              echo "</tr>";
+              echo "<tr id=\"center_table\">";
+
+              $contri = 0;
+              for($i = 1; $i <= $totalItem; $i ++){
+                $re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
+                echo "<td id=\"center_table\">$re</td>";
+                $price = getItemPriceByItemID($i);
+                $prop = getMinorOneprop($i);
+                $contri = $contri+$price *$re*$prop;
+              }
+              echo "<td id=\"center_table\">$contri</td>";
+              echo "</tr>";
+              echo "</table>";
+              echo "</div>";
+              echo "</div>";
+              echo "</button>";
+              
             }
-
-            echo "<th id=\"center_table\">Total</th>";
-            echo "</tr>";
-            echo "<tr id=\"center_table\">";
-
-            $contri = 0;
-            for($i = 1; $i <= $totalItem; $i ++){
-              $re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
-              echo "<td id=\"center_table\">$re</td>";
-              $price = getItemPriceByItemID($i);
-              $prop = getMinorOneprop($i);
-              $contri = $contri+$price *$re*$prop;
-            }
-            echo "<td id=\"center_table\">$contri</td>";
-            echo "</tr>";
-            echo "</table>";
-            echo "</div>";
-            echo "</div>";
-            echo "</div>";
-            
-          }
-        ?>
+          ?>
+        </form>
       </div>
 
       <div class="column_right">
