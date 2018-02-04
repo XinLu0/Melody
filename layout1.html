@@ -16,6 +16,10 @@
   		}
 		$dateFrom = $_SESSION['dateFrom'];
 		$dateTo = $_SESSION['dateTo'];
+		if(isset($_POST['Minor'])){
+		$_SESSION['cMinor1']=$_POST['Minor'];
+			header("Location:http://www.melodysac.com.sg/index.php/en/layout2/");
+		}
       function getNameByMemberID($memberID){
         global $wpdb;
         $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
