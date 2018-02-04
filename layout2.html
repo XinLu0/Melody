@@ -94,6 +94,14 @@
         $result = $sum[0]->Minor1_proprotion;
         return $result;
       }
+	  function getMinorTwoprop($item_no)
+	{
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Minor2_proprotion FROM `Melody_items` WHERE Item_no = $item_no");
+		$result = $sum[0]->Minor2_proprotion;
+		return $result;
+	}
+
 	  
       $currentMinor1 = $_SESSION['cMinor1'];
 
@@ -505,7 +513,7 @@
               $re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
               echo "<td id=\"center_table\">$re</td>";
               $price = getItemPriceByItemID($i);
-              $prop = getMinorOneprop($i);
+              $prop = getMinorTwoprop($i);
               $contri = $contri+$price *$re*$prop;
             }
 
