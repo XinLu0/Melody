@@ -45,25 +45,22 @@
         return sizeof($sum);
       }
   
-		function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-						global $wpdb;
-						global $dateFrom;
-						global $dateTo;
-						$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+        global $wpdb;
+				global $dateFrom;
+				global $dateTo;
+        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member=$memberID AND Item_no=$item_no");
 
-						
-						if(sizeof($sum)==0)
-							return 0;
-						else 
-						{
-							$result;
-							for($x=0;$x<sizeof($sum);$x++){
-								$result = $result+ $sum[$x]->Number;
-								
-							}
-							return $result;
-						}
-		}
+        if(sizeof($sum) == 0)
+          return 0;
+        else {
+          $result;
+          for($x = 0; $x < sizeof($sum); $x++){
+            $result = $result + $sum[$x]->Number;
+          }
+          return $result;
+        }
+      }
 
       function getMemberIDFromName($Name){
         global $wpdb;
@@ -144,6 +141,17 @@
         color: black;
       }
 
+      .topnav button {
+        float: right;
+        display: block;
+        color: white;
+        background-color: #333;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        border: 0px;
+      }
+	  
       .label_moving {
         width: 500px;
         background-color: red;
@@ -386,9 +394,9 @@
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Up Layer</a>
       <a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
-	  <form action="#" method="get">
-		<button name="logout" value = 1>Logout</button>
-	  </form>
+      <form action="#" method="get">
+        <button name="logout" value = 1>Logout</button>
+      </form>
     </div>
 
     <div class="label_moving">Hurry up! The cello already be sold 10!!</div>
