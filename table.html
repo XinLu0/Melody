@@ -8,20 +8,23 @@
     ?>
   	<?php
   		session_start();
-  		//$logout=@$_GET['logout'];
-  		//if($logout ==1)
-  		//	$_SESSION['loggedin']=0;
-  		//	if($_SESSION['loggedin']!=1)
-  		//{
-  		//	header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
-  		//	exit;
-  		//}
+  		$logout=@$_GET['logout'];
+  		if($logout ==1)
+  			$_SESSION['loggedin']=0;
+  		if($_SESSION['loggedin']!=1)
+  		{
+  			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+  			exit;
+  		}
   		//$username = $_SESSION['username'];
 		if(isset($_POST['Month'])){
 			getDatefromToByMonth($_POST['Month']);
+			
 		}else{
 			getDatefromToByCurrent();
 		}
+		$_SESSION['dateFrom'] = $dateFrom;
+		$_SESSION['dateTo'] = $dateTo;
   		$totalIncome=0;
   		function getItemPriceByItemID($item_id)
   		{
@@ -369,7 +372,9 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
     <div class="topnav">
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Layer</a>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
-      <a href="">Logout</a>
+      <form action="#" method="get">
+		<button name="logout" value = 1>Logout</button>
+	  </form>
     </div>
 
     <div class="row">

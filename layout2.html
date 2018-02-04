@@ -6,6 +6,17 @@
         Template Name: layout2 
       */ 
       session_start();
+	  
+	  $logout=@$_GET['logout'];
+  		if($logout ==1)
+  			$_SESSION['loggedin']=0;
+  		if($_SESSION['loggedin']!=1)
+  		{
+  			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+  			exit;
+  		}
+		$dateFrom = $_SESSION($dateFrom);
+		$dateTo = $_SESSION($dateTo);
       $_SESSION['cMinor1']=1001;// to be deprecated
 
       function getNameByMemberID($memberID){
@@ -34,20 +45,25 @@
         return sizeof($sum);
       }
   
-      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-        global $wpdb;
-        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member=$memberID AND Item_no=$item_no");
+		function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+						global $wpdb;
+						global $dateFrom;
+						global $dateTo;
+						$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
 
-        if(sizeof($sum) == 0)
-          return 0;
-        else {
-          $result;
-          for($x = 0; $x < sizeof($sum); $x++){
-            $result = $result + $sum[$x]->Number;
-          }
-          return $result;
-        }
-      }
+						
+						if(sizeof($sum)==0)
+							return 0;
+						else 
+						{
+							$result;
+							for($x=0;$x<sizeof($sum);$x++){
+								$result = $result+ $sum[$x]->Number;
+								
+							}
+							return $result;
+						}
+		}
 
       function getMemberIDFromName($Name){
         global $wpdb;
