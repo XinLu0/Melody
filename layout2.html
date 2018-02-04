@@ -15,8 +15,8 @@
   			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
   			exit;
   		}
-		$dateFrom = $_SESSION($dateFrom);
-		$dateTo = $_SESSION($dateTo);
+		$dateFrom = $_SESSION['dateFrom'];
+		$dateTo = $_SESSION['dateTo'];
       $_SESSION['cMinor1']=1001;// to be deprecated
 
       function getNameByMemberID($memberID){
@@ -386,6 +386,9 @@
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Up Layer</a>
       <a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
+	  <form action="#" method="get">
+		<button name="logout" value = 1>Logout</button>
+	  </form>
     </div>
 
     <div class="label_moving">Hurry up! The cello already be sold 10!!</div>

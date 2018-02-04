@@ -14,8 +14,8 @@
   			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
   			exit;
   		}
-		$dateFrom = $_SESSION($dateFrom);
-		$dateTo = $_SESSION($dateTo);
+		$dateFrom = $_SESSION['dateFrom'];
+		$dateTo = $_SESSION['dateTo'];
       function getNameByMemberID($memberID){
         global $wpdb;
         $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
@@ -360,7 +360,9 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
     </div>
     <div class="topnav">
       <a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
-      <a href="">Logout</a>
+      <form action="#" method="get">
+		<button name="logout" value = 1>Logout</button>
+	  </form>
     </div>
 
     <div class="label_moving">Hurry up! The cello already be sold 10!!</div>
