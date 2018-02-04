@@ -34,6 +34,18 @@ function getBelowTeacherListFromName($Name){
 	return $nameArray;
 }
 
+function getAllTeacherMemberID(){
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor ");
+	$mList;
+	$size = sizeof($result);
+	for($x=0;$x<$size;$x++){
+		$mList[$x]=$result[$x]->Member;
+	}
+	return $mList;
+
+}
+
 function getMemberIDFromName($Name){
 	global $wpdb;
 	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor WHERE Name=\"$Name\"");
