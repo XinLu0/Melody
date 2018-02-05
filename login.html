@@ -37,7 +37,7 @@
           $_SESSION['loggedin']=1;
           if(isAdminByMemberId($_POST['user'])==0)
             header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
-          else header("Location: http://www.melodysac.com.sg/index.php/en/test-login/"); //to be updated
+          else header("Location: http://www.melodysac.com.sg/index.php/en/admintable/"); 
         }
         else {
           alert("Username does not match password");
