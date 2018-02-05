@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-<?php 
+    <?php 
   		/* 
   		Template Name: adminTable
   		*/ 
   		session_start();
-function getAllTeacherMemberID(){
-	global $wpdb;
-	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor ");
-	$mList;
-	$size = sizeof($result);
-	for($x=0;$x<$size;$x++){
-		$mList[$x]=$result[$x]->Member;
-	}
-	return $mList;
 
-}
-function getNameByMemberID($memberID){
-	global $wpdb;
-	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Member=".$memberID);
-	return $result[0]->Name;
-}
-function getTotalItemNumber(){
-	global $wpdb;
-	$sum = $wpdb->get_results("SELECT * FROM `Melody_items` ");
+      $logout=@$_GET['logout'];
+      if($logout ==1)
+        $_SESSION['loggedin']=0;
+      if($_SESSION['loggedin']!=1)
+      {
+        header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+        exit;
+      }
 
-	return sizeof($sum);
-}
-function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+      function getAllTeacherMemberID(){
+      	global $wpdb;
+      	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor ");
+      	$mList;
+      	$size = sizeof($result);
+      	for($x=0;$x<$size;$x++){
+      		$mList[$x]=$result[$x]->Member;
+      	}
+      	return $mList;
+      }
+
+      function getNameByMemberID($memberID){
+      	global $wpdb;
+      	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Member=".$memberID);
+      	return $result[0]->Name;
+      }
+
+      function getTotalItemNumber(){
+      	global $wpdb;
+      	$sum = $wpdb->get_results("SELECT * FROM `Melody_items` ");
+
+      	return sizeof($sum);
+      }
+
+      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 				global $wpdb;
 				global $dateFrom;
 				global $dateTo;
@@ -46,114 +58,335 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 					}
 					return $result;
 				}
-}
-function getItemPriceByItemID($item_id)
-{
-	global $wpdb;
-	$sum = $wpdb->get_results("SELECT Price
-FROM `Melody_items` WHERE item_no =$item_id");
-return $sum[0]->Price;
-}
-$dateFrom;
-$dateTo;
-function getDatefromToByCurrent(){
-	$currentDate =date('Y-m-d');
-	$currentMonth = substr($currentDate,5,2);
-	$nextMonth = $currentMonth+1;
-	if($nextMonth>12)$nextMonth="01";
-	else if($nextMonth<10)$nextMonth="0".$nextMonth;
-	global $dateFrom;
-	global $dateTo;
-	$dateFrom = substr($currentDate,0,7)."-01";
-	$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
-}
-$totalItemNumber = getTotalItemNumber();
-getDatefromToByCurrent();
-if(isset($_POST["linkToMID"])){
-	$_SESSION[username] = $_POST["linkToMID"];
-	header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
-}
-?>
-</head>
-<body>
-
-<p>Click the button to sort the table alphabetically, by name:</p>
-<p><button onclick="sortTable()">Sort</button></p>
-
-<table id="myTable">
-  <tr>
-    <th>Name</th>
-    <th onclick="sortTable(1)" href="javascript:void(0);">MemberID</th>
-    <?php
-    for($i=1; $i<=$totalItemNumber;$i++){
-    //echo "<th>Item$i</th>
-    //";
-    echo "<th onclick=\"sortTable($i+1)\" href=\"javascript:void(0);\">Item$i</th>";
-}
-    ?>
-    <th onclick="sortTable(<?php echo $totalItemNumber+2; ?>)" href="javascript:void(0);">Total</th>
-  </tr>
-  <?php
-  $list = getAllTeacherMemberID();
-  	for($x=0; $x < sizeof($list);$x++){
-  		$name = getNameByMemberID($list[$x]);
-  		$sale = 0;
-  		echo "<td>$name</td>";
-  		echo "<form id=\"form$list[$x]\" method=\"POST\">";
-  		echo "<input type=\"hidden\" name=\"linkToMID\" value=\"$list[$x]\">";
-  		echo "</form>";
-  		echo  "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\" >$list[$x]</td>";
-  		//echo "<td>$list[$x]</td>";
-  		for($i=1; $i<=$totalItemNumber;$i++){
-  		$num =getNumOfItemByItemIDAndMemeberID($list[$x],$i);
-  		echo "<td>$num</td>";
-  		$price = getItemPriceByItemID($i);
-  		$sale = $sale+$price*$num;
-  	}
-  	echo"<td>$sale</td>";
-  echo"</tr>";
-  }
-  ?>
-  
-</table>
-<script>
-function sortTable(colnum) {
-  var table, rows, switching, i, x, y, shouldSwitch,numOfCol;
-  table = document.getElementById("myTable");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    numOfCol = table.rows[0].cells.length;
-
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-      x = rows[i].getElementsByTagName("TD")[colnum];
-      y = rows[i + 1].getElementsByTagName("TD")[colnum];
-      //check if the two rows should switch place:
-      if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
-        //if so, mark as a switch and break the loop:
-        shouldSwitch= true;
-        break;
       }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
+      function getItemPriceByItemID($item_id)
+      {
+      	global $wpdb;
+      	$sum = $wpdb->get_results("SELECT Price
+      FROM `Melody_items` WHERE item_no =$item_id");
+      return $sum[0]->Price;
+      }
+      $dateFrom;
+      $dateTo;
+      function getDatefromToByCurrent(){
+      	$currentDate =date('Y-m-d');
+      	$currentMonth = substr($currentDate,5,2);
+      	$nextMonth = $currentMonth+1;
+      	if($nextMonth>12)$nextMonth="01";
+      	else if($nextMonth<10)$nextMonth="0".$nextMonth;
+      	global $dateFrom;
+      	global $dateTo;
+      	$dateFrom = substr($currentDate,0,7)."-01";
+      	$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
+      }
+      $totalItemNumber = getTotalItemNumber();
+      if(isset($_POST["linkToMID"])){
+      	$_SESSION[username] = $_POST["linkToMID"];
+      	header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
+      }
 
-</script>
-</body>
+      function getItemNameByItemID($item_id){
+        global $wpdb;
+        $sum = $wpdb->get_results("SELECT Item FROM Melody_items WHERE item_no=$item_id");
+        return $sum[0]->Item;
+      }
+
+      if(isset($_POST['Month'])){
+        getDatefromToByMonth($_POST['Month']);
+      }
+      else{
+        getDatefromToByCurrent();
+      }
+      $_SESSION['dateFrom'] = $dateFrom;
+      $_SESSION['dateTo'] = $dateTo;
+    ?>
+    <meta charset="utf-8">
+    <style>
+      * {
+          box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        height: 1000px;
+        background-image: linear-gradient(white, grey);
+      }
+
+      /* Style the header */
+      .header {
+        background-color: #ffffff;
+        padding: 1px;
+        text-align: center;
+      }
+
+      /* Style the top navigation bar */
+      .topnav {
+        overflow: hidden;
+        background-color: #333;
+      }
+
+      /* Style the topnav links */
+      .topnav a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      /* Change color on hover */
+      .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+      }
+
+      .topnav button {
+        float: right;
+        display: block;
+        color: white;
+        background-color: #333;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        border: 0px;
+      }
+
+      /* Create three equal columns that floats next to each other */
+      .column_left {
+        float: left;
+        width: 20%;
+        padding: 15px;
+      }
+
+      /* Create three equal columns that floats next to each other */
+      .column_center {
+        float: left;
+        width: 60%;
+        padding: 15px;
+      }
+
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+      @media (max-width:600px) {
+        .column {
+            width: 100%;
+        }
+      }
+      .Performance {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+        margin: auto;
+        text-align: center;
+      }
+
+      .Performance th {
+        border: 1px solid #ddd;
+        padding:  12px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: grey;
+        color: white;
+      }
+
+      .Major {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 50%;
+      }
+
+      .Major td{
+        font-size: 20px;
+        border: 1px solid #ddd;
+        padding:  12px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        text-align: center;
+        background-color: #DDA0DD;
+        color: black;
+      }
+      #right_table {
+        margin-top:20px;
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 30%;
+      }
+
+      #right_table th {
+        font-weight: 100;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        text-align: center;
+        background-color: #cccccc;
+        color: white;
+      }
+
+      #right_table td{
+        font-size: 15px;
+        border: 1px solid #ddd;
+        padding:  10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+        background-color: #cccccc;
+        color: black;
+      }
+      </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <img src="<?php echo get_template_directory_uri(); ?>/test/melody.jpg">
+    </div>
+
+    <div class="topnav">
+      <a HREF="javascript:window.print()">Print</a>
+      <form action="#" method="get">
+        <button name="logout" value = 1>Logout</button>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="column_left">
+        <p></p>
+        <p>Select Month</p>
+
+        <table id="right_table">
+          <tr id="right_table">
+            <form action="#" method="post">
+              <select name="Month">
+                <?php
+                  $y = date('Y');
+                  $m = date('m');
+                  for($i = 0; $i < 24; $i++){
+                    echo "<option value=\"$y$m\">$y/$m</option>";
+                    $m--;
+                    if($m==0){
+                      $m=12;
+                      $y--;
+                    }
+                    if($m<10)$m="0".$m;
+                  }
+                ?>
+              </select>
+              <input type="submit" value="Submit"/>
+            </form>
+          </tr>
+
+        </table>
+        <p></p>
+        <p></p>
+        <p></p>
+        <table id="right_table">
+          <tr id="right_table">
+            <th id="right_table">Item</th>
+            <th id="right_table">Item_No</th>
+            <th id="right_table">Price</th>
+          </tr>
+
+          <?php
+            $sum = getTotalItemNumber();
+            for($i = 1; $i <= $sum; $i ++){
+              $iName = getItemNameByItemID($i);
+              $iPrice = getItemPriceByItemID($i);
+              echo "<tr id=\"right_table\">";
+              echo "<td id=\"right_table\">$iName</td>";
+              echo "<td id=\"right_table\">$i</td>";
+              echo "<td id=\"right_table\">$iPrice</td>";
+              echo "</tr>";
+            }
+          ?>
+        </table>
+      </div>
+
+      <div class="column_center">
+        <table id="myTable">
+          <tr class="Performance">
+            <th>Name</th>
+            <th onclick="sortTable(1)" href="javascript:void(0);">MemberID</th>
+            <?php
+              for($i=1; $i<=$totalItemNumber;$i++){
+                echo "<th onclick=\"sortTable($i+1)\" href=\"javascript:void(0);\">Item$i</th>";
+              }
+            ?>
+            <th onclick="sortTable(<?php echo $totalItemNumber+2; ?>)" href="javascript:void(0);">Total</th>
+          </tr>
+
+          <?php
+            $list = getAllTeacherMemberID();
+          	for($x=0; $x < sizeof($list);$x++){
+          		$name = getNameByMemberID($list[$x]);
+          		$sale = 0;
+              echo"<tr class=\"Major\">";
+          		echo "<td >$name</td>";
+          		echo "<form id=\"form$list[$x]\" method=\"POST\">";
+          		echo "<input type=\"hidden\" name=\"linkToMID\" value=\"$list[$x]\">";
+          		echo "</form>";
+          		echo "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\">$list[$x]</td>";
+          		//echo "<td>$list[$x]</td>";
+          		for($i=1; $i<=$totalItemNumber;$i++){
+          		  $num =getNumOfItemByItemIDAndMemeberID($list[$x],$i);
+          		  echo "<td>$num</td>";
+          		  $price = getItemPriceByItemID($i);
+          		  $sale = $sale+$price*$num;
+            	}
+            	echo"<td>$sale</td>";
+              echo"</tr>";
+            }
+          ?>
+      
+        </table>
+      </div>
+    </div>
+
+    <script>
+      function sortTable(colnum) {
+        var table, rows, switching, i, x, y, shouldSwitch,numOfCol;
+        table = document.getElementById("myTable");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+          //start by saying: no switching is done:
+          switching = false;
+          rows = table.getElementsByTagName("TR");
+          numOfCol = table.rows[0].cells.length;
+
+          /*Loop through all table rows (except the
+          first, which contains table headers):*/
+          for (i = 1; i < (rows.length - 1); i++) {
+            //start by saying there should be no switching:
+            shouldSwitch = false;
+            /*Get the two elements you want to compare,
+            one from current row and one from the next:*/
+            x = rows[i].getElementsByTagName("TD")[colnum];
+            y = rows[i + 1].getElementsByTagName("TD")[colnum];
+            //check if the two rows should switch place:
+            if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+              //if so, mark as a switch and break the loop:
+              shouldSwitch= true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            /*If a switch has been marked, make the switch
+            and mark that a switch has been done:*/
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
