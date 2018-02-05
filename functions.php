@@ -164,4 +164,9 @@ function getDatefromToByCurrent(){
 	$dateFrom = substr($currentDate,0,7)."-01";
 	$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
 }
+function isAdminByMemberId($mId){
+	global $wpdb;
+	$sum = $wpdb->get_results("SELECT isAdmin FROM `Teacher_infor` WHERE Member = $mId");
+	return ($sum[0]->isAdmin); 
+}
 ?>
