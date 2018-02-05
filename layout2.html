@@ -91,6 +91,14 @@
         $result = $sum[0]->Minor1_proprotion;
         return $result;
       }
+	  function getMinorTwoprop($item_no)
+	{
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Minor2_proprotion FROM `Melody_items` WHERE Item_no = $item_no");
+		$result = $sum[0]->Minor2_proprotion;
+		return $result;
+	}
+
 	  
       $currentMinor1 = $_SESSION['cMinor1'];
 
@@ -391,7 +399,7 @@
     </div>
 
     <div class="topnav">
-      <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Up Layer</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Upper Layer</a>
       <a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
       <form action="#" method="get">
@@ -399,7 +407,7 @@
       </form>
     </div>
 
-    <div class="label_moving">Hurry up! The cello already be sold 10!!</div>
+    <div class="label_moving">Hurry up! <?php echo rand(5,20; ?> cellos are sold today!!</div>
 
     <div class="row">
       <div class="column_left">
@@ -513,7 +521,7 @@
               $re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
               echo "<td id=\"center_table\">$re</td>";
               $price = getItemPriceByItemID($i);
-              $prop = getMinorOneprop($i);
+              $prop = getMinorTwoprop($i);
               $contri = $contri+$price *$re*$prop;
             }
 

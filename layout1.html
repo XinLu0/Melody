@@ -46,22 +46,25 @@
         return sizeof($sum);
       }
   
-      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-        global $wpdb;
+function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+				global $wpdb;
 				global $dateFrom;
 				global $dateTo;
-        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member=$memberID AND Item_no=$item_no");
+				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
 
-        if(sizeof($sum) == 0)
-          return 0;
-        else {
-          $result;
-          for($x = 0; $x < sizeof($sum); $x++){
-            $result = $result + $sum[$x]->Number;
-          }
-          return $result;
-        }
-      }
+				
+				if(sizeof($sum)==0)
+					return 0;
+				else 
+				{
+					$result;
+					for($x=0;$x<sizeof($sum);$x++){
+						$result = $result+ $sum[$x]->Number;
+						
+					}
+					return $result;
+				}
+}
 
       function getMemberIDFromName($Name){
         global $wpdb;
@@ -404,7 +407,7 @@
       </form>
     </div>
 
-    <div class="label_moving">Hurry up! The cello already be sold 10!!</div>
+    <div class="label_moving">Hurry up! <?php echo rand(5,20); ?> cellos are sold today!!</div>
 
     <div class="row">
       <div class="column_left">

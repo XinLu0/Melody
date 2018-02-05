@@ -22,6 +22,11 @@
       function comparePassword($input,$fromDatabase){
         return strcmp($input,$fromDatabase);
       }
+      function isAdminByMemberId($mId){
+        global $wpdb;
+        $sum = $wpdb->get_results("SELECT isAdmin FROM `Teacher_infor` WHERE Member = $mId");
+        return ($sum[0]->isAdmin); 
+      }
         
       if(isset($_POST['user'])&&isset($_POST['Password'])){
         $pa=getPasswordByMemberID($_POST['user']);
@@ -30,7 +35,9 @@
         if($re==0){
           $_SESSION['username']=$_POST['user'];
           $_SESSION['loggedin']=1;
-          header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
+          if(isAdminByMemberId($_POST['user'])==0)
+            header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
+          else header("Location: http://www.melodysac.com.sg/index.php/en/admintable/"); 
         }
         else {
           alert("Username does not match password");

@@ -156,17 +156,6 @@
         background-image: linear-gradient(white, grey);
       }
 
-      /* Style the header */
-      .header {
-        background-color: #ffffff;
-        padding: 1px;
-        text-align: center;
-      }
-
-      .heading2 {
-        color:  FF0000;
-      }
-
       /* Style the top navigation bar */
       .topnav {
         overflow: hidden;
@@ -201,16 +190,9 @@
       }
 
       /* Create three equal columns that floats next to each other */
-      .column_left {
-        float: left;
-        width: 20%;
-        padding: 15px;
-      }
-
-      /* Create three equal columns that floats next to each other */
       .column_center {
         float: left;
-        width: 60%;
+        width: 80%;
         padding: 15px;
       }
 
@@ -376,65 +358,23 @@
         color: black;
       }
 
+      /* Style the header */
+      .header {
+        background-color: #ffffff;
+        padding: 1px;
+        text-align: center;
+      }
     </style>
   </head>
 
   <body>
-    <div class="header">
-      <img src="<?php echo get_template_directory_uri(); ?>/test/melody.jpg">
-    </div>
-
+    <h1 class="header">Melody Strings Art Center</h1>
     <div class="topnav">
-      <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Chart</a>
-      <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
       <a HREF="javascript:window.print()">Print</a>
-      <form action="#" method="get">
-        <button name="logout" value = 1>Logout</button>
-      </form>
     </div>
+    <h2>Member Name: Blair   Member ID: 1003  Month: 01/2018</h2>
 
     <div class="row">
-      <div class="column_left">
-        <?php
-          session_start();
-          $mid = $_SESSION['username'];
-          $name = getNameByMemberID($mid);
-          echo "<h2 id=\"heading2\">Hello $name</h2>"
-        ?>
-        <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg">
-        <p></p>
-        <p></p>
-        <p></p>
-        <p>Select Month</p>
-
-        <table id="right_table">
-          <tr id="right_table">
-            <form action="#" method="post">
-              <select name="Month">
-			  <?php
-				$y = date('Y');
-				$m = date('m');
-				for($i = 0; $i<24 ; $i++){
-					echo "
-					<option value=\"$y$m\">$y/$m</option>
-					";
-					$m--;
-					if($m==0){
-					$m=12;
-					$y--;
-					}
-					if($m<10)$m="0".$m;
-					
-				}
-			  ?>
-              </select>
-              <input type="submit" value="Submit"/>
-            </form>
-          </tr>
-
-        </table>
-      </div>
-
       <div class="column_center">
         <table id="Performance">
           <tr id="Performance">
