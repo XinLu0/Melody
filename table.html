@@ -207,6 +207,12 @@
         padding: 15px;
       }
 
+      .img_left{
+        width: 250px;
+        height: 200px;
+        float: left;
+      }
+
       /* Create three equal columns that floats next to each other */
       .column_center {
         float: left;
@@ -401,32 +407,35 @@
           $name = getNameByMemberID($mid);
           echo "<h2 id=\"heading2\">Hello $name</h2>"
         ?>
-        <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg">
+        <img class="img_left" src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg">
+        <br></br>
         <p></p>
         <p></p>
         <p></p>
+        <p></p>
+        <br></br>
+        <br></br>
         <p>Select Month</p>
 
         <table id="right_table">
+          
           <tr id="right_table">
             <form action="#" method="post">
               <select name="Month">
-			  <?php
-				$y = date('Y');
-				$m = date('m');
-				for($i = 0; $i<24 ; $i++){
-					echo "
-					<option value=\"$y$m\">$y/$m</option>
-					";
-					$m--;
-					if($m==0){
-					$m=12;
-					$y--;
-					}
-					if($m<10)$m="0".$m;
-					
-				}
-			  ?>
+      			  <?php
+        				$y = date('Y');
+        				$m = date('m');
+        				for($i = 0; $i<24 ; $i++){
+        					echo "<option value=\"$y$m\">$y/$m</option>";
+        					$m--;
+        					if($m==0){
+                    $m=12;
+                    $y--;
+        					}
+        					if($m<10)$m="0".$m;
+        					
+        				}
+      			  ?>
               </select>
               <input type="submit" value="Submit"/>
             </form>
@@ -436,6 +445,7 @@
       </div>
 
       <div class="column_center">
+        <h2><?php echo "From $dateFrom to $dateTo";  ?></h2>
         <table id="Performance">
           <tr id="Performance">
             <th id="Performance">Name</th>

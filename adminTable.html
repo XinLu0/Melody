@@ -18,24 +18,24 @@
 
       function getAllTeacherMemberID(){
       	global $wpdb;
-      	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor ");
+      	$result = $wpdb->get_results("SELECT Member FROM Teacher_infor ");
       	$mList;
       	$size = sizeof($result);
-      	for($x=0;$x<$size;$x++){
-      		$mList[$x]=$result[$x]->Member;
+      	for($x = 0; $x < $size; $x++){
+      		$mList[$x] = $result[$x]->Member;
       	}
       	return $mList;
       }
 
       function getNameByMemberID($memberID){
       	global $wpdb;
-      	$result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Member=".$memberID);
+      	$result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
       	return $result[0]->Name;
       }
 
       function getTotalItemNumber(){
       	global $wpdb;
-      	$sum = $wpdb->get_results("SELECT * FROM `Melody_items` ");
+      	$sum = $wpdb->get_results("SELECT * FROM Melody_items ");
 
       	return sizeof($sum);
       }
@@ -44,41 +44,43 @@
 				global $wpdb;
 				global $dateFrom;
 				global $dateTo;
-				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+				$sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
 
-				
-				if(sizeof($sum)==0)
+				if(sizeof($sum) == 0)
 					return 0;
-				else 
-				{
+				else {
 					$result;
-					for($x=0;$x<sizeof($sum);$x++){
+					for($x = 0; $x < sizeof($sum); $x++){
 						$result = $result+ $sum[$x]->Number;
 						
 					}
 					return $result;
 				}
       }
+
       function getItemPriceByItemID($item_id)
       {
       	global $wpdb;
-      	$sum = $wpdb->get_results("SELECT Price
-      FROM `Melody_items` WHERE item_no =$item_id");
-      return $sum[0]->Price;
+      	$sum = $wpdb->get_results("SELECT Price FROM Melody_items WHERE item_no=$item_id");
+        return $sum[0]->Price;
       }
+
       $dateFrom;
       $dateTo;
       function getDatefromToByCurrent(){
-      	$currentDate =date('Y-m-d');
+      	$currentDate = date('Y-m-d');
       	$currentMonth = substr($currentDate,5,2);
       	$nextMonth = $currentMonth+1;
-      	if($nextMonth>12)$nextMonth="01";
-      	else if($nextMonth<10)$nextMonth="0".$nextMonth;
+      	if($nextMonth>12)
+          $nextMonth="01";
+      	else if($nextMonth<10)
+          $nextMonth="0".$nextMonth;
       	global $dateFrom;
       	global $dateTo;
       	$dateFrom = substr($currentDate,0,7)."-01";
       	$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
       }
+
       $totalItemNumber = getTotalItemNumber();
       if(isset($_POST["linkToMID"])){
       	$_SESSION[username] = $_POST["linkToMID"];
@@ -89,6 +91,20 @@
         global $wpdb;
         $sum = $wpdb->get_results("SELECT Item FROM Melody_items WHERE item_no=$item_id");
         return $sum[0]->Item;
+      }
+
+      function getDatefromToByMonth($yyyymm){
+        $month = substr($yyyymm, -2);
+        $year = substr($yyyymm,0, 4);
+        $nextMonth = $month+1;
+        if($nextMonth > 12)
+          $nextMonth="01";
+        else if($nextMonth < 10)
+          $nextMonth = "0".$nextMonth;
+        global $dateFrom;
+        $dateFrom = $year."-".$month."-01";
+        global $dateTo;
+        $dateTo = $year."-".$nextMonth."-01";
       }
 
       if(isset($_POST['Month'])){
@@ -213,6 +229,7 @@
         background-color: #DDA0DD;
         color: black;
       }
+
       #right_table {
         margin-top:20px;
         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -242,7 +259,7 @@
         background-color: #cccccc;
         color: black;
       }
-      </style>
+    </style>
   </head>
 
   <body>
@@ -283,7 +300,6 @@
               <input type="submit" value="Submit"/>
             </form>
           </tr>
-
         </table>
         <p></p>
         <p></p>
@@ -311,6 +327,7 @@
       </div>
 
       <div class="column_center">
+        <h2><?php echo "From $dateFrom to $dateTo";  ?></h2>
         <table id="myTable">
           <tr class="Performance">
             <th>Name</th>
@@ -325,24 +342,23 @@
 
           <?php
             $list = getAllTeacherMemberID();
-          	for($x=0; $x < sizeof($list);$x++){
+          	for($x = 0; $x < sizeof($list); $x++){
           		$name = getNameByMemberID($list[$x]);
           		$sale = 0;
-              echo"<tr class=\"Major\">";
+              echo "<tr class=\"Major\">";
           		echo "<td >$name</td>";
           		echo "<form id=\"form$list[$x]\" method=\"POST\">";
           		echo "<input type=\"hidden\" name=\"linkToMID\" value=\"$list[$x]\">";
           		echo "</form>";
           		echo "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\">$list[$x]</td>";
-          		//echo "<td>$list[$x]</td>";
-          		for($i=1; $i<=$totalItemNumber;$i++){
-          		  $num =getNumOfItemByItemIDAndMemeberID($list[$x],$i);
+          		for($i = 1; $i <= $totalItemNumber; $i++){
+          		  $num = getNumOfItemByItemIDAndMemeberID($list[$x],$i);
           		  echo "<td>$num</td>";
           		  $price = getItemPriceByItemID($i);
           		  $sale = $sale+$price*$num;
             	}
-            	echo"<td>$sale</td>";
-              echo"</tr>";
+            	echo "<td>$sale</td>";
+              echo "</tr>";
             }
           ?>
       
