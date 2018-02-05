@@ -5,6 +5,7 @@
   		/* 
   		Template Name: adminTable
   		*/ 
+  		session_start();
 function getAllTeacherMemberID(){
 	global $wpdb;
 	$result = $wpdb->get_results( "SELECT Member FROM Teacher_infor ");
@@ -68,6 +69,10 @@ function getDatefromToByCurrent(){
 }
 $totalItemNumber = getTotalItemNumber();
 getDatefromToByCurrent();
+if(isset($_POST["linkToMID"])){
+	$_SESSION[username] = $_POST["linkToMID"];
+	header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
+}
 ?>
 </head>
 <body>
@@ -94,7 +99,11 @@ getDatefromToByCurrent();
   		$name = getNameByMemberID($list[$x]);
   		$sale = 0;
   		echo "<td>$name</td>";
-  		echo "<td>$list[$x]</td>";
+  		echo "<form id=\"form$list[$x]\" method=\"POST\">";
+  		echo "<input type=\"hidden\" name=\"linkToMID\" value=\"$list[$x]\">";
+  		echo "</form>";
+  		echo  "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\" >$list[$x]</td>";
+  		//echo "<td>$list[$x]</td>";
   		for($i=1; $i<=$totalItemNumber;$i++){
   		$num =getNumOfItemByItemIDAndMemeberID($list[$x],$i);
   		echo "<td>$num</td>";
