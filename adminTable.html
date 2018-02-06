@@ -346,7 +346,7 @@
           		$name = getNameByMemberID($list[$x]);
           		$sale = 0;
               echo "<tr class=\"Major\">";
-          		echo "<td >$name</td>";
+          		echo "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\">$name</td>";
           		echo "<form id=\"form$list[$x]\" method=\"POST\">";
           		echo "<input type=\"hidden\" name=\"linkToMID\" value=\"$list[$x]\">";
           		echo "</form>";
