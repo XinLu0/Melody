@@ -46,11 +46,11 @@
         return sizeof($sum);
       }
   
-function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
+      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 				global $wpdb;
 				global $dateFrom;
 				global $dateTo;
-				$sum = $wpdb->get_results("SELECT Number FROM `Melody_performance` WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
+        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member=$memberID AND Item_no=$item_no");
 
 				
 				if(sizeof($sum)==0)
@@ -105,7 +105,6 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 
       body {
         margin: 0;
-        height: 1000px;
         background-image: linear-gradient(white, grey);
       }
 
@@ -173,13 +172,13 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
       /* Safari 4.0 - 8.0 */
       @-webkit-keyframes label_anim {
         0%    {background-color:red; left:0px; top:0px;}
-        100%  {background-color:yellow; left:1000px; top:0px;}
+        100%  {background-color:yellow; left:500px; top:0px;}
       }
 
       /* Standard syntax */
       @keyframes label_anim {
         0%    {background-color:red; left:0px; top:0px;}
-        100%  {background-color:yellow; left:1000px; top:0px;}
+        100%  {background-color:yellow; left:500px; top:0px;}
       }
       
       /* Create three equal columns that floats next to each other */
@@ -219,8 +218,9 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
 
       .left_img{
         text-align: center;
-        margin-top:50px;
-        width: 150px; 
+        margin-top:20px;
+        margin-bottom:20px;
+        width: 220px; 
         height: 200px;
       }
 
@@ -309,13 +309,12 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
         font-size: 20px;
       }
 
-      div.gallery {
+      .gallery {
           border: 1px solid green;
           border-radius: 35px;
           padding: 25px;
           margin: 25px;
           border: 1px solid #ccc;
-          width: 180px;
       }
 
       .gallery-dropdown-content {
@@ -327,14 +326,16 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
         z-index: 1;
       }
 
-      div.gallery:hover .gallery-dropdown-content {
+      .gallery:hover .gallery-dropdown-content {
         border: 1px solid #777;
         display: block;
       }
 
-      div.gallery img {
-        width: 100%;
-        height: auto;
+      .gallery img {
+        text-align: center;
+        margin-top:20px;
+        margin-bottom:20px;
+        width: 140px; 
       }
 
       div.desc {
@@ -434,7 +435,7 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
       <div class="column_center">
         <div class="center_major">
           <div class="gallery">
-            <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg" width="300" height="200">
+            <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg">
             <div class="desc"><?php echo $_SESSION['username']; ?></div>
           </div>
         </div>
@@ -461,9 +462,9 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
             for($x = 0; $x < sizeof($subTeacherList); $x++){
               $subTeacherid = getMemberIDFromName($subTeacherList[$x]);
               $subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
-              echo "<button class=\"minor_button\" type=\"submit\" name=\"Minor\" value=\"$subTeacherid\">";
-              echo "<div class=\"gallery\">";
-              echo "<img src= $subpath width=\"300\" height=\"200\">";
+              echo "<button class=\"gallery\" type=\"submit\" name=\"Minor\" value=\"$subTeacherid\">";
+              //echo "<div class=\"gallery\">";
+              echo "<img src= $subpath>";
               echo "<div class=\"desc\">$subTeacherid</div>";
               echo "<div class=\"gallery-dropdown-content\">";
               echo "<table id=\"center_table\">";
@@ -490,7 +491,7 @@ function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
               echo "</tr>";
               echo "</table>";
               echo "</div>";
-              echo "</div>";
+              //echo "</div>";
               echo "</button>";
               
             }

@@ -46,7 +46,7 @@
       }
   
       function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-        global $wpdb;
+				global $wpdb;
 				global $dateFrom;
 				global $dateTo;
         $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member=$memberID AND Item_no=$item_no");
@@ -112,7 +112,6 @@
 
       body {
         margin: 0;
-        height: 1000px;
         background-image: linear-gradient(white, grey);
       }
 
@@ -159,6 +158,12 @@
         text-decoration: none;
         border: 0px;
       }
+      
+      /* Change color on hover */
+      .topnav button:hover {
+        background-color: #ddd;
+        color: black;
+      }
 	  
       .label_moving {
         width: 500px;
@@ -174,13 +179,13 @@
       /* Safari 4.0 - 8.0 */
       @-webkit-keyframes label_anim {
         0%    {background-color:red; left:0px; top:0px;}
-        100%  {background-color:yellow; left:1000px; top:0px;}
+        100%  {background-color:yellow; left:500px; top:0px;}
       }
 
       /* Standard syntax */
       @keyframes label_anim {
         0%    {background-color:red; left:0px; top:0px;}
-        100%  {background-color:yellow; left:1000px; top:0px;}
+        100%  {background-color:yellow; left:500px; top:0px;}
       }
       
       /* Create three equal columns that floats next to each other */
@@ -220,8 +225,9 @@
 
       .left_img{
         text-align: center;
-        margin-top:50px;
-        width: 150px; 
+        margin-top:20px;
+        margin-bottom:20px;
+        width: 220px; 
         height: 200px;
       }
 
@@ -318,7 +324,7 @@
         font-size: 20px;
       }
 
-      div.gallery_major {
+      .gallery_major {
         border: 1px solid green;
         border-radius: 35px;
         padding: 10px;
@@ -326,14 +332,17 @@
         border: 1px solid #ccc;
         width: 100px;
       }
-
-      div.gallery {
+      .gallery_major img {
+        width: 100%;
+        height: auto;
+      }
+	  
+      .gallery {
           border: 1px solid green;
           border-radius: 35px;
           padding: 25px;
           margin: 25px;
           border: 1px solid #ccc;
-          width: 180px;
       }
 
       .gallery-dropdown-content {
@@ -345,12 +354,13 @@
         z-index: 1;
       }
 
-      div.gallery:hover .gallery-dropdown-content {
+      .gallery:hover .gallery-dropdown-content {
         border: 1px solid #777;
         display: block;
       }
 
-      div.gallery img {
+      .gallery img {
+        text-align: center;
         width: 100%;
         height: auto;
       }
