@@ -1,6 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<?php
+		/* 
+  		Template Name: Update
+  		*/
+  		session_start();
+
+  		//to be deprecated
+  		$logout
+
+
+  		$logout=@$_GET['logout'];
+  		if($logout ==1)
+  			$_SESSION['loggedin']=0;
+  		if($_SESSION['loggedin']!=1)
+  		{
+  			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+  			exit;
+  		}
+  		$mid = $_SESSION['username'];
+  		function updateEmailByMID($Mid,$email){
+			global $wpdb;
+			$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET Email=\"$email\" WHERE Member = $Mid"));
+		}
+		function updatePasswordByMID($Mid,$password){
+			global $wpdb;
+			$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET Password=\"$password\" WHERE Member = $Mid"));
+		}
+		function updateContactNoByMID($Mid,$Contact_no){
+			global $wpdb;
+			$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET Contact_no=\"$Contact_no\" WHERE Member = $Mid"));
+		}
+		function alert($msg) {
+		echo "<script type='text/javascript'>alert('$msg');</script>";
+		}
+  		if(isset($_POST["Number"])) {
+  			if($_POST["Number"]!=""){
+  				updateContactNoByMID($mid,$_POST["Number"]);
+  			}
+  			if($_POST["NewPassword1"]!=""){
+  				if($_POST["NewPassword1"]!=$_POST["NewPassword2"])
+  					alert("Passwords don't match");
+  				else {
+  					updatePasswordByMID($mid,$_POST["NewPassword1"]);
+  				}
+  			}
+  			if($_POST["Email"]!=""){
+  				updateEmailByMID($mid,$_POST["Email"]);
+  			}
+  		}
+		?>
 		<meta charset="utf-8">
 		<style>
 	    	* {
@@ -105,7 +155,7 @@
 					<lable>
 						Email
 						<br>
-						<input type="text" name="UserName" id="username">
+						<input type="text" name="Email" id="Email">
 					</lable>
 				</p>
 				<p>
