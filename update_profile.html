@@ -8,7 +8,7 @@
   		session_start();
 
   		//to be deprecated
-  		$logout
+  		$_SESSION['username']=1006;
 
 
   		$logout=@$_GET['logout'];
@@ -159,27 +159,17 @@
 			<form name="update_profile" method="post">
 				<p>
 					<label for="email">Email</label>
-					<input type="text" id="email" name="NewEmail">
+					<input type="text" id="email" name="Email">
 				</p>
 				<p>
 					<label for="NPassword1">New Password</label>
 					<input type="text" id="NPassword1" name="NewPassword1">
 				</p>
 				<p>
-<<<<<<< HEAD
-					<lable>
-						Email
-						<br>
-<<<<<<< HEAD
-						<input type="text" name="Email" id="Email">
-=======
-						<input type="text" name="UserName" id="username" class="input_text">
->>>>>>> origin/master
-					</lable>
-=======
+
 					<label for="NPassword2">Confirm New password</label>
 					<input type="text" id="NPassword2" name="NewPassword2">
->>>>>>> 673e9c426baee8ca948ff250453db92b991a3baa
+
 				</p>
 				<p>
 					<input type="submit" value="Submit">
