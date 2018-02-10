@@ -56,11 +56,22 @@
 			.update {
 				width: 100%;
 				max-width: 550px;
-				padding: 8% 0 0;
+				padding: 10px;
 				margin: auto;
+    			border: 2px solid gray;
+    			text-align: center;
 			}
-
-
+			.input_text{
+				border: 1px solid #ddd;
+				-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+				box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+				background-color: #fff;
+				color: #32373c;
+				outline: 0;
+				-webkit-transition: 50ms border-color ease-in-out;
+				transition: 50ms border-color ease-in-out;
+				width: 500px;
+			}
 		</style>
 	</head>
 
@@ -76,36 +87,38 @@
 				<button name="logout" value = 1>Logout</button>
 			</form>
 		</div>
-
+		<br>
+		<br>
+		<br>
 		<div class="update">
-			<p>Update Your Profile</p>
+			<h2>Update Your Profile</h2>
 			<form name="update_profile" method="post">
 				<p>
 					<lable>
 						Contact Number
 						<br>
-						<input type="text" name="Number" id="Number">
+						<input type="text" name="Number" id="Number" class="input_text">
 					</lable>
 				</p>
 				<p>
 					<lable>
 						New Password
 						<br>
-						<input type="text" name="NewPassword1" id="NewPassword1">
+						<input type="text" name="NewPassword1" id="NewPassword1" class="input_text">
 					</lable>
 				</p>
 				<p>
 					<lable>
 						Confirm New password
 						<br>
-						<input type="text" name="NewPassword2" id="NewPassword2">
+						<input type="text" name="NewPassword2" id="NewPassword2" class="input_text">
 					</lable>
 				</p>
 				<p>
 					<lable>
 						Email
 						<br>
-						<input type="text" name="UserName" id="username">
+						<input type="text" name="UserName" id="username" class="input_text">
 					</lable>
 				</p>
 				<p>
