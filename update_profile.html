@@ -104,23 +104,37 @@
 			}
 
 			.update {
-				width: 100%;
+				border-radius: 5px;
+				background-color: #f2f2f2;
+				padding: 20px;
 				max-width: 550px;
-				padding: 10px;
 				margin: auto;
-    			border: 2px solid gray;
-    			text-align: center;
+				border: 1px solid gray;
 			}
-			.input_text{
-				border: 1px solid #ddd;
-				-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
-				box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
-				background-color: #fff;
-				color: #32373c;
-				outline: 0;
-				-webkit-transition: 50ms border-color ease-in-out;
-				transition: 50ms border-color ease-in-out;
-				width: 500px;
+
+			input[type=text] {
+			    width: 100%;
+			    padding: 12px 20px;
+			    margin: 8px 0;
+			    display: inline-block;
+			    border: 1px solid #ccc;
+			    border-radius: 4px;
+			    box-sizing: border-box;
+			}
+
+			input[type=submit] {
+			    width: 100%;
+			    background-color: #A6502D;
+			    color: white;
+			    padding: 14px 20px;
+			    margin: 8px 0;
+			    border: none;
+			    border-radius: 4px;
+			    cursor: pointer;
+			}
+
+			input[type=submit]:hover {
+			    background-color: #8C2A05;
 			}
 		</style>
 	</head>
@@ -144,27 +158,15 @@
 			<h2>Update Your Profile</h2>
 			<form name="update_profile" method="post">
 				<p>
-					<lable>
-						Contact Number
-						<br>
-						<input type="text" name="Number" id="Number" class="input_text">
-					</lable>
+					<label for="email">Email</label>
+					<input type="text" id="email" name="NewEmail">
 				</p>
 				<p>
-					<lable>
-						New Password
-						<br>
-						<input type="text" name="NewPassword1" id="NewPassword1" class="input_text">
-					</lable>
+					<label for="NPassword1">New Password</label>
+					<input type="text" id="NPassword1" name="NewPassword1">
 				</p>
 				<p>
-					<lable>
-						Confirm New password
-						<br>
-						<input type="text" name="NewPassword2" id="NewPassword2" class="input_text">
-					</lable>
-				</p>
-				<p>
+<<<<<<< HEAD
 					<lable>
 						Email
 						<br>
@@ -174,12 +176,15 @@
 						<input type="text" name="UserName" id="username" class="input_text">
 >>>>>>> origin/master
 					</lable>
+=======
+					<label for="NPassword2">Confirm New password</label>
+					<input type="text" id="NPassword2" name="NewPassword2">
+>>>>>>> 673e9c426baee8ca948ff250453db92b991a3baa
 				</p>
 				<p>
-					<button value="submit">
-						Update
-					</button>
+					<input type="submit" value="Submit">
 				</p>
 			</form>
+		</div>
 	</body>
 </html>
