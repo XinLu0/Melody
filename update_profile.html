@@ -9,7 +9,7 @@
 
   		//to be deprecated
   		$_SESSION['username']=1006;
-
+		$_SESSION['loggedin']=1;
 
   		$logout=@$_GET['logout'];
   		if($logout ==1)
@@ -158,8 +158,12 @@
 			<h2>Update Your Profile</h2>
 			<form name="update_profile" method="post">
 				<p>
-					<label for="email">Email</label>
-					<input type="text" id="email" name="Email">
+					<label for="number">Contact Number</label>
+					<input type="text" id="number" name="Number">
+				</p>
+				<p>
+					<label for="Email">Email</label>
+					<input type="text" id="Email" name="Email">
 				</p>
 				<p>
 					<label for="NPassword1">New Password</label>
