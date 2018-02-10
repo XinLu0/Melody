@@ -191,4 +191,21 @@ function updateContactNoByMID($Mid,$Contact_no){
 	global $wpdb;
 	$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET Contact_no=\"$Contact_no\" WHERE Member = $Mid"));
 }
+function sendEmail($subject, $emailList, $message,$isHTML)
+{
+	
+	for($x = 0; $x<sizeof($emailList);$x++)
+	{
+		$to = $emailList[$x];
+	
+		$headers[] = 'MIME-Version: 1.0';
+		$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+		$headers[] = 'From: Melody Strings Art Center <Melody@Melody.com>';
+		if($isHTML)
+		{
+			mail($to, $subject, $message,implode("\r\n", $headers));
+		}
+		else mail($to, $subject, $message);
+	}
+}
 ?>
