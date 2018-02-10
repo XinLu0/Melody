@@ -33,21 +33,28 @@
 			$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET Contact_no=\"$Contact_no\" WHERE Member = $Mid"));
 		}
 		function alert($msg) {
-		echo "<script type='text/javascript'>alert('$msg');</script>";
+			echo "<script type='text/javascript'>alert('$msg');</script>";
 		}
   		if(isset($_POST["Number"])) {
   			if($_POST["Number"]!=""){
   				updateContactNoByMID($mid,$_POST["Number"]);
+  				alert("Successful!");
   			}
   			if($_POST["NewPassword1"]!=""){
+
   				if($_POST["NewPassword1"]!=$_POST["NewPassword2"])
-  					alert("Passwords don't match");
+  				{
+  					alert("Passwords don\'t match");
+  					
+  				}
   				else {
   					updatePasswordByMID($mid,$_POST["NewPassword1"]);
+  					alert("Successful!");
   				}
   			}
   			if($_POST["Email"]!=""){
   				updateEmailByMID($mid,$_POST["Email"]);
+  				alert("Successful!");
   			}
   		}
 		?>
@@ -156,7 +163,7 @@
 		<br>
 		<div class="update">
 			<h2>Update Your Profile</h2>
-			<form name="update_profile" method="post">
+			<form action="#" name="update_profile" method="post">
 				<p>
 					<label for="Number">Contact Number</label>
 					<input type="text" id="Number" name="Number">
