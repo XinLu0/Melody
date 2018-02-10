@@ -169,16 +169,16 @@
 		return ($sum[0]->isAdmin); 
 	}
 	function getListofEmail(){
-	global $wpdb;
-	$sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor`");
-	$num = sizeof($sum);
-	$result = array();
-	for($x=0;$x<$num;$x++){
-		if($sum[$x]->Email!="")
-			$result[$x]=$sum[$x]->Email;
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor`");
+		$num = sizeof($sum);
+		$result = array();
+		for($x=0;$x<$num;$x++){
+			if($sum[$x]->Email!="")
+				$result[$x]=$sum[$x]->Email;
+		}
+		return $result;
 	}
-	return $result;
-}
 function updateEmailByMID($Mid,$email){
 	global $wpdb;
 	$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET Email=\"$email\" WHERE Member = $Mid"));

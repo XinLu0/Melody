@@ -1,6 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<?php 
+		      /* 
+		      Template Name: email 
+		      */ 
+		session_start();
+		function alert($msg) {
+			echo "<script type='text/javascript'>alert('$msg');</script>";
+		}
+		function getNameByMemberID($memberID){
+			global $wpdb;
+			$result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
+			return $result[0]->Name;
+		}
+		function getAllTeacherMemberID(){
+			global $wpdb;
+			$result = $wpdb->get_results("SELECT Member FROM Teacher_infor");
+			$mList;
+			$size = sizeof($result);
+			for($x = 0; $x < $size; $x++){
+				$mList[$x] = $result[$x]->Member;
+			}
+			return $mList;
+		}
+		function getListofEmail(){
+			global $wpdb;
+			$sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor`");
+			$num = sizeof($sum);
+			$result = array();
+			for($x=0;$x<$num;$x++){
+				if($sum[$x]->Email!="")
+					$result[$x]=$sum[$x]->Email;
+			}
+			return $result;
+		}
+		function getEmailByMid($MId){
+			global $wpdb;
+			$sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor` WHERE Member = $MId");
+			return $sum[0]->Email;
+		}
+		function sendEmail($subject, $emailList, $message,$isHTML)
+		{
+			
+			for($x = 0; $x<sizeof($emailList);$x++)
+			{
+				$to = $emailList[$x];
+			
+				$headers[] = 'MIME-Version: 1.0';
+				$headers[] = 'Content-type: text/html; charset=iso-8859-1';
+				$headers[] = 'From: Melody Strings Art Center <Melody@Melody.com>';
+				if($isHTML)
+				{
+					mail($to, $subject, $message,implode("\r\n", $headers));
+				}
+				else mail($to, $subject, $message);
+			}
+		}
+		if(isset($_POST["receiver"])){
+			if($_POST["receiver"]=="All"){
+				$emailList=getListofEmail();
+				sendEmail($_POST["Subject"],$emailList,$_POST["Message"],False);
+			}
+			else {
+				$emailList=array();
+				$emailList[0]=getEmailByMid($_POST["receiver"]);
+				sendEmail($_POST["Subject"],$emailList,$_POST["Message"],False);
+			}
+			alert("Successfully Send Email");
+		}
+
+		?>
 		<meta charset="utf-8">
 		<style>
 	    	* {
@@ -62,7 +132,7 @@
 				border: 1px solid gray;
 			}
 
-			select{
+			input[type=text], select{
 			    width: 100%;
 			    padding: 12px 20px;
 			    margin: 8px 0;
@@ -117,13 +187,21 @@
 		<br>
 		<br>
 		<div class="update">
-			<form>
+			<form action="#" name="send_email" method="post">
 				<label for="receiver">To..</label>
 				<select id="receiver" name="receiver">
 					<option value="All">All members</option>
-					<option value="1000">CH</option>
-					<option value="1001">liU</option>
+					<?php
+						$MemberList= getAllTeacherMemberID();
+						for($x=0; $x<sizeof($MemberList); $x++){
+							$name = getNameByMemberID($MemberList[$x]);
+							echo "<option value=\"$MemberList[$x]\">$name</option>";
+						}
+					?>
 				</select>
+
+				<label for="Subject">Subject</label>
+				<input type="text" id="Subject" name="Subject"></text>
 
 				<label for="Message">Message</label>
 				<textarea  id="Message" name="Message"></textarea>
