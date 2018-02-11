@@ -423,7 +423,15 @@
     <div class="row">
       <div class="column_left">
         <h2 class="heading2"><?php echo "Hello ".$myName?></h2>
-        <img class="left_img" src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg"> 
+        <?php
+          $img = get_template_directory_uri()."/test/".$_SESSION['username'].".jpg";
+          $relativeImg="wp-content/themes/top3themes/test/".$_SESSION['username'].".jpg";
+          $defaultImg = get_template_directory_uri()."/test/default.jpg";
+          if(file_exists($relativeImg)){
+            echo "<img class=\"left_img\" src=\"$img\"> "; 
+          }else
+          echo "<img class=\"left_img\" src=\"$defaultImg\"> ";
+        ?>
                 
         <table id="right_table">
           <tr id="right_table">
@@ -447,8 +455,19 @@
       <div class="column_center">
         <div class="center_major">
           <div class="gallery_major">
-              <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg" width="60" height="60">
-              <div class="desc"><?php echo $_SESSION['username']; ?></div>
+          <?php
+            $img = get_template_directory_uri()."/test/".$_SESSION['username'].".jpg";
+            $relativeImg="wp-content/themes/top3themes/test/".$_SESSION['username'].".jpg";
+            $defaultImg = get_template_directory_uri()."/test/default.jpg";
+            if(file_exists($relativeImg)){
+              echo "<img src=\"$img\" width=\"60\" height=\"60\">"; 
+            }else
+            echo "<img src=\"$defaultImg\" width=\"60\" height=\"60\"> ";
+          ?>
+              <div class="desc"><?php 
+                $name = getNameByMemberID($_SESSION['username']);
+                echo $name;
+                 ?></div>
           </div>
         </div>
 
@@ -458,8 +477,18 @@
 
         <div class="center_major1">
           <div class="gallery">
-              <img src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $currentMinor1; ?>.jpg" width="300" height="200">
-              <div class="desc"><?php echo $currentMinor1; ?></div>
+              <?php
+                $img = get_template_directory_uri()."/test/".$currentMinor1.".jpg";
+                $relativeImg="wp-content/themes/top3themes/test/".$currentMinor1.".jpg";
+                $defaultImg = get_template_directory_uri()."/test/default.jpg";
+                if(file_exists($relativeImg)){
+                  echo "<img src=\"$img\" width=\"300\" height=\"200\">"; 
+                }else
+                echo "<img src=\"$defaultImg\" width=\"300\" height=\"200\"> ";
+              ?>
+              <div class="desc"><?php 
+                $name = getNameByMemberID($currentMinor1);
+                echo $name; ?></div>
               <div class="gallery-dropdown-content">
               <table id="center_table">
                 <tr id="center_table">
@@ -508,11 +537,17 @@
           for($x = 0; $x < sizeof($subTeacherList); $x++){
             $subTeacherid = getMemberIDFromName($subTeacherList[$x]);
             $subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
+            $relativeImg="wp-content/themes/top3themes/test/".$subTeacherid.".jpg";
+            $defaultImg = get_template_directory_uri()."/test/default.jpg";
             echo "<div class=\"center_minor\">";
             echo "<div class=\"gallery\">";
-            echo "<img src=$subpath width=\"300\" height=\"200\">";
-            
-            echo "<div class=\"desc\">$subTeacherid</div>";
+              if(file_exists("$relativeImg")){
+              echo "<img src=$subpath width=\"300\" height=\"200\">";
+            }else{
+            echo "<img src=$defaultImg width=\"300\" height=\"200\">";
+          }
+            $subname = getNameByMemberID($subTeacherid);          
+            echo "<div class=\"desc\">$subname</div>";
             echo "<div class=\"gallery-dropdown-content\">";
             echo "<table id=\"center_table\">";
 

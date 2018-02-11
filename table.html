@@ -406,9 +406,15 @@
           session_start();
           $mid = $_SESSION['username'];
           $name = getNameByMemberID($mid);
-          echo "<h2 class=\"heading2\">Hello $name</h2>"
+          echo "<h2 class=\"heading2\">Hello $name</h2>";
+          $img = get_template_directory_uri()."/test/".$_SESSION['username'].".jpg";
+          $relativeImg="wp-content/themes/top3themes/test/".$_SESSION['username'].".jpg";
+          $defaultImg = get_template_directory_uri()."/test/default.jpg";
+          if (file_exists($relativeImg)){
+            echo "<img class=\"img_left\" src=\"$img\">";
+          }
+          else echo "<img class=\"img_left\" src=\"$defaultImg\">";
         ?>
-          <img class="img_left" src="<?php echo get_template_directory_uri(); ?>/test/<?php echo $_SESSION['username']; ?>.jpg">
         <br/>
         <p>Select Month</p>
 

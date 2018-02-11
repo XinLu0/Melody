@@ -6,6 +6,14 @@
 		      Template Name: email 
 		      */ 
 		session_start();
+		$logout=@$_GET['logout'];
+  		if($logout ==1)
+  			$_SESSION['loggedin']=0;
+  		if($_SESSION['loggedin']!=1)
+  		{
+  			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+  			exit;
+  		}
 		function alert($msg) {
 			echo "<script type='text/javascript'>alert('$msg');</script>";
 		}
