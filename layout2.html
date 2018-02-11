@@ -12,7 +12,7 @@
   			$_SESSION['loggedin']=0;
   		if($_SESSION['loggedin']!=1)
   		{
-  			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+  			header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
   			exit;
   		}
 		$dateFrom = $_SESSION['dateFrom'];
@@ -424,9 +424,9 @@
       <div class="column_left">
         <h2 class="heading2"><?php echo "Hello ".$myName?></h2>
         <?php
-          $img = get_template_directory_uri()."/test/".$_SESSION['username'].".jpg";
-          $relativeImg="wp-content/themes/top3themes/test/".$_SESSION['username'].".jpg";
-          $defaultImg = get_template_directory_uri()."/test/default.jpg";
+          $img = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
+          $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
+          $defaultImg = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/default.jpg";
           if(file_exists($relativeImg)){
             echo "<img class=\"left_img\" src=\"$img\"> "; 
           }else
@@ -456,9 +456,9 @@
         <div class="center_major">
           <div class="gallery_major">
           <?php
-            $img = get_template_directory_uri()."/test/".$_SESSION['username'].".jpg";
-            $relativeImg="wp-content/themes/top3themes/test/".$_SESSION['username'].".jpg";
-            $defaultImg = get_template_directory_uri()."/test/default.jpg";
+            $img = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
+            $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
+            $defaultImg = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/default.jpg";
             if(file_exists($relativeImg)){
               echo "<img src=\"$img\" width=\"60\" height=\"60\">"; 
             }else
@@ -478,9 +478,9 @@
         <div class="center_major1">
           <div class="gallery">
               <?php
-                $img = get_template_directory_uri()."/test/".$currentMinor1.".jpg";
-                $relativeImg="wp-content/themes/top3themes/test/".$currentMinor1.".jpg";
-                $defaultImg = get_template_directory_uri()."/test/default.jpg";
+                $img = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/".$currentMinor1.".jpg";
+                $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$currentMinor1.".jpg";
+                $defaultImg = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/default.jpg";
                 if(file_exists($relativeImg)){
                   echo "<img src=\"$img\" width=\"300\" height=\"200\">"; 
                 }else
@@ -536,9 +536,9 @@
           $path =  get_template_directory_uri();
           for($x = 0; $x < sizeof($subTeacherList); $x++){
             $subTeacherid = getMemberIDFromName($subTeacherList[$x]);
-            $subpath = "\"".$path."/test/".$subTeacherid.".jpg\"";
-            $relativeImg="wp-content/themes/top3themes/test/".$subTeacherid.".jpg";
-            $defaultImg = get_template_directory_uri()."/test/default.jpg";
+            $subpath = "\"".$path."/MemberInfo/ProfileImgJPG/".$subTeacherid.".jpg\"";
+            $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$subTeacherid.".jpg";
+            $defaultImg = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/default.jpg";
             echo "<div class=\"center_minor\">";
             echo "<div class=\"gallery\">";
               if(file_exists("$relativeImg")){

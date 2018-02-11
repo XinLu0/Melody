@@ -138,29 +138,37 @@
 	function getDatefromToByMonth($yyyymm){
 		$month = substr($yyyymm, -2);
 		$year = substr($yyyymm,0, 4);
+		$toyear = substr($yyyymm,0, 4);
 		$nextMonth = $month+1;
 		if($nextMonth>12)
-			$nextMonth="01";
+			{
+				$nextMonth="01";
+				$toyear++;
+			}
 		else if($nextMonth<10)
 			$nextMonth = "0".$nextMonth;
 		global $dateFrom;
 		$dateFrom = $year."-".$month."-01";
 		global $dateTo;
-		$dateTo = $year."-".$nextMonth."-01";
+		$dateTo = $toyear."-".$nextMonth."-01";
 	}
 
 	function getDatefromToByCurrent(){
 		$currentDate = date('Y-m-d');
 		$currentMonth = substr($currentDate,5,2);
 		$nextMonth = $currentMonth+1;
+		$year = substr($currentDate,0,4);
 		if($nextMonth>12)
-			$nextMonth="01";
+			{
+				$nextMonth="01";
+				$year++;
+			}
 		else if($nextMonth<10)
 			$nextMonth = "0".$nextMonth;
 		global $dateFrom;
 		global $dateTo;
 		$dateFrom = substr($currentDate,0,7)."-01";
-		$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
+		$dateTo = $year."-".$nextMonth."-01";
 	}
 
 	function isAdminByMemberId($mId){
@@ -178,6 +186,11 @@
 				$result[$x]=$sum[$x]->Email;
 		}
 		return $result;
+	}
+	function getEmailByMid($MId){
+		global $wpdb;
+		$sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor` WHERE Member = $MId");
+		return $sum[0]->Email;
 	}
 function updateEmailByMID($Mid,$email){
 	global $wpdb;

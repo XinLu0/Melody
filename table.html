@@ -14,7 +14,7 @@
   			$_SESSION['loggedin']=0;
   		if($_SESSION['loggedin']!=1)
   		{
-  			header("Location:http://www.melodysac.com.sg/index.php/zh/testing/");
+  			header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
   			exit;
   		}
   		//$username = $_SESSION['username'];
@@ -118,30 +118,40 @@
       }
 
       function getDatefromToByMonth($yyyymm){
-    		$month = substr($yyyymm, -2);
-    		$year = substr($yyyymm,0, 4);
-    		$nextMonth = $month+1;
-    		if($nextMonth > 12)
-          $nextMonth="01";
-    		else if($nextMonth < 10)
+        $month = substr($yyyymm, -2);
+        $year = substr($yyyymm,0, 4);
+        $toyear = substr($yyyymm,0, 4);
+        $nextMonth = $month+1;
+        if($nextMonth>12)
+          {
+            $nextMonth="01";
+            $toyear++;
+          }
+        else if($nextMonth<10)
           $nextMonth = "0".$nextMonth;
-    		global $dateFrom;
-    		$dateFrom = $year."-".$month."-01";
-    		global $dateTo;
-    		$dateTo = $year."-".$nextMonth."-01";
-    	}
+        global $dateFrom;
+        $dateFrom = $year."-".$month."-01";
+        global $dateTo;
+        $dateTo = $toyear."-".$nextMonth."-01";
+      }
 
-      function getDatefromToByCurrent(){
-    		$currentDate =date('Y-m-d');
-    		$currentMonth = substr($currentDate,5,2);
-    		$nextMonth = $currentMonth+1;
-    		if($nextMonth>12)$nextMonth="01";
-    		else if($nextMonth<10)$nextMonth="0".$nextMonth;
-    		global $dateFrom;
-    		global $dateTo;
-    		$dateFrom = substr($currentDate,0,7)."-01";
-    		$dateTo = substr($currentDate,0,4)."-".$nextMonth."-01";
-    	}
+        function getDatefromToByCurrent(){
+    $currentDate = date('Y-m-d');
+    $currentMonth = substr($currentDate,5,2);
+    $nextMonth = $currentMonth+1;
+    $year = substr($currentDate,0,4);
+    if($nextMonth>12)
+      {
+        $nextMonth="01";
+        $year++;
+      }
+    else if($nextMonth<10)
+      $nextMonth = "0".$nextMonth;
+    global $dateFrom;
+    global $dateTo;
+    $dateFrom = substr($currentDate,0,7)."-01";
+    $dateTo = $year."-".$nextMonth."-01";
+  }
 
     ?>
 
@@ -393,6 +403,10 @@
     <div class="topnav">
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Chart</a>
       <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Update Profile</a>
+      <?php
+       $contract = get_template_directory_uri()."/MemberInfo/"."/ContractPDF/".$_SESSION['username'].".pdf";
+       echo "<a href=\"$contract\" download=\"contract\">Contract Download</a>";
+      ?>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
       <a HREF="javascript:window.print()">Print</a>
       <form action="#" method="get">
@@ -407,9 +421,9 @@
           $mid = $_SESSION['username'];
           $name = getNameByMemberID($mid);
           echo "<h2 class=\"heading2\">Hello $name</h2>";
-          $img = get_template_directory_uri()."/test/".$_SESSION['username'].".jpg";
-          $relativeImg="wp-content/themes/top3themes/test/".$_SESSION['username'].".jpg";
-          $defaultImg = get_template_directory_uri()."/test/default.jpg";
+          $img = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
+          $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
+          $defaultImg = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/default.jpg";
           if (file_exists($relativeImg)){
             echo "<img class=\"img_left\" src=\"$img\">";
           }
