@@ -105,7 +105,6 @@
 
       body {
         margin: 0;
-        background-image: linear-gradient(white, grey);
       }
 
       /* Style the header */
@@ -191,14 +190,7 @@
       /* Create three equal columns that floats next to each other */
       .column_center {
         float: left;
-        width: 60%;
-        padding: 15px;
-      }
-
-      /* Create three equal columns that floats next to each other */
-      .column_right {
-        float: left;
-        width: 20%;
+        width: 80%;
         padding: 15px;
       }
 
@@ -398,12 +390,16 @@
 
   <body>
     <div class="header">
-      <img src="<?php echo get_template_directory_uri(); ?>/test/teacherFederation.jpg">
+      <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
     </div>
     <div class="topnav">
+      <a href="http://www.melodysac.com.sg/index.php/en/melodysac_instruments/">MelodySAC Instruments</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/seasoned_instruments/">Seasoned Instruments</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/orchestra/">Orchestra</a>
       <a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
       <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Update Profile</a>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/terms/">Terms&Conditions</a>
       <form action="#" method="get">
         <button name="logout" value = 1>Logout</button>
       </form>
@@ -424,21 +420,6 @@
           }else
           echo "<img class=\"left_img\" src=\"$defaultImg\"> ";
         ?>
-        <table id="right_table">
-          <tr id="right_table">
-            <th id="right_table">Item No</th>
-            <th id="right_table">Sold No</th>
-          </tr>
-          <?php
-            for($i = 1; $i <= $totalItem; $i++){
-              $iItemNumber = getNumOfItemByItemIDAndMemeberID($_SESSION['username'],$i);
-              echo "<tr id=\"right_table\">";
-              echo "<td id=\"right_table\">$i</td>";
-              echo "<td id=\"right_table\">$iItemNumber</td>";
-              echo "</tr>";
-            }
-          ?>
-        </table>
       </div>
 
 
@@ -494,31 +475,6 @@
               }
               $subname = getNameByMemberID($subTeacherid);
               echo "<div class=\"desc\">$subname</div>";
-              echo "<div class=\"gallery-dropdown-content\">";
-              echo "<table id=\"center_table\">";
-              echo "<tr id=\"center_table\">";
-
-              for($i = 1; $i <= $totalItem; $i++)
-              {
-                echo "<th id=\"center_table\">Item$i</th>";
-              }
-
-              echo "<th id=\"center_table\">Total</th>";
-              echo "</tr>";
-              echo "<tr id=\"center_table\">";
-
-              $contri = 0;
-              for($i = 1; $i <= $totalItem; $i ++){
-                $re = getNumOfItemByItemIDAndMemeberID($subTeacherid,$i);
-                echo "<td id=\"center_table\">$re</td>";
-                $price = getItemPriceByItemID($i);
-                $prop = getMinorOneprop($i);
-                $contri = $contri+$price *$re*$prop;
-              }
-              echo "<td id=\"center_table\">$contri</td>";
-              echo "</tr>";
-              echo "</table>";
-              echo "</div>";
               //echo "</div>";
               echo "</button>";
               
@@ -527,27 +483,6 @@
         </form>
       </div>
 
-      <div class="column_right">
-        <table id="right_table">
-          <tr id="right_table">
-            <th id="right_table">Item</th>
-            <th id="right_table">Item_No</th>
-            <th id="right_table">Price</th>
-          </tr>
-
-          <?php
-            for($i = 1; $i <= $totalItem; $i ++){
-              $iName = getItemNameByItemID($i);
-              $iPrice = getItemPriceByItemID($i);
-              echo "<tr id=\"right_table\">";
-              echo "<td id=\"right_table\">$iName</td>";
-              echo "<td id=\"right_table\">$i</td>";
-              echo "<td id=\"right_table\">$iPrice</td>";
-              echo "</tr>";
-            }
-          ?>
-        </table>
-      </div>
     </div>
 
   </body>

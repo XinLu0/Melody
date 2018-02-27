@@ -163,7 +163,6 @@
 
       body {
         margin: 0;
-        background-image: linear-gradient(white, grey);
       }
 
       /* Style the header */
@@ -235,6 +234,7 @@
         float: left;
         width: 80%;
         padding: 15px;
+        padding-top: 40px;
       }
 
       /* Clear floats after the columns */
@@ -397,10 +397,13 @@
 
   <body>
     <div class="header">
-      <img src="<?php echo get_template_directory_uri(); ?>/test/melody.jpg">
+      <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
     </div>
 
     <div class="topnav">
+      <a href="http://www.melodysac.com.sg/index.php/en/melodysac_instruments/">MelodySAC Instruments</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/seasoned_instruments/">Seasoned Instruments</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/orchestra/">Orchestra</a>
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Chart</a>
       <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Update Profile</a>
       <?php
@@ -408,6 +411,7 @@
        echo "<a href=\"$contract\" download=\"contract\">Contract Download</a>";
       ?>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
+      <a href="http://www.melodysac.com.sg/index.php/en/terms/">Terms&Conditions</a>
       <a HREF="javascript:window.print()">Print</a>
       <form action="#" method="get">
         <button name="logout" value = 1>Logout</button>
@@ -429,87 +433,17 @@
           }
           else echo "<img class=\"img_left\" src=\"$defaultImg\">";
         ?>
-        <br/>
-        <p>Select Month</p>
-
-        <table id="right_table">
-          
-          <tr id="right_table">
-            <form action="#" method="post">
-              <select name="Month">
-      			  <?php
-        				$y = date('Y');
-        				$m = date('m');
-        				for($i = 0; $i<24 ; $i++){
-        					echo "<option value=\"$y$m\">$y/$m</option>";
-        					$m--;
-        					if($m==0){
-                    $m=12;
-                    $y--;
-        					}
-        					if($m<10)$m="0".$m;
-        					
-        				}
-      			  ?>
-              </select>
-              <input type="submit" value="Submit"/>
-            </form>
-          </tr>
-
-        </table>
-        <br></br>
-        <table id="right_table">
-          <tr id="right_table">
-            <th id="right_table">Item</th>
-            <th id="right_table">Item_No</th>
-            <th id="right_table">Price</th>
-          </tr>
-
-          <?php
-            $sum = getTotalItemNumber();
-            for($i = 1; $i <= $sum; $i ++){
-              $iName = getItemNameByItemID($i);
-              $iPrice = getItemPriceByItemID($i);
-              echo "<tr id=\"right_table\">";
-              echo "<td id=\"right_table\">$iName</td>";
-              echo "<td id=\"right_table\">$i</td>";
-              echo "<td id=\"right_table\">$iPrice</td>";
-              echo "</tr>";
-            }
-          ?>
-        </table>
       </div>
 
       <div class="column_center">
-        <h2 class="heading4"><?php echo "From $dateFrom to $dateTo";  ?></h2>
         <table id="Performance">
           <tr id="Performance">
             <th id="Performance">Name</th>
             <th id="Performance">Member No.</th>
-        		<?php
-        			session_start();
-        			$sum = getTotalItemNumber();
-        			$_SESSION['TotalItem']=$sum;
-
-        			for($i = 1; $i <= $sum; $i ++){
-        				echo "<th id=\"Performance\">Item $i</th>";
-        			}
-        			echo "<th id=\"Performance\">Total</th>";
-        		?>
           </tr>
 
           <tr id="Major">
             <th id="Major">Major</th>
-            <th id="Major"></th>
-            <?php
-              session_start();
-        			$sum=$_SESSION['TotalItem'];
-        			for($i = 1; $i <= $sum; $i ++){
-        				$re = getMajorprop($i);
-        				$re = $re*100;
-        				echo "<th id=\"Major\">$re %</th>";
-        			}
-        		?>
             <th id="Major"></th>
           </tr>
 
@@ -522,19 +456,6 @@
         			echo "<td id=\"Major\">$name</td>";
         			echo "<td id=\"Major\">$mid</td>";
         			$_SESSION['user'] = $name;
-
-              $sum = $_SESSION['TotalItem'];
-              $mid = $_SESSION['username'];
-              $majorincome=0;
-              for ($i = 1; $i <= $sum; $i ++){
-                $num =getNumOfItemByItemIDAndMemeberID($mid,$i);
-                $price = getItemPriceByItemID($i);
-                $prop = getMajorprop($i);
-                $majorincome = $majorincome + $num *$price*$prop;
-                echo "<td id=\"Major\">$num</td>";
-        			}
-              echo"<td id=\"Major\">$majorincome</td>";
-              $totalIncome =$totalIncome+$majorincome;
             ?>
           </tr>
 
@@ -549,29 +470,13 @@
       				echo "<tr id=\"Minor1\">";
       				echo "<th id=\"Minor1\">Minor1</th>";
       				echo "<th id=\"Minor1\"></th>";
-      				for($i = 1; $i <= $total_item; $i ++){
-      					$minor1= getMinorOneprop($i);
-      					$minor1 = $minor1*100;
-      					echo "<th id=\"Minor1\">$minor1%</th>";
-      				}
-      				echo "<th id=\"Minor1\"></th></tr>";
 
       				//Minor1's Data
       				$subMemId = getMemberIDFromName($nameList[$x]);
       				echo "<tr id=\"Minor1\">";
       				echo "<td id=\"Minor1\">$nameList[$x]</td>";
       				echo "<td id=\"Minor1\">$subMemId</td>";
-              $subincome=0;
-      				for($i = 1; $i <= $total_item; $i ++){
-      					$re = getNumOfItemByItemIDAndMemeberID($subMemId,$i);
-                $price = getItemPriceByItemID($i);
-                $prop = getMinorOneprop($i);
-                $subincome = $subincome+$price*$re*$prop;
-      					echo "<td id=\"Minor1\">$re</td>";
-      				}
-              echo "<td id=\"Minor1\">$subincome</td></tr>";
-              $totalIncome = $totalIncome+$subincome;
-              $subincome=0;
+
       				$subNameList = getBelowTeacherListFromName($nameList[$x]);
       				
 				      if(sizeof($subNameList) > 0){
@@ -579,12 +484,6 @@
                 echo "<tr id=\"Minor2\">";
                 echo "<th id=\"Minor2\">Minor2</th>";
                 echo "<th id=\"Minor2\"></th>";
-      					for($i = 1; $i <= $total_item; $i ++){
-      						$minor2 = getMinorTwoprop($i);
-      						$minor2 = $minor2*100;
-      						echo "<th id=\"Minor2\">$minor2%</th>";
-      					}
-                echo"<th id=\"Minor2\"></th></tr>";
 
                 //Minor2's data
                 for($y = 0; $y < sizeof($subNameList); $y ++){
@@ -592,29 +491,10 @@
                   echo "<tr id=\"Minor2\">";
                   echo "<td id=\"Minor2\">$subNameList[$y]</td>";
                   echo "<td id=\"Minor2\">$minor2MemberID</td>";
-                  $subincome=0;
-      						for($i = 1; $i <= $total_item; $i ++){
-      							$re = getNumOfItemByItemIDAndMemeberID($minor2MemberID,$i);
-                    $price = getItemPriceByItemID($i);
-                    $prop = getMinorTwoprop($i);
-                    $subincome=$subincome+$re*$price*$prop;
-      							echo "<td id=\"Minor2\">$re</td>";
-      						}
-						      echo "<td id=\"Minor2\">$subincome</td></tr>";
-						      $totalIncome = $totalIncome+$subincome;
+
                 }//End of Minor2's data
 				      } //End of Minor2
             }//End of Minor
-
-            //Last Total
-            echo "<tr id=\"Performance\">";
-            echo "<th id=\"Performance\"> </th>";
-            echo "<th id=\"Performance\"> </th>";
-            for($i = 1; $i <= $total_item; $i ++){
-              echo "<th id=\"Performance\"> </th>";
-            }
-            echo "<th id=\"Performance\">$totalIncome</th>";
-            echo "</tr>";
           ?>
         </table>
       </div>

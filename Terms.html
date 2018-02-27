@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<?php
+			/* 
+	  		Template Name: Terms
+	  		*/
+	  		session_start();
+
+
+	  		$logout=@$_GET['logout'];
+	  		if($logout ==1)
+	  			$_SESSION['loggedin']=0;
+	  		if($_SESSION['loggedin']!=1)
+	  		{
+	  			header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
+	  			exit;
+	  		}
+	  		$mid = $_SESSION['username'];
+
+		?>
+		<meta charset="utf-8">
+		<style>
+	    	* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				height: 1000px;
+			}
+
+			/* Style the header */
+			.header {
+				background-color: #ffffff;
+				padding: 1px;
+				text-align: center;
+			}
+
+			/* Style the top navigation bar */
+			.topnav {
+				overflow: hidden;
+				background-color: #333;
+			}
+
+			/* Style the topnav links */
+			.topnav a {
+				float: left;
+				display: block;
+				color: #f2f2f2;
+				text-align: center;
+				padding: 14px 16px;
+				text-decoration: none;
+			}
+
+			/* Change color on hover */
+			.topnav a:hover {
+				background-color: #ddd;
+				color: black;
+			}
+
+			.topnav button {
+				float: right;
+				display: block;
+				color: white;
+				background-color: #333;
+				text-align: center;
+				padding: 14px 16px;
+				text-decoration: none;
+				border: 0px;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="header">
+			<img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
+		</div>
+
+		<div class="topnav">
+			<a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
+			<a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
+			<form action="#" method="get">
+				<button name="logout" value = 1>Logout</button>
+			</form>
+		</div>
+		<br>
+		<br>
+		<br>
+		<img src="<?php echo get_template_directory_uri(); ?>/test/terms_001.jpg" width="800">
+		<img src="<?php echo get_template_directory_uri(); ?>/test/terms_002.jpg" width="800">
+		<img src="<?php echo get_template_directory_uri(); ?>/test/terms_003.jpg" width="800">
+		<img src="<?php echo get_template_directory_uri(); ?>/test/terms_004.jpg" width="800">
+		<img src="<?php echo get_template_directory_uri(); ?>/test/terms_005.jpg" width="800">
+		<img src="<?php echo get_template_directory_uri(); ?>/test/terms_006.jpg" width="800">
+		
+	</body>
+</html>

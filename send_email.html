@@ -2,9 +2,9 @@
 <html lang="en">
 	<head>
 		<?php 
-		      /* 
-		      Template Name: email 
-		      */ 
+	      /* 
+	      Template Name: email 
+	      */ 
 		session_start();
 		$logout=@$_GET['logout'];
   		if($logout ==1)
@@ -87,7 +87,6 @@
 
 			body {
 				margin: 0;
-				background-image: linear-gradient(white, grey);
 				height: 1000px;
 			}
 
@@ -181,11 +180,12 @@
 
 	<body>
 		<div class="header">
-			<img src="<?php echo get_template_directory_uri(); ?>/test/teacherFederation.jpg">
+			<img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
 		</div>
 
 		<div class="topnav">
-			<a href="http://www.melodysac.com.sg/index.php/en/table2/">Table</a>
+			<a href="http://www.melodysac.com.sg/index.php/en/table2/">MyTable</a>
+			<a href="http://www.melodysac.com.sg/index.php/en/admintable/">WholeTable</a>
 			<a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
 			<form action="#" method="get">
 				<button name="logout" value = 1>Logout</button>
