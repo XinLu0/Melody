@@ -51,6 +51,13 @@
 		return $result[0]->Member;
 	}
 
+	function getLoginTimesFromMID($mId){
+		global $wpdb;
+		$result = $wpdb->get_results("SELECT loginTimes FROM Teacher_infor WHERE Member=$mId");
+		return $result[0]->loginTimes;
+	}
+
+
 	//get ItemName, Number, Price by Member ID where Datefrom to DateTo
 	function getItemNameNumberPrice($Member, $DateFrom, $DateTo){
 		global $wpdb;
@@ -191,6 +198,10 @@
 		global $wpdb;
 		$sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor` WHERE Member = $MId");
 		return $sum[0]->Email;
+	}
+	function updateLoginTimesByMID($Mid,$login){
+	global $wpdb;
+	$wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET loginTimes=$login WHERE Member = $Mid"));
 	}
 function updateEmailByMID($Mid,$email){
 	global $wpdb;

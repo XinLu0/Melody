@@ -96,6 +96,11 @@
         $sum = $wpdb->get_results("SELECT Item FROM Melody_items WHERE item_no=$item_id");
         return $sum[0]->Item;
       }
+      function getLoginTimesFromMID($mId){
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT loginTimes FROM Teacher_infor WHERE Member=$mId");
+        return $result[0]->loginTimes;
+      }
 
       function getDatefromToByMonth($yyyymm){
           $month = substr($yyyymm, -2);
@@ -340,11 +345,13 @@
             <th onclick="sortTableByName()" href="javascript:void(0);"><a href="#">Name</a></th>
             <th onclick="sortTableByMID()" href="javascript:void(0);"><a href="#">MemberID</a></th>
             <?php
+
               for($i=1; $i<=$totalItemNumber;$i++){
                 echo "<th onclick=\"sortTable($i+1)\" href=\"javascript:void(0);\"><a href=\"#\">Item$i</a></th>";
               }
             ?>
             <th onclick="sortTable(<?php echo $totalItemNumber+2; ?>)" href="javascript:void(0);"><a href="#">Total</a></th>
+            <th onclick="sortTable(<?php echo $totalItemNumber+3; ?>)" href="javascript:void(0);"><a href="#">Login_Times</a></th>
           </tr>
 
           <?php
@@ -365,6 +372,8 @@
           		  $sale = $sale+$price*$num;
             	}
             	echo "<td>$sale</td>";
+              $times = getLoginTimesFromMID($list[$x]);
+              echo "<td>$times</td>";
               echo "</tr>";
             }
           ?>
@@ -482,6 +491,7 @@ function sortTableByName() {
     }
   }
 }
+
     </script>
   </body>
 </html>

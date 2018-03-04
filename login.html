@@ -27,6 +27,15 @@
         $sum = $wpdb->get_results("SELECT isAdmin FROM `Teacher_infor` WHERE Member = $mId");
         return ($sum[0]->isAdmin); 
       }
+      function updateLoginTimesByMID($Mid,$login){
+      global $wpdb;
+      $wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET loginTimes=$login WHERE Member = $Mid"));
+      }
+      function getLoginTimesFromMID($mId){
+      global $wpdb;
+      $result = $wpdb->get_results("SELECT loginTimes FROM Teacher_infor WHERE Member=$mId");
+      return $result[0]->loginTimes;
+      }
         
       if(isset($_POST['user'])&&isset($_POST['Password'])){
         $pa=getPasswordByMemberID($_POST['user']);
@@ -35,6 +44,9 @@
         if($re==0){
           $_SESSION['username']=$_POST['user'];
           $_SESSION['loggedin']=1;
+          $times =getLoginTimesFromMID($_SESSION['username']);
+          updateLoginTimesByMID($_SESSION['username'],$times+1);
+
           if(isAdminByMemberId($_POST['user'])==0)
             header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
           else header("Location: http://www.melodysac.com.sg/index.php/en/admintable/"); 
