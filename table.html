@@ -27,13 +27,16 @@
 		$_SESSION['dateFrom'] = $dateFrom;
 		$_SESSION['dateTo'] = $dateTo;
   		$totalIncome=0;
-  		function getItemPriceByItemID($item_id)
-  		{
-  			global $wpdb;
-  			$sum = $wpdb->get_results("SELECT Price
-    		FROM `Melody_items` WHERE item_no =$item_id");
-    		return $sum[0]->Price;
-  		}
+		function getPriceCNByItemNo($itemNo){
+		global $wpdb;
+		$result = $wpdb->get_results("SELECT Price_CN FROM Melody_items_New WHERE Item_no=$itemNo");
+		return $result[0]->Price_CN;
+		}
+		function getPriceSGByItemNo($itemNo){
+		global $wpdb;
+		$result = $wpdb->get_results("SELECT Price_SG FROM Melody_items_New WHERE Item_no=$itemNo");
+		return $result[0]->Price_SG;
+		}
   	?>
     <?php
       session_start();
@@ -44,12 +47,26 @@
         return sizeof($sum);
       }
 
-      function getMajorprop($item_no){
+	  function getMajorPropsCNByItemNo($itemNo){
         global $wpdb;
-        $sum = $wpdb->get_results("SELECT Major_proprotion FROM Melody_items WHERE Item_no = $item_no");
-        $result = $sum[0]->Major_proprotion;
-        return $result;
-      }
+        $result = $wpdb->get_results("SELECT Major_Proportion_CN FROM Melody_items_New WHERE Item_no=$itemNo");
+        return $result[0]->Major_Proportion_CN;
+	  }
+	  function getMinorPropsCNByItemNo($itemNo){
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Minor_Proportion_CN FROM Melody_items_New WHERE Item_no=$itemNo");
+        return $result[0]->Minor_Proportion_CN;
+	  }
+	  function getMajorPropsSGByItemNo($itemNo){
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Major_Proportion_SG FROM Melody_items_New WHERE Item_no=$itemNo");
+        return $result[0]->Major_Proportion_SG;
+	  }
+	  function getMinorPropsSGByItemNo($itemNo){
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Minor_Proportion_SG FROM Melody_items_New WHERE Item_no=$itemNo");
+        return $result[0]->Minor_Proportion_SG;
+	  }
 
       function getNameByMemberID($memberID){
         global $wpdb;
@@ -135,23 +152,28 @@
         $dateTo = $toyear."-".$nextMonth."-01";
       }
 
-        function getDatefromToByCurrent(){
-    $currentDate = date('Y-m-d');
-    $currentMonth = substr($currentDate,5,2);
-    $nextMonth = $currentMonth+1;
-    $year = substr($currentDate,0,4);
-    if($nextMonth>12)
-      {
-        $nextMonth="01";
-        $year++;
-      }
-    else if($nextMonth<10)
-      $nextMonth = "0".$nextMonth;
-    global $dateFrom;
-    global $dateTo;
-    $dateFrom = substr($currentDate,0,7)."-01";
-    $dateTo = $year."-".$nextMonth."-01";
-  }
+	function getDatefromToByCurrent(){
+		$currentDate = date('Y-m-d');
+		$currentMonth = substr($currentDate,5,2);
+		$nextMonth = $currentMonth+1;
+		$year = substr($currentDate,0,4);
+		if($nextMonth>12)
+		  {
+			$nextMonth="01";
+			$year++;
+		  }
+		else if($nextMonth<10)
+		  $nextMonth = "0".$nextMonth;
+		global $dateFrom;
+		global $dateTo;
+		$dateFrom = substr($currentDate,0,7)."-01";
+		$dateTo = $year."-".$nextMonth."-01";
+	}
+	function getIsInChinaByMemberId($memberId){
+		global $wpdb;
+		$result = $wpdb->get_results("SELECT isInChina FROM Teacher_infor WHERE Member=$memberId");
+		return $result[0]->isInChina;
+	}
 
     ?>
 
@@ -422,8 +444,8 @@
       <div class="column_left">
         <?php
           session_start();
-          $mid = $_SESSION['username'];
-          $name = getNameByMemberID($mid);
+          $userId = $_SESSION['username'];
+          $name = getNameByMemberID($userId);
           echo "<h2 class=\"heading2\">Hello $name</h2>";
           $img = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
           $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
@@ -455,33 +477,54 @@
             <th id="Major">Major</th>
             <th id="Major"></th>
             <?php
-              session_start();
-        			$sum=$_SESSION['TotalItem'];
-        			for($i = 1; $i <= $sum; $i ++){
-        				$re = getMajorprop($i);
-        				$re = $re*100;
-        				echo "<th id=\"Major\">$re %</th>";
-        			}
+				//major's percentage
+				session_start();
+				$userId = $_SESSION['username'];
+				$sum=$_SESSION['TotalItem'];
+				if(getIsInChinaByMemberId($userId) == 0)
+				{
+					for($i = 1; $i <= $sum; $i ++){
+						$re = getMajorPropsSGByItemNo($i);
+						$re = $re*100;
+						echo "<th id=\"Major\">$re %</th>";
+					}
+				}
+				else
+				{
+					for($i = 1; $i <= $sum; $i ++){
+						$re = getMajorPropsCNByItemNo($i);
+						$re = $re*100;
+						echo "<th id=\"Major\">$re %</th>";
+					}
+				}
         		?>
             <th id="Major"></th>
           </tr>
 
           <tr id="Major">
             <?php 
+			//major's Data
               session_start();
 			
-        			$mid = $_SESSION['username'];
-        			$name = getNameByMemberID($mid);
+        			$userId = $_SESSION['username'];
+        			$name = getNameByMemberID($userId);
         			echo "<td id=\"Major\">$name</td>";
-        			echo "<td id=\"Major\">$mid</td>";
+        			echo "<td id=\"Major\">$userId</td>";
         			$_SESSION['user'] = $name;
               $sum = $_SESSION['TotalItem'];
-              $mid = $_SESSION['username'];
 			$majorincome=0;
               for ($i = 1; $i <= $sum; $i ++){
-				$num =getNumOfItemByItemIDAndMemeberID($mid,$i);
-				$price = getItemPriceByItemID($i);
-				$prop = getMajorprop($i);
+				$num =getNumOfItemByItemIDAndMemeberID($userId,$i);
+				$price = getPriceCNByItemNo($i);
+				if(getIsInChinaByMemberId($userId) == 0)
+				{
+					$price = getPriceSGByItemNo($i);
+				}
+				$prop = getMajorPropsSGByItemNo($i);
+				if(getIsInChinaByMemberId($userId) == 1)
+				{
+					$prop = getMajorPropsCNByItemNo($i);
+				}
 				$majorincome = $majorincome + $num *$price*$prop;
 				echo "<td id=\"Major\">$num</td>";
         			}
@@ -493,16 +536,26 @@
           <?php
             session_start();
             $major_name = $_SESSION['user'];
+			$userId = $_SESSION['username'];
             $nameList = getBelowTeacherListFromName($major_name);
             $total_item = $_SESSION['TotalItem'];
 
             for($x = 0; $x < sizeof($nameList); $x ++){
       				//Minor1's percentage
       				echo "<tr id=\"Minor1\">";
-      				echo "<th id=\"Minor1\">Minor I</th>";
+      				echo "<th id=\"Minor1\">Minor</th>";
       				echo "<th id=\"Minor1\"></th>";
+					$minor = 0;
       				for($i = 1; $i <= $total_item; $i ++){
-      					$minor1= getMinorOneprop($i);
+      					if(getIsInChinaByMemberId($userId) == 0)
+						{
+							$minor1 = getMinorPropsSGByItemNo($i);
+						}
+						else
+						{
+							$minor1 = getMinorPropsCNByItemNo($i);
+						}
+						
       					$minor1 = $minor1*100;
       					echo "<th id=\"Minor1\">$minor1%</th>";
       				}
@@ -515,8 +568,16 @@
 					$subincome=0;
       				for($i = 1; $i <= $total_item; $i ++){
       					$re = getNumOfItemByItemIDAndMemeberID($subMemId,$i);
-					$price = getItemPriceByItemID($i);
-					$prop = getMinorOneprop($i);
+					$price = getPriceCNByItemNo($i);
+					if(getIsInChinaByMemberId($userId) == 0)
+					{
+						$price = getPriceSGByItemNo($i);
+					}
+					$prop = getMinorPropsCNByItemNo($i);
+					if(getIsInChinaByMemberId($userId) == 0)
+					{
+						$prop = getMinorPropsSGByItemNo($i);
+					}
 					$subincome = $subincome+$price*$re*$prop;
       					echo "<td id=\"Minor1\">$re</td>";
       				}
@@ -525,35 +586,6 @@
 				$subincome=0;
       				$subNameList = getBelowTeacherListFromName($nameList[$x]);
       				
-				      if(sizeof($subNameList) > 0){
-                //Minor2's percentage
-                echo "<tr id=\"Minor2\">";
-                echo "<th id=\"Minor2\">Minor II</th>";
-                echo "<th id=\"Minor2\"></th>";
-      					for($i = 1; $i <= $total_item; $i ++){
-      						$minor2 = getMinorTwoprop($i);
-      						$minor2 = $minor2*100;
-      						echo "<th id=\"Minor2\">$minor2%</th>";
-      					}
-                echo"<th id=\"Minor2\"></th></tr>";
-                //Minor2's data
-                for($y = 0; $y < sizeof($subNameList); $y ++){
-                  $minor2MemberID = getMemberIDFromName($subNameList[$y]);
-                  echo "<tr id=\"Minor2\">";
-                  echo "<td id=\"Minor2\">$subNameList[$y]</td>";
-                  echo "<td id=\"Minor2\">$minor2MemberID</td>";
-						$subincome=0;
-      						for($i = 1; $i <= $total_item; $i ++){
-      							$re = getNumOfItemByItemIDAndMemeberID($minor2MemberID,$i);
-							$price = getItemPriceByItemID($i);
-							$prop = getMinorTwoprop($i);
-							$subincome=$subincome+$re*$price*$prop;
-      							echo "<td id=\"Minor2\">$re</td>";
-      						}
-						echo "<td id=\"Minor2\">$subincome</td></tr>";
-						$totalIncome = $totalIncome+$subincome;
-                }//End of Minor2's data
-				      } //End of Minor2
             }//End of Minor
             //Last Total
             echo "<tr id=\"Performance\">";
