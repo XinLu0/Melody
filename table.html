@@ -3,7 +3,7 @@
   <head>
     <?php
   		/* 
-  		Template Name: table2 
+  		Template Name: table3 
   		*/ 
     ?>
     
@@ -440,10 +440,29 @@
           <tr id="Performance">
             <th id="Performance">Name</th>
             <th id="Performance">Member No.</th>
+        		<?php
+        			session_start();
+        			$sum = getTotalItemNumber();
+        			$_SESSION['TotalItem']=$sum;
+        			for($i = 1; $i <= $sum; $i ++){
+        				echo "<th id=\"Performance\">Item $i</th>";
+        			}
+        			echo "<th id=\"Performance\">Total</th>";
+        		?>
           </tr>
 
           <tr id="Major">
             <th id="Major">Major</th>
+            <th id="Major"></th>
+            <?php
+              session_start();
+        			$sum=$_SESSION['TotalItem'];
+        			for($i = 1; $i <= $sum; $i ++){
+        				$re = getMajorprop($i);
+        				$re = $re*100;
+        				echo "<th id=\"Major\">$re %</th>";
+        			}
+        		?>
             <th id="Major"></th>
           </tr>
 
@@ -456,6 +475,18 @@
         			echo "<td id=\"Major\">$name</td>";
         			echo "<td id=\"Major\">$mid</td>";
         			$_SESSION['user'] = $name;
+              $sum = $_SESSION['TotalItem'];
+              $mid = $_SESSION['username'];
+			$majorincome=0;
+              for ($i = 1; $i <= $sum; $i ++){
+				$num =getNumOfItemByItemIDAndMemeberID($mid,$i);
+				$price = getItemPriceByItemID($i);
+				$prop = getMajorprop($i);
+				$majorincome = $majorincome + $num *$price*$prop;
+				echo "<td id=\"Major\">$num</td>";
+        			}
+			echo"<td id=\"Major\">$majorincome</td>";
+			$totalIncome =$totalIncome+$majorincome;
             ?>
           </tr>
 
@@ -470,13 +501,28 @@
       				echo "<tr id=\"Minor1\">";
       				echo "<th id=\"Minor1\">Minor I</th>";
       				echo "<th id=\"Minor1\"></th>";
-
+      				for($i = 1; $i <= $total_item; $i ++){
+      					$minor1= getMinorOneprop($i);
+      					$minor1 = $minor1*100;
+      					echo "<th id=\"Minor1\">$minor1%</th>";
+      				}
+      				echo "<th id=\"Minor1\"></th></tr>";
       				//Minor1's Data
       				$subMemId = getMemberIDFromName($nameList[$x]);
       				echo "<tr id=\"Minor1\">";
       				echo "<td id=\"Minor1\">$nameList[$x]</td>";
       				echo "<td id=\"Minor1\">$subMemId</td>";
-
+					$subincome=0;
+      				for($i = 1; $i <= $total_item; $i ++){
+      					$re = getNumOfItemByItemIDAndMemeberID($subMemId,$i);
+					$price = getItemPriceByItemID($i);
+					$prop = getMinorOneprop($i);
+					$subincome = $subincome+$price*$re*$prop;
+      					echo "<td id=\"Minor1\">$re</td>";
+      				}
+					echo "<td id=\"Minor1\">$subincome</td></tr>";
+				$totalIncome = $totalIncome+$subincome;
+				$subincome=0;
       				$subNameList = getBelowTeacherListFromName($nameList[$x]);
       				
 				      if(sizeof($subNameList) > 0){
@@ -484,17 +530,40 @@
                 echo "<tr id=\"Minor2\">";
                 echo "<th id=\"Minor2\">Minor II</th>";
                 echo "<th id=\"Minor2\"></th>";
-
+      					for($i = 1; $i <= $total_item; $i ++){
+      						$minor2 = getMinorTwoprop($i);
+      						$minor2 = $minor2*100;
+      						echo "<th id=\"Minor2\">$minor2%</th>";
+      					}
+                echo"<th id=\"Minor2\"></th></tr>";
                 //Minor2's data
                 for($y = 0; $y < sizeof($subNameList); $y ++){
                   $minor2MemberID = getMemberIDFromName($subNameList[$y]);
                   echo "<tr id=\"Minor2\">";
                   echo "<td id=\"Minor2\">$subNameList[$y]</td>";
                   echo "<td id=\"Minor2\">$minor2MemberID</td>";
-
+						$subincome=0;
+      						for($i = 1; $i <= $total_item; $i ++){
+      							$re = getNumOfItemByItemIDAndMemeberID($minor2MemberID,$i);
+							$price = getItemPriceByItemID($i);
+							$prop = getMinorTwoprop($i);
+							$subincome=$subincome+$re*$price*$prop;
+      							echo "<td id=\"Minor2\">$re</td>";
+      						}
+						echo "<td id=\"Minor2\">$subincome</td></tr>";
+						$totalIncome = $totalIncome+$subincome;
                 }//End of Minor2's data
 				      } //End of Minor2
             }//End of Minor
+            //Last Total
+            echo "<tr id=\"Performance\">";
+            echo "<th id=\"Performance\"> </th>";
+            echo "<th id=\"Performance\"> </th>";
+            for($i = 1; $i <= $total_item; $i ++){
+              echo "<th id=\"Performance\"> </th>";
+            }
+            echo "<th id=\"Performance\">$totalIncome</th>";
+            echo "</tr>";
           ?>
         </table>
       </div>
