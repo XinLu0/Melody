@@ -195,7 +195,7 @@
       function getCreditChangeByMemberID($memberID)
       {
         global $wpdb;
-        $sum = $wpdb->get_results("SELECT CreditChange FROM Admin_Actions WHERE Member = $memberID");
+        $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID");
         if(sizeof($sum) == 0)
           return 0;
         else
@@ -523,65 +523,76 @@
           session_start();
           $userId = $_SESSION['username'];
           $name = getNameByMemberID($userId);
-          echo "<h3 class=\"heading3\">Hi, $name, Level</h3>";
+          echo "<h3 class=\"heading3\">Hi, $name, Level YuanFen@ Member</h3>";
         ?>
 
         <br> 
         <br>
-        <h3 class="heading3">Points Collection details: </h3>
+        <h3 class="heading3">History </h3>
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">Date</th>
-            <th id="Performance">Product/Size</th>
-            <th id="Performance">Model</th>
-            <th id="Performance">Selling Price</th>
-            <th id="Performance">Rental Price</th>
-            <th id="Performance">Percentage %</th>
-            <th id="Performance">Point Earn</th>
+            <th id="Performance">JANUARY - MARCH</th>
+            <td id="Performance"></td>
           </tr>
           <tr id="Performance">
-            <td id="Performance">25.8.2019</td>
-            <td id="Performance">a</td>
-            <td id="Performance">bb</td>
-            <td id="Performance">11</td>
-            <td id="Performance">2</td>
-            <td id="Performance">50</td>
-            <td id="Performance">5</td>
+            <th id="Performance">Total Points from Products Selling</th>
+            <td id="Performance"></td>
           </tr>
           <tr id="Performance">
-            <th id="Performance">Total</th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
+            <th id="Performance">Total Points from direct member</th>
+            <td id="Performance"></td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Total Points</th>
+            <td id="Performance"></td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Total Points redemption</th>
+            <td id="Performance"></td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Balance</th>
+            <td id="Performance"></td>
           </tr>
         </table>
 
         <br> 
         <br>
-        <h3 class="heading3">Points Collection as Referral for Melody's Membership: </h3>
+        <h3 class="heading3">History </h3>
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">Date</th>
-            <th id="Performance">Name</th>
-            <th id="Performance">Referral Name</th>
-            <th id="Performance">Points Award</th>
+            <th id="Performance">Points Redeemed</th>
+            <td id="Performance">5</td>
           </tr>
           <tr id="Performance">
-            <td id="Performance">25.8.2019</td>
-            <td id="Performance">Jasmine</td>
-            <td id="Performance">Blair</td>
-            <td id="Performance">250</td>
+            <th id="Performance">January - March</th>
+            <td id="Performance">1</td>
           </tr>
           <tr id="Performance">
-            <th id="Performance">Total</th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
-            <th id="Performance"></th>
+            <th id="Performance">March - June</th>
+            <td id="Performance">2</td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">July - September</th>
+            <td id="Performance">3</td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Octomber - December</th>
+            <td id="Performance">4</td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Total Points</th>
+            <td id="Performance">10</td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Total Points redemption</th>
+            <td id="Performance">5</td>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Balance</th>
+            <td id="Performance">5</td>
           </tr>
         </table>
         

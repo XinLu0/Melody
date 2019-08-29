@@ -48,7 +48,7 @@
           updateLoginTimesByMID($_SESSION['username'],$times+1);
 
           if(isAdminByMemberId($_POST['user'])==0)
-            header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
+            header("Location: http://www.melodysac.com.sg/index.php/en/userHome/");
           else header("Location: http://www.melodysac.com.sg/index.php/en/admintable/"); 
         }
         else {
@@ -218,6 +218,18 @@
         padding: 1px;
         text-align: center;
       }
+
+      a.news:link, a.news:visited {
+        color: red;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size:30px;
+      } 
+
+        a.news:hover, a.news:active {
+            background-color: darkred;
+      }
     </style>
   </head>
 
@@ -227,7 +239,7 @@
     </div>
 
     <div class="topnav">
-      <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
+        <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
     </div>
 
     <div class="row">
@@ -251,7 +263,7 @@
             <div class="center_oneline">
               <div class="center_left">Password: </div>
               <div class="center_right" >
-                <input  class="center_box" type="text" name="Password" id="pwd_val" value="" >
+                <input  class="center_box" type="password" name="Password" id="pwd_val" value="" >
               </div>
             </div>
             <div class="center_oneline center_btn">
@@ -259,8 +271,18 @@
             </div>
           </div>
         </form>
-        
-        </br>
+        <br><br>
+        <br><br>
+
+<HR>
+<div style="text-align:center">    
+<a class="news" href="http://www.melodysac.com.sg/index.php/en/member_news/">LATEST INFORMATION</a>
+
+</div>
+<HR>
+<br><br>
+<br><br>
+
         <div class="header">
           <img src="<?php echo get_template_directory_uri(); ?>/test/Melodylogo.jpg" width="200">
         </div>

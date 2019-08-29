@@ -195,7 +195,7 @@
       function getCreditChangeByMemberID($memberID)
       {
         global $wpdb;
-        $sum = $wpdb->get_results("SELECT CreditChange FROM Admin_Actions WHERE Member = $memberID");
+        $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID");
         if(sizeof($sum) == 0)
           return 0;
         else

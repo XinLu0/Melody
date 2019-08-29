@@ -3,7 +3,7 @@
   <head>
     <?php
   		/* 
-  		Template Name: table3 
+  		Template Name: userInformation 
   		*/ 
     ?>
     
@@ -195,7 +195,7 @@
       function getCreditChangeByMemberID($memberID)
       {
         global $wpdb;
-        $sum = $wpdb->get_results("SELECT CreditChange FROM Admin_Actions WHERE Member = $memberID");
+        $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID");
         if(sizeof($sum) == 0)
           return 0;
         else
@@ -206,6 +206,169 @@
           }
           return $result;
         }
+      }
+
+      function getGradePropSGByCredit($credit)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Grade_Major_Prop_SG FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $results[sizeof($results)-1]->Grade_Major_Prop_SG;
+      }
+
+      function getCreditEarnedByMemberID($memberID)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Number, PricePerItem FROM Melody_performance WHERE Member = $memberID ORDER BY dDate ASC");
+    
+        $sum = 0; 
+        $prop = getGradePropSGByCredit($sum);
+        for($x = 0; $x < sizeof($results); $x++){
+          $sum += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          $prop = getGradePropSGByCredit($sum);
+        }
+        return $sum;
+    
+      }
+
+      function getReferringCreditEarnedByMemberId($memberID)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Credit FROM Melody_Referring_Performance WHERE Member = $memberID");
+        $sum =0;
+        for($x = 0; $x < sizeof($results); $x++){
+          $sum += $results[$x]->Credit;
+        }
+        return $sum;
+      }
+
+      function getAllCreditByMemberId($memberID)
+      {
+        $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+        $CreditEarnedBysubMember = 0;
+        $ReferringCreditBySubMember = 0;
+        for($x = 0; $x < sizeof($belowTeacherList); $x++)
+        {
+          $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
+          $CreditEarnedBysubMember += getCreditEarnedByMemberID($subMemberID);
+          $ReferringCreditBySubMember += getReferringCreditEarnedByMemberId($subMemberID);
+        }
+        $total = $CreditEarnedBysubMember + $ReferringCreditBySubMember;
+        $total += getCreditEarnedByMemberID($memberID);
+        $total += getReferringCreditEarnedByMemberId($memberID);
+        return $total;
+      }
+
+      function getGradeNameSGByCredit($credit)
+      {
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Grade_Name FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $result[sizeof($result)-1]->Grade_Name;
+      }
+
+      function getAllPerformanceInfoByMemberID($memberId)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_SG, Melody_items_New.Model_SG, Melody_performance.Number, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
+        return $results;
+      }
+
+      function getCreditEarnedWithRefByMemberIDANDDateTo($memberID, $dateTo)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate
+        FROM `Melody_performance`
+        LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        WHERE Melody_performance.Member = $memberID 
+        HAVING FinalDate < \"$dateTo\"
+        UNION
+        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate
+        FROM `Melody_performance`
+        RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        WHERE Melody_Referring_Performance.Member = $memberID 
+        HAVING FinalDate < \"$dateTo\"
+        ORDER BY FinalDate ASC");
+
+        $map = array();
+        $prop = getGradePropSGByCredit(0);
+        for($x = 0; $x < sizeof($results); $x++){
+          if(!is_null($results[$x]->Item_no))
+          {
+            //sell performance
+            $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+            $currentSum =0;
+            for($y = 0; $y < sizeof($sublist); $y++){
+              $subMemberId = getMemberIDFromName($sublist[$y]);
+              if(is_null($map[$subMemberId]))
+              {
+                $map[$subMemberId] = 0;
+              }
+              $currentSum += $map[$subMemberId];
+            }
+            $currentSum += $map[$results[$x]->FinalMember];
+            $prop = getGradePropSGByCredit($currentSum);
+            $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          }
+          else
+          {
+            $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+          }
+        }
+        return $map[$memberID];
+      }
+
+      function getCreditEarnedWithoutRefByMemberID($memberID)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+        FROM `Melody_performance`
+        LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        UNION
+        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+        FROM `Melody_performance`
+        RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        ORDER BY FinalDate ASC");
+      
+    
+        $map = array();
+        $submap = array();
+        $prop = getGradePropSGByCredit(0);
+        for($x = 0; $x < sizeof($results); $x++){
+          if(!is_null($results[$x]->Item_no))
+          {
+            //sell performance
+            $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+            $currentSum =0;
+            for($y = 0; $y < sizeof($sublist); $y++){
+              $subMemberId = getMemberIDFromName($sublist[$y]);
+              if(is_null($map[$subMemberId]))
+              {
+                $map[$subMemberId] = 0;
+              }
+              $currentSum += $map[$subMemberId];
+            }
+            $currentSum += $map[$results[$x]->FinalMember];
+            $prop = getGradePropSGByCredit($currentSum);
+            if($results[$x]->props == 0)
+            {
+              $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+            }
+            $map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+            $submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          }
+          else
+          {
+            $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+          }
+        }
+        return $submap[$memberID];
+    
+      }
+
+      function getRefereeListByMemberId($memberID)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Referee, dDate, Credit FROM Melody_Referring_Performance WHERE Member = $memberID");
+        return $results;
       }
 
     ?>
@@ -497,6 +660,10 @@
         <?php
           session_start();
           $userId = $_SESSION['username'];
+          if($_SESSION['isMinor'] == 1)
+          {
+            $userId = $_SESSION['minorId'];
+          }
           $name = getNameByMemberID($userId);
           echo "<p>Welcome back: $name</p>";
         ?>
@@ -520,79 +687,91 @@
     <div class="row">
       <div style="text-align:center">
         <?php
-          session_start();
-          $userId = $_SESSION['username'];
           $name = getNameByMemberID($userId);
-          echo "<h3 class=\"heading3\">Hi, $name, Level YuanFen@ Member</h3>";
+          $creditEarn = getAllCreditByMemberId($userId);
+          $gradeName = getGradeNameSGByCredit($creditEarn);
+          echo "<h3 class=\"heading3\">Hi, $name, $gradeName</h3>";
         ?>
 
         <br> 
         <br>
-        <h3 class="heading3">History </h3>
+        <h3 class="heading3">Points Collection details: </h3>
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">JANUARY - MARCH</th>
-            <td id="Performance"></td>
+            <th id="Performance">Date</th>
+            <th id="Performance">Product/Size</th>
+            <th id="Performance">Model</th>
+            <th id="Performance">Quantity</th>
+            <th id="Performance">Selling Price</th>
+            <th id="Performance">Rental Price</th>
+            <th id="Performance">Percentage %</th>
+            <th id="Performance">Point Earn</th>
           </tr>
+          <?php
+          $performanceInfo = getAllPerformanceInfoByMemberID($userId);
+          for($i = 0; $i<sizeof($performanceInfo); $i++)
+          {
+            echo "<tr id=\"Performance\">";
+            echo "<td id=\"Performance\">".substr($performanceInfo[$i]->dDate,0,10)."</td>";
+            echo "<td id=\"Performance\">".$performanceInfo[$i]->Product_Or_Size_SG."</td>";
+            echo "<td id=\"Performance\">".$performanceInfo[$i]->Model_SG."</td>";
+            echo "<td id=\"Performance\">".$performanceInfo[$i]->Number."</td>";
+            echo "<td id=\"Performance\">".$performanceInfo[$i]->PricePerItem."</td>";
+            echo "<td id=\"Performance\">".$performanceInfo[$i]->RentPricePerItem."</td>";
+            echo "<td id=\"Performance\">".$performanceInfo[$i]->props."</td>";
+            echo "<td id=\"Performance\">".($performanceInfo[$i]->Number * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props + $performanceInfo[$i]->Number * $performanceInfo[$i]->RentPricePerItem * $performanceInfo[$i]->props)."</td>";
+            echo "</tr>";
+          }
+
+          ?>
+
           <tr id="Performance">
-            <th id="Performance">Total Points from Products Selling</th>
-            <td id="Performance"></td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points from direct member</th>
-            <td id="Performance"></td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points</th>
-            <td id="Performance"></td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points redemption</th>
-            <td id="Performance"></td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Balance</th>
-            <td id="Performance"></td>
+            <th id="Performance">Total</th>
+            <th id="Performance"></th>
+            <th id="Performance"></th>
+            <th id="Performance"></th>
+            <th id="Performance"></th>
+            <th id="Performance"></th>
+            <th id="Performance"></th>
+            <?php
+            echo "<th id=\"Performance\">".getCreditEarnedWithoutRefByMemberID($userId)."</th>";
+            ?>
           </tr>
         </table>
 
         <br> 
         <br>
-        <h3 class="heading3">History </h3>
+        <h3 class="heading3">Points Collection as Referral for Melody's Membership: </h3>
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">Points Redeemed</th>
-            <td id="Performance">5</td>
+            <th id="Performance">Date</th>
+            <th id="Performance">Name</th>
+            <th id="Performance">Referral Name</th>
+            <th id="Performance">Points Award</th>
           </tr>
+          <?php
+          $RefereeList = getRefereeListByMemberId($userId);
+          for($x = 0; $x <sizeof($RefereeList); $x++)
+          {
+            echo "<tr id=\"Performance\">";
+            echo "<td id=\"Performance\">".substr($RefereeList[$x]->dDate,0,10)."</td>";
+            echo "<td id=\"Performance\">".$RefereeList[$x]->Referee."</td>";
+            echo "<td id=\"Performance\">".getNameByMemberID($userId)."</td>";
+            echo "<td id=\"Performance\">".$RefereeList[$x]->Credit."</td>";
+            echo "</tr>";
+
+          }
+          ?>
           <tr id="Performance">
-            <th id="Performance">January - March</th>
-            <td id="Performance">1</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">March - June</th>
-            <td id="Performance">2</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">July - September</th>
-            <td id="Performance">3</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Octomber - December</th>
-            <td id="Performance">4</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points</th>
-            <td id="Performance">10</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points redemption</th>
-            <td id="Performance">5</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Balance</th>
-            <td id="Performance">5</td>
+            <th id="Performance">Total</th>
+            <th id="Performance"></th>
+            <th id="Performance"></th>
+            <?php
+              echo "<th id=\"Performance\">".getReferringCreditEarnedByMemberId($userId)."</th>";
+            ?>
+
           </tr>
         </table>
         

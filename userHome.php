@@ -3,7 +3,7 @@
   <head>
     <?php
   		/* 
-  		Template Name: table3 
+  		Template Name: userHome 
   		*/ 
     ?>
     
@@ -123,22 +123,6 @@
         return $nameArray;
       }
 
-      function getMinorOneprop($item_no)
-      {
-        global $wpdb;
-        $sum = $wpdb->get_results("SELECT Minor1_proprotion FROM Melody_items WHERE Item_no = $item_no");
-        $result = $sum[0]->Minor1_proprotion;
-        return $result;
-      }
-
-      function getMinorTwoprop($item_no)
-      {
-        global $wpdb;
-        $sum = $wpdb->get_results("SELECT Minor2_proprotion FROM Melody_items WHERE Item_no = $item_no");
-        $result = $sum[0]->Minor2_proprotion;
-        return $result;
-      }
-
       function getMemberIDFromName($Name){
         global $wpdb;
         $result = $wpdb->get_results( "SELECT Member FROM Teacher_infor WHERE Name=\"$Name\"");
@@ -195,7 +179,7 @@
       function getCreditChangeByMemberID($memberID)
       {
         global $wpdb;
-        $sum = $wpdb->get_results("SELECT CreditChange FROM Admin_Actions WHERE Member = $memberID");
+        $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID");
         if(sizeof($sum) == 0)
           return 0;
         else
@@ -206,6 +190,90 @@
           }
           return $result;
         }
+      }
+
+      function getGradePropSGByCredit($credit)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Grade_Major_Prop_SG FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $results[sizeof($results)-1]->Grade_Major_Prop_SG;
+      }
+
+      function getCreditEarnedWithRefByMemberID($memberID)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+        FROM `Melody_performance`
+        LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        UNION
+        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+        FROM `Melody_performance`
+        RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        ORDER BY FinalDate ASC");
+      
+
+        $map = array();
+        $prop = getGradePropSGByCredit(0);
+        for($x = 0; $x < sizeof($results); $x++){
+          if(!is_null($results[$x]->Item_no))
+          {
+            //sell performance
+            $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+            $currentSum =0;
+            for($y = 0; $y < sizeof($sublist); $y++){
+              $subMemberId = getMemberIDFromName($sublist[$y]);
+              if(is_null($map[$subMemberId]))
+              {
+                $map[$subMemberId] = 0;
+              }
+              $currentSum += $map[$subMemberId];
+            }
+            $currentSum += $map[$results[$x]->FinalMember];
+            $prop = getGradePropSGByCredit($currentSum);
+            if($results[$x]->props == 0)
+            {
+              $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+            }
+            $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          }
+          else
+          {
+            $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+          }
+        }
+        return $map[$memberID];
+
+      }
+
+      function getReferringCreditEarnedByMemberId($memberID)
+      {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Credit FROM Melody_Referring_Performance WHERE Member = $memberID");
+        $sum =0;
+        for($x = 0; $x < sizeof($results); $x++){
+          $sum += $results[$x]->Credit;
+        }
+        return $sum;
+      }
+
+      function getAllCreditIncSubByMemberId($memberID)
+      {
+        $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+        $CreditEarnedBysubMember = 0;
+        for($x = 0; $x < sizeof($belowTeacherList); $x++)
+        {
+          $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
+          $CreditEarnedBysubMember += getCreditEarnedWithRefByMemberID($subMemberID);
+        }
+        $total = $CreditEarnedBysubMember + getCreditEarnedWithRefByMemberID($memberID);
+        return $total;
+      }
+
+      function getGradeNameSGByCredit($credit)
+      {
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Grade_Name FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $result[sizeof($result)-1]->Grade_Name;
       }
 
     ?>
@@ -516,7 +584,12 @@
           $name = getNameByMemberID($userId);
           echo "<h3 class=\"heading3\">Hi, $name</h3>";
           echo "<h3 class=\"heading3\">Congratulations!</h3>";
-          echo "<a href=\"http://www.melodysac.com.sg/index.php/en/information/\" >You had collect: points</a>";
+          $creditEarnedOfMainUser = getCreditEarnedWithRefByMemberID($userId);
+          $creditEarnedByAll = getAllCreditIncSubByMemberId($userId);
+          $creditEarnedByAll += getCreditChangeByMemberID($userId);
+
+          echo "<a href=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" >You had collect: $creditEarnedOfMainUser points</a>";
+          echo "<h3 class=\"heading3\" >Total Point earn(included your direct member): $creditEarnedByAll points</a>";
           echo "<br>";
           $img = get_template_directory_uri()."/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
           $relativeImg="wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/".$_SESSION['username'].".jpg";
@@ -533,33 +606,29 @@
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">Name</th>
-            <th id="Performance">Type</th>
-            <th id="Performance">Level</th>
+            <th id="Performance">YOUR TOTAL DIRECT MEMBER:</th>
           </tr>
-          <tr id="Performance">
-            <td id="Performance">
-              <a href="http://www.melodysac.com.sg/index.php/en/information/">
-                <div style="height:100%;width:100%">
-                  Jasmine
-                </div>
-              </a>
-            </td>
-            <td id="Performance">
-              <a href="http://www.melodysac.com.sg/index.php/en/information/">
-                <div style="height:100%;width:100%">
-                  Member
-                </div>
-              </a>
-            </td>
-            <td id="Performance">
-              <a href="http://www.melodysac.com.sg/index.php/en/information/">
-                <div style="height:100%;width:100%">
-                  Level 1
-                </div>
-              </a>
-            </td>
-          </tr>
+          
+            <?php
+              $userid = $_SESSION['username'];
+              $belowList = getBelowTeacherListFromName(getNameByMemberID($userid));
+              for($x = 0; $x < sizeof($belowList); $x++)
+              {
+                // name of sub teacher
+                echo "<tr id=\"Performance\">";
+                echo "<td id=\"Performance\">";
+                echo "<a href=\"http://www.melodysac.com.sg/index.php/en/information/\">";
+                echo "<div style=\"height:100%;width:100%\">";
+                echo ($x+1).".";
+                echo $belowList[$x];
+                echo " - ";
+                echo getGradeNameSGByCredit(getAllCreditIncSubByMemberId(getMemberIDFromName($belowList[$x])));
+                echo "</div>";
+                echo "</a>";
+                echo "</td>";
+                echo "</tr>";
+              }
+            ?>
         </table>
         
         <br> 
