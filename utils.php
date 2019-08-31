@@ -422,7 +422,7 @@
 
     function getBalanceByMemberId($memberID)
     {
-      return getAllCreditIncSubByMemberId($memberID) - getCreditChangeByMemberID($memberID);
+      return getAllCreditIncSubByMemberId($memberID) + getCreditChangeByMemberID($memberID);
     }
 
     function getCreditEarnedWithRefByMemberIDANDDateTo($memberID, $dateTo)
@@ -458,6 +458,8 @@
           $currentSum += $map[$results[$x]->FinalMember];
           $prop = getGradePropSGByCredit($currentSum);
           $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
+
         }
         else
         {
