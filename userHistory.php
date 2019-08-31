@@ -430,8 +430,8 @@
                 echo $balanceBroughtForward;
               ?>
             </td>
-            <td id="Performance"><?php getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);?></td>
-            <td id="Performance"><?php getAllCreditIncSubByMemberIdANDDateTo($userId, $dateFrom)-getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);?></td>
+            <td id="Performance"><?php echo getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);?></td>
+            <td id="Performance"><?php echo (getAllCreditIncSubByMemberIdANDDateTo($userId, $dateFrom)+getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom));?></td>
           </tr>
           <?php
             $startYear = substr($dateFrom, 0, 4);
@@ -439,6 +439,8 @@
             $currentYear = substr($dateTo, 0, 4);
             $currentMonth = substr($dateTo, 5, 2); 
             $months = array (1=>'January',2=>'February',3=>'March',4=>'April',5=>'May',6=>'June',7=>'July',8=>'August',9=>'September',10=>'October',11=>'November',12=>'December');
+            $AllCreditTotalSum = getAllCreditIncSubByMemberId($userId) - getAllCreditIncSubByMemberIdANDDateTo($userId, $startYear."-".sprintf("%02d", $startMonth)."-01"); 
+            $AllCreditChangeTotalSum = getCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear."-".sprintf("%02d", $startMonth)."-01", $dateTo);
             while($startYear < $currentYear || $startMonth <= $currentMonth)
             {
 
@@ -448,7 +450,7 @@
               echo "<th id=\"Performance\">".$startYear."-".$months[intval($startMonth)]."</th>";
               echo "<td id=\"Performance\">".$AllCreditByMonth."</td>";
               echo "<td id=\"Performance\">".$AllCreditChangeByMonth."</td>";
-              echo "<td id=\"Performance\">".($AllCreditByMonth - $AllCreditChangeByMonth)."</td>";
+              echo "<td id=\"Performance\">".($AllCreditByMonth + $AllCreditChangeByMonth)."</td>";
               echo "</tr>";
               $startMonth++;
               if($startMonth>12)
@@ -457,35 +459,16 @@
                 $startMonth = 01;
               }
             }
+            echo "<tr id=\"Performance\">";
+            echo "<th id=\"Performance\">Total Sum</th>";
+            echo "<td id=\"Performance\">".$AllCreditTotalSum."</td>";
+            echo "<td id=\"Performance\">".$AllCreditChangeTotalSum."</td>";
+            echo "<td id=\"Performance\">".($AllCreditTotalSum + $AllCreditChangeTotalSum)."</td>";
+            echo "</tr>";
+
+
           ?>
-          <tr id="Performance">
-            <th id="Performance">January</th>
-            <td id="Performance">1</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">March - June</th>
-            <td id="Performance">2</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">July - September</th>
-            <td id="Performance">3</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Octomber - December</th>
-            <td id="Performance">4</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points</th>
-            <td id="Performance">10</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Total Points redemption</th>
-            <td id="Performance">5</td>
-          </tr>
-          <tr id="Performance">
-            <th id="Performance">Balance</th>
-            <td id="Performance">5</td>
-          </tr>
+
         </table>
         
         <br> 

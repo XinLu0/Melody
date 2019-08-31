@@ -247,7 +247,7 @@
         <div style="text-align:center">
             <?php
             $name = getNameByMemberID($userId);
-            $creditEarn = getAllCreditByMemberId($userId);
+            $creditEarn = getAllCreditIncSubByMemberId($userId);
             $gradeName = getGradeNameSGByCredit($creditEarn);
             echo "<h3 class=\"heading3\">Hi, $hostName, $gradeName</h3>";
             echo "<h3 class=\"heading3\">Here is the information for your member $name </h3>";
