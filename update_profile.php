@@ -4,13 +4,11 @@
 <head>
     <?php
     /* 
-  		Template Name: userHome 
+  		Template Name: Update
   		*/
-    ?>
-
-    <?php
     session_start();
-    require('utils.php');
+
+
     $logout = @$_GET['logout'];
     if ($logout == 1)
         $_SESSION['loggedin'] = 0;
@@ -18,18 +16,54 @@
         header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
         exit;
     }
+    $mid = $_SESSION['username'];
 
-    //$username = $_SESSION['username'];
-    if (isset($_POST['Month'])) {
-        getDatefromToByMonth($_POST['Month']);
-    } else {
-        getDatefromToByCurrent();
+    function getNameByMemberID($memberID)
+    {
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
+        return $result[0]->Name;
     }
+    
+    function updateEmailByMID($Mid, $email)
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Email=\"$email\" WHERE Member = $Mid"));
+    }
+    function updatePasswordByMID($Mid, $password)
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Password=\"$password\" WHERE Member = $Mid"));
+    }
+    function updateContactNoByMID($Mid, $Contact_no)
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Contact_no=\"$Contact_no\" WHERE Member = $Mid"));
+    }
+    function alert($msg)
+    {
+        echo "<script type='text/javascript'>alert('$msg');</script>";
+    }
+    if (isset($_POST["Number"])) {
+        if ($_POST["Number"] != "") {
+            updateContactNoByMID($mid, $_POST["Number"]);
+            alert("Successful!");
+        }
+        if ($_POST["NewPassword1"] != "") {
 
-    $_SESSION['dateFrom'] = $dateFrom;
-    $_SESSION['dateTo'] = $dateTo;
+            if ($_POST["NewPassword1"] != $_POST["NewPassword2"]) {
+                alert("Passwords don\'t match");
+            } else {
+                updatePasswordByMID($mid, $_POST["NewPassword1"]);
+                alert("Successful!");
+            }
+        }
+        if ($_POST["Email"] != "") {
+            updateEmailByMID($mid, $_POST["Email"]);
+            alert("Successful!");
+        }
+    }
     ?>
-
     <meta charset="utf-8">
     <style>
         * {
@@ -38,8 +72,10 @@
 
         body {
             margin: 0;
+            height: 1000px;
         }
 
+        /* Style the header */
         .header {
             background-color: #ffffff;
             padding: 1px;
@@ -54,7 +90,7 @@
 
         /* Style the topWel links */
         .topWel p {
-            float: center;
+            float: right;
             display: block;
             color: #f2f2f2;
             text-align: center;
@@ -69,7 +105,7 @@
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
-            border: 2px;
+            border: 0px;
         }
 
         .topWel button:hover {
@@ -134,43 +170,38 @@
             display: block;
         }
 
-        .img_left {
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            width: 220px;
-            height: 200px;
-        }
-
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-        @media (max-width:600px) {
-            .column {
-                width: 100%;
-            }
-        }
-
-        #Performance {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 80%;
+        .update {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            max-width: 550px;
             margin: auto;
+            border: 1px solid gray;
         }
 
-        #Performance th {
-            border: 1px solid #ddd;
-            padding: 12px;
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: center;
-            background-color: grey;
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #A6502D;
             color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #8C2A05;
         }
     </style>
 </head>
@@ -180,6 +211,7 @@
         <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
     </div>
 
+
     <div class="topWel">
         <form action="#" method="get">
             <button name="logout" value=1>Logout</button>
@@ -187,6 +219,9 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        if (isset($_GET['userInfo'])) {
+            $userId = $_GET['userInfo'];
+        }
         $name = getNameByMemberID($userId);
         echo "<p>Welcome back: $name</p>";
         ?>
@@ -233,66 +268,35 @@
         </li>
     </ul>
 
-    <div class="row">
-        <div style="text-align:center">
-            <?php
-            session_start();
-            $userId = $_SESSION['username'];
-            $name = getNameByMemberID($userId);
-            echo "<h3 class=\"heading3\">Hi, $name</h3>";
-            echo "<h3 class=\"heading3\">Congratulations!</h3>";
-            $creditEarnedOfMainUser = getCreditEarnedWithRefByMemberID($userId);
-            $creditEarnedByAll = getAllCreditIncSubByMemberId($userId);
-            $creditEarnedByAll += getCreditChangeByMemberID($userId);
+    <br>
+    <br>
+    <br>
+    <div class="update">
+        <h2>Update Your Profile</h2>
+        <form action="#" name="update_profile" method="post">
+            <p>
+                <label for="Number">Contact Number</label>
+                <input type="text" id="Number" name="Number">
+            </p>
+            <p>
+                <label for="Email">Email</label>
+                <input type="text" id="Email" name="Email">
+            </p>
+            <p>
+                <label for="NPassword1">New Password</label>
+                <input type="text" id="NPassword1" name="NewPassword1">
+            </p>
+            <p>
 
-            echo "<a href=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" >You had collect: $creditEarnedOfMainUser points</a>";
-            echo "<h3 class=\"heading3\" >Total Point earn(included your direct member): $creditEarnedByAll points</a>";
-            echo "<br>";
-            $img = get_template_directory_uri() . "/MemberInfo/ProfileImgJPG/" . $_SESSION['username'] . ".jpg";
-            $relativeImg = "wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/" . $_SESSION['username'] . ".jpg";
-            $defaultImg = get_template_directory_uri() . "/MemberInfo/ProfileImgJPG/default.jpg";
-            if (file_exists($relativeImg)) {
-                echo "<img class=\"img_left\" src=\"$img\">";
-            } else echo "<img class=\"img_left\" src=\"$defaultImg\">";
-            ?>
+                <label for="NPassword2">Confirm New password</label>
+                <input type="text" id="NPassword2" name="NewPassword2">
 
-            <br>
-            <br>
-            <h3 class="heading3">YOUR TOTAL DIRECT MEMBER: </h3>
-
-            <table id="Performance">
-                <tr id="Performance">
-                    <th id="Performance">YOUR TOTAL DIRECT MEMBER:</th>
-                </tr>
-
-                <?php
-                $userid = $_SESSION['username'];
-                $belowList = getBelowTeacherListFromName(getNameByMemberID($userid));
-                for ($x = 0; $x < sizeof($belowList); $x++) {
-                    // name of sub teacher
-                    echo "<tr id=\"Performance\">";
-                    echo "<td id=\"Performance\">";
-                    echo "<form action=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" method=\"get\">";
-                    echo "<button name=\"userInfo\" value = " . getMemberIDFromName($belowList[$x]) . "> ";
-                    echo "<div style=\"height:100%;width:100%\">";
-                    echo ($x + 1) . ".";
-                    echo $belowList[$x];
-                    echo " - ";
-                    echo getGradeNameSGByCredit(getAllCreditIncSubByMemberId(getMemberIDFromName($belowList[$x])));
-                    echo "</div>";
-                    echo "</button>";
-                    echo "</form>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                ?>
-            </table>
-
-            <br>
-            <br>
-        </div>
+            </p>
+            <p>
+                <input type="submit" value="Submit">
+            </p>
+        </form>
     </div>
-
 </body>
 
 </html>
