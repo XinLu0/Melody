@@ -3,7 +3,8 @@
   <head>
     <?php
   		/* 
-  		Template Name: table3 
+      Template Name: userHistory
+       
   		*/ 
     ?>
     
@@ -207,7 +208,76 @@
           return $result;
         }
       }
+      
+      function getCreditEarnedWithoutRefByMemberID($memberID)
+     {
+      global $wpdb;
+      $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+      FROM `Melody_performance`
+      LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+      UNION
+      SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+      FROM `Melody_performance`
+      RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+      ORDER BY FinalDate ASC");
+    
 
+      $map = array();
+      $submap = array();
+      $prop = getGradePropSGByCredit(0);
+      for($x = 0; $x < sizeof($results); $x++){
+        if(!is_null($results[$x]->Item_no))
+        {
+          //sell performance
+          $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+          $currentSum =0;
+          for($y = 0; $y < sizeof($sublist); $y++){
+            $subMemberId = getMemberIDFromName($sublist[$y]);
+            if(is_null($map[$subMemberId]))
+            {
+              $map[$subMemberId] = 0;
+            }
+            $currentSum += $map[$subMemberId];
+          }
+          $currentSum += $map[$results[$x]->FinalMember];
+          $prop = getGradePropSGByCredit($currentSum);
+          if($results[$x]->props == 0)
+          {
+            $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+          }
+          $map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          $submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+        }
+        else
+        {
+          $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+        }
+      }
+      return $submap[$memberID];
+    }
+
+    function getReferringCreditEarnedByMemberId($memberID)
+    {
+      global $wpdb;
+      $results = $wpdb->get_results("SELECT Credit FROM Melody_Referring_Performance WHERE Member = $memberID");
+      $sum =0;
+      for($x = 0; $x < sizeof($results); $x++){
+        $sum += $results[$x]->Credit;
+      }
+      return $sum;
+    }
+
+    function getAllCreditFromSubByMemberId($memberID)
+    {
+      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $CreditEarnedBysubMember = 0;
+      for($x = 0; $x < sizeof($belowTeacherList); $x++)
+      {
+        $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
+        $CreditEarnedBysubMember += getCreditEarnedWithRefByMemberID($subMemberID);
+      }
+      return $CreditEarnedBysubMember;
+    }
     ?>
 
     <meta charset="utf-8">
@@ -532,16 +602,16 @@
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">JANUARY - MARCH</th>
-            <td id="Performance"></td>
+            <th id="Performance">Individual Points from Products Selling</th>
+            <td id="Performance"><?php echo getCreditEarnedWithoutRefByMemberID($userId); ?></td>
           </tr>
           <tr id="Performance">
-            <th id="Performance">Total Points from Products Selling</th>
-            <td id="Performance"></td>
+            <th id="Performance">Points as Melody's membership referral</th>
+            <td id="Performance"><?php echo getReferringCreditEarnedByMemberId($userId); ?></td>
           </tr>
           <tr id="Performance">
-            <th id="Performance">Total Points from direct member</th>
-            <td id="Performance"></td>
+            <th id="Performance">Points from direct member</th>
+            <td id="Performance">><?php echo getAllCreditFromSubByMemberId($userId); ?></td>
           </tr>
           <tr id="Performance">
             <th id="Performance">Total Points</th>
@@ -559,15 +629,21 @@
 
         <br> 
         <br>
-        <h3 class="heading3">History </h3>
+        <h3 class="heading3">History Record </h3>
 
         <table id="Performance">
           <tr id="Performance">
-            <th id="Performance">Points Redeemed</th>
+            <th id="Performance">Month</th>
+            <th id="Performance">Total Point Collected</th>
+            <th id="Performance">Total Point Redeemed</th>
+            <th id="Performance">Balance Points</th>
+          </tr>
+          <tr id="Performance">
+            <th id="Performance">Balance Brought Forward</th>
             <td id="Performance">5</td>
           </tr>
           <tr id="Performance">
-            <th id="Performance">January - March</th>
+            <th id="Performance">January</th>
             <td id="Performance">1</td>
           </tr>
           <tr id="Performance">

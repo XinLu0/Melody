@@ -660,9 +660,9 @@
         <?php
           session_start();
           $userId = $_SESSION['username'];
-          if($_SESSION['isMinor'] == 1)
+          if(isset($_GET['userInfo']))
           {
-            $userId = $_SESSION['minorId'];
+            $userId = $_GET['userInfo'];
           }
           $name = getNameByMemberID($userId);
           echo "<p>Welcome back: $name</p>";

@@ -617,14 +617,16 @@
                 // name of sub teacher
                 echo "<tr id=\"Performance\">";
                 echo "<td id=\"Performance\">";
-                echo "<a href=\"http://www.melodysac.com.sg/index.php/en/information/\">";
+                echo " <form action=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" method=\"get\">";
+                echo "<button name=\"userInfo\" value = ".getMemberIDFromName($belowList[$x])."> ";
                 echo "<div style=\"height:100%;width:100%\">";
                 echo ($x+1).".";
                 echo $belowList[$x];
                 echo " - ";
                 echo getGradeNameSGByCredit(getAllCreditIncSubByMemberId(getMemberIDFromName($belowList[$x])));
                 echo "</div>";
-                echo "</a>";
+                echo "</button>";
+                echo "</form>";
                 echo "</td>";
                 echo "</tr>";
               }
