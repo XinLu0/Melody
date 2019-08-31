@@ -172,6 +172,26 @@
             background-color: grey;
             color: white;
         }
+
+
+        #Performance td {
+            border: 1px solid #ddd;
+            text-align: center;
+            background-color: white;
+            color: black;
+        }
+
+
+        #Performance button {
+            /* border: 1px solid #ddd; */
+            border: 0px;
+            padding: 12px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: white;
+            color: black;
+        }
     </style>
 </head>
 
@@ -260,6 +280,7 @@
             <br>
             <h3 class="heading3">YOUR TOTAL DIRECT MEMBER: </h3>
 
+            <form method="GET" action="http://www.melodysac.com.sg/index.php/en/userinformation/" id="directMember"></form>
             <table id="Performance">
                 <tr id="Performance">
                     <th id="Performance">YOUR TOTAL DIRECT MEMBER:</th>
@@ -272,16 +293,16 @@
                     // name of sub teacher
                     echo "<tr id=\"Performance\">";
                     echo "<td id=\"Performance\">";
-                    echo "<form action=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" method=\"get\">";
-                    echo "<button name=\"userInfo\" value = " . getMemberIDFromName($belowList[$x]) . "> ";
-                    echo "<div style=\"height:100%;width:100%\">";
+                    // echo "<form action=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" method=\"get\">";
+                    echo "<button name=\"userInfo\" value = " . getMemberIDFromName($belowList[$x]) . " form=\"directMember\" id=\"Performance\"> ";
+                    // echo "<div style=\"height:100%;width:100%\">";
                     echo ($x + 1) . ".";
                     echo $belowList[$x];
                     echo " - ";
                     echo getGradeNameSGByCredit(getAllCreditIncSubByMemberId(getMemberIDFromName($belowList[$x])));
-                    echo "</div>";
+                    // echo "</div>";
                     echo "</button>";
-                    echo "</form>";
+                    // echo "</form>";
                     echo "</td>";
                     echo "</tr>";
                 }

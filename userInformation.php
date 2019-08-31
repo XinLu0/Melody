@@ -247,10 +247,10 @@
         <div style="text-align:center">
             <?php
             $name = getNameByMemberID($userId);
-            $creditEarn = getAllCreditByMemberId($userId);
+            $creditEarn = getAllCreditIncSubByMemberId($userId);
             $gradeName = getGradeNameSGByCredit($creditEarn);
             echo "<h3 class=\"heading3\">Hi, $hostName, $gradeName</h3>";
-            echo "<h3 class=\"heading3\">Here is the information for your member $name </h3>";
+            echo "<h3 class=\"heading3\" style=\"color:dark grey;\">Here is the information for your member $name </h3>";
             ?>
 
             <br>
@@ -270,6 +270,8 @@
                 </tr>
                 <?php
                 $performanceInfo = getAllPerformanceInfoByMemberID($userId);
+                if(sizeof($performanceInfo) == 0)
+                    echo "<tr id=\"Performance\"><td colspan=\"8\" id=\"Performance\">No Selling History</td></tr>";
                 for ($i = 0; $i < sizeof($performanceInfo); $i++) {
                     echo "<tr id=\"Performance\">";
                     echo "<td id=\"Performance\">" . substr($performanceInfo[$i]->dDate, 0, 10) . "</td>";
@@ -313,7 +315,7 @@
                 <?php
                 $RefereeList = getRefereeListByMemberId($userId);
                 if(sizeof($RefereeList) == 0)
-                    echo "<tr id=\"Performance\"><td colspan=\"4\" id=\"Performance\">No Refer history</td></tr>";
+                    echo "<tr id=\"Performance\"><td colspan=\"4\" id=\"Performance\">No Refer History</td></tr>";
                 for ($x = 0; $x < sizeof($RefereeList); $x++) {
                     echo "<tr id=\"Performance\">";
                     echo "<td id=\"Performance\">" . substr($RefereeList[$x]->dDate, 0, 10) . "</td>";
