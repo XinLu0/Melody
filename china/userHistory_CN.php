@@ -447,7 +447,7 @@
 
             <table id="Performance" class="one">
                 <tr id="Performance">
-                    <td id="Performance" width="50%">总纪录</td>
+                    <td id="Performance" width="50%">总记录</td>
                     <td id="Performance" width="50%"></td>
                 </tr>
                 <tr id="Performance">
@@ -490,15 +490,15 @@
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">上期积分余额</th>
-                    <td id="Performance">
+                    <th id="Performance">
                         <?php
                         $balanceBroughtForward = 0;
                         $balanceBroughtForward = getAllCreditIncSubCNByMemberIdANDDateTo($userId, $dateFrom);
                         echo $balanceBroughtForward;
                         ?>
-                    </td>
-                    <td id="Performance"><?php echo getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom); ?></td>
-                    <td id="Performance"><?php echo (getAllCreditIncSubCNByMemberIdANDDateTo($userId, $dateFrom) + getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom)); ?></td>
+                    </th>
+                    <th id="Performance"><?php echo getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom); ?></td>
+                    <th id="Performance"><?php echo (getAllCreditIncSubCNByMemberIdANDDateTo($userId, $dateFrom) + getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom)); ?></td>
                 </tr>
                 <?php
                 $startYear = substr($dateFrom, 0, 4);
@@ -526,9 +526,9 @@
                 }
                 echo "<tr id=\"Performance\">";
                 echo "<th id=\"Performance\">总计</th>";
-                echo "<td id=\"Performance\">" . $AllCreditTotalSum . "</td>";
-                echo "<td id=\"Performance\">" . $AllCreditChangeTotalSum . "</td>";
-                echo "<td id=\"Performance\">" . ($AllCreditTotalSum + $AllCreditChangeTotalSum) . "</td>";
+                echo "<th id=\"Performance\">" . $AllCreditTotalSum . "</th>";
+                echo "<th id=\"Performance\">" . $AllCreditChangeTotalSum . "</th>";
+                echo "<th id=\"Performance\">" . ($AllCreditTotalSum + $AllCreditChangeTotalSum) . "</th>";
                 echo "</tr>";
 
 

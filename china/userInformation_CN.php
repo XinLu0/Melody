@@ -195,8 +195,12 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        if (isset($_GET['userInfo'])) {
+            $userId = $_GET['userInfo'];
+        }
         $name = getNameByMemberID($userId);
-        echo "<p>欢迎: $name</p>";
+        $hostName = getNameByMemberID($_SESSION['username']);
+        echo "<p>欢迎: $hostName</p>";
         ?>
     </div>
 
@@ -204,9 +208,7 @@
         <li class="dropdown">
             <?php
             session_start();
-            $userId = $_SESSION['username'];
-            $name = getNameByMemberID($userId);
-            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/zh/userhome_cn/\" > $name</a>";
+            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/zh/userhome_cn/\" > $hostName</a>";
             ?>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/zh/userinformation_cn/">个人详情</a>
@@ -244,7 +246,6 @@
     <div class="row">
         <div style="text-align:center">
             <?php
-            $userId = $_SESSION['username'];
             $name = getNameByMemberID($userId);
             $creditEarn = getAllCreditIncSubCNByMemberId($userId);
             $gradeName = getGradeNameCNByCredit($creditEarn);

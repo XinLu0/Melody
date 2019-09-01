@@ -24,7 +24,7 @@
         $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
         return $result[0]->Name;
     }
-    
+
     function updateEmailByMID($Mid, $email)
     {
         global $wpdb;
@@ -211,19 +211,15 @@
         <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
     </div>
 
-
     <div class="topWel">
         <form action="#" method="get">
-            <button name="logout" value=1>Logout</button>
+            <button name="logout" value=1>登出</button>
         </form>
         <?php
         session_start();
         $userId = $_SESSION['username'];
-        if (isset($_GET['userInfo'])) {
-            $userId = $_GET['userInfo'];
-        }
         $name = getNameByMemberID($userId);
-        echo "<p>Welcome back: $name</p>";
+        echo "<p>欢迎: $name</p>";
         ?>
     </div>
 
@@ -233,38 +229,38 @@
             session_start();
             $userId = $_SESSION['username'];
             $name = getNameByMemberID($userId);
-            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $name</a>";
+            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/zh/userhome_cn/\" > $name</a>";
             ?>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/userinformation/">Information</a>
-                <a href="https://www.melodysac.com.sg/en/userhistory/">History</a>
-                <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Setting</a>
+                <a href="https://www.melodysac.com.sg/zh/userinformation_cn/">个人详情</a>
+                <a href="https://www.melodysac.com.sg/zh/userhistory_cn/">历史记录</a>
+                <a href="https://www.melodysac.com.sg/zh/updateinfo_cn/">设置</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">About Us</a>
+            <a class="dropbtn">关于我们</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_memberbenifits_cn/">会员福利</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">YuanFen@ info</a>
+            <a class="dropbtn">蔓联会员说明</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
-                <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
-                <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
-                echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
+                echo "<a href=\"$contract\" download=\"contract\">会员表格下载</a>";
                 ?>
-                <a href="https://www.melodysac.com.sg/en/terms/">Term and Condition</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="http://www.melodysac.com.sg/index.php/en/contact/">CONTACT US</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系方式</a>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_melodysacproducts_cn/">价格表</a>
         </li>
     </ul>
 
@@ -272,10 +268,10 @@
     <br>
     <br>
     <div class="update">
-        <h2>Update Your Profile</h2>
+        <h2>更新个人资料</h2>
         <form action="#" name="update_profile" method="post">
             <p>
-                <label for="Number">Contact Number</label>
+                <label for="Number">联系电话</label>
                 <input type="text" id="Number" name="Number">
             </p>
             <p>
@@ -283,17 +279,17 @@
                 <input type="text" id="Email" name="Email">
             </p>
             <p>
-                <label for="NPassword1">New Password</label>
+                <label for="NPassword1">新密码</label>
                 <input type="text" id="NPassword1" name="NewPassword1">
             </p>
             <p>
 
-                <label for="NPassword2">Confirm New password</label>
+                <label for="NPassword2">确认新密码</label>
                 <input type="text" id="NPassword2" name="NewPassword2">
 
             </p>
             <p>
-                <input type="submit" value="Submit">
+                <input type="submit" value="提交">
             </p>
         </form>
     </div>

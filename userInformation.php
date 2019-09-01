@@ -208,9 +208,7 @@
         <li class="dropdown">
             <?php
             session_start();
-            $userId = $_SESSION['username'];
-            $name = getNameByMemberID($userId);
-            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $name</a>";
+            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $hostName</a>";
             ?>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/en/userinformation/">Information</a>
@@ -251,8 +249,8 @@
             $name = getNameByMemberID($userId);
             $creditEarn = getAllCreditIncSubSGByMemberId($userId);
             $gradeName = getGradeNameSGByCredit($creditEarn);
-            echo "<h3 class=\"heading3\">Hi, $hostName, $gradeName</h3>";
-            echo "<h3 class=\"heading3\" style=\"color:dark grey;\">Here is the information for your member $name </h3>";
+            echo "<h3 class=\"heading3\">Hi,</h3>";
+            echo "<h3 class=\"heading3\" style=\"color:dark grey;\">Here is the information for $name, $gradeName</h3>";
             ?>
 
             <br>

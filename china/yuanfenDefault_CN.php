@@ -6,7 +6,15 @@
     /*
 * Template Name: yuanfenDefaultCN
 */
+    session_start();
     require('utils.php');
+    $logout = @$_GET['logout'];
+    if ($logout == 1)
+        $_SESSION['loggedin'] = 0;
+    if ($_SESSION['loggedin'] != 1) {
+        header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
+        exit;
+    }
     ?>
     <style>
         * {

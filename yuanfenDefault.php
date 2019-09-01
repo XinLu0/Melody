@@ -6,7 +6,15 @@
     /*
 * Template Name: yuanfenDefault
 */
+    session_start();
     require('utils.php');
+    $logout = @$_GET['logout'];
+    if ($logout == 1)
+        $_SESSION['loggedin'] = 0;
+    if ($_SESSION['loggedin'] != 1) {
+        header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
+        exit;
+    }
     ?>
     <style>
         * {
@@ -169,7 +177,7 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="http://www.melodysac.com.sg/index.php/en/contact/">CONTACT US</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/user_contact_us/">CONTACT US</a>
         </li>
         <li class="dropdown">
             <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
@@ -178,8 +186,6 @@
 
     <div id="container">
         <div id="content" class="pageContent">
-
-            <h1 class="entry-title" align="center"><?php the_title(); ?></h1> <!-- Page Title -->
 
             <?php
             // TO SHOW THE PAGE CONTENTS

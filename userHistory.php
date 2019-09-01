@@ -444,10 +444,10 @@
             <br>
             <h3 class="heading3">History </h3>
 
-            <table id="Performance"  class="one">
+            <table id="Performance" class="one">
                 <tr id="Performance">
-                    <th id="Performance"  width="50%">Individual Points from Products Selling</th>
-                    <td id="Performance"  width="50%"><?php echo getCreditEarnedWithoutRefSGByMemberID($userId); ?></td>
+                    <th id="Performance" width="50%">Individual Points from Products Selling</th>
+                    <td id="Performance" width="50%"><?php echo getCreditEarnedWithoutRefSGByMemberID($userId); ?></td>
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">Points as Melody's membership referral</th>
@@ -475,7 +475,7 @@
             <br>
             <h3 class="heading3">History Record </h3>
 
-            <table id="Performance"  class="one">
+            <table id="Performance" class="one">
                 <tr id="Performance">
                 <tr id="Performance">
                     <th id="Performance">Month</th>
@@ -485,15 +485,15 @@
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">Balance Brought Forward</th>
-                    <td id="Performance">
+                    <th id="Performance">
                         <?php
                         $balanceBroughtForward = 0;
                         $balanceBroughtForward = getAllCreditIncSubSGByMemberIdANDDateTo($userId, $dateFrom);
                         echo $balanceBroughtForward;
                         ?>
-                    </td>
-                    <td id="Performance"><?php echo getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom); ?></td>
-                    <td id="Performance"><?php echo (getAllCreditIncSubSGByMemberIdANDDateTo($userId, $dateFrom) + getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom)); ?></td>
+                    </th>
+                    <th id="Performance"><?php echo getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom); ?></th>
+                    <th id="Performance"><?php echo (getAllCreditIncSubSGByMemberIdANDDateTo($userId, $dateFrom) + getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom)); ?></th>
                 </tr>
                 <?php
                 $startYear = substr($dateFrom, 0, 4);
@@ -521,9 +521,9 @@
                 }
                 echo "<tr id=\"Performance\">";
                 echo "<th id=\"Performance\">Total Sum</th>";
-                echo "<td id=\"Performance\">" . $AllCreditTotalSum . "</td>";
-                echo "<td id=\"Performance\">" . $AllCreditChangeTotalSum . "</td>";
-                echo "<td id=\"Performance\">" . ($AllCreditTotalSum + $AllCreditChangeTotalSum) . "</td>";
+                echo "<th id=\"Performance\">" . $AllCreditTotalSum . "</th>";
+                echo "<th id=\"Performance\">" . $AllCreditChangeTotalSum . "</th>";
+                echo "<th id=\"Performance\">" . ($AllCreditTotalSum + $AllCreditChangeTotalSum) . "</th>";
                 echo "</tr>";
 
 

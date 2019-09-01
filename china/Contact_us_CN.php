@@ -17,18 +17,16 @@
         exit;
     }
     $mid = $_SESSION['username'];
-    if(isset($_POST["Message"]))
-    {
-        if(!isset($_POST["Number"]) || !isset($_POST["Email"]))
-        {
+    if (isset($_POST["Message"])) {
+        if (!isset($_POST["Number"]) || !isset($_POST["Email"])) {
             alertWithHistoryBack("Please fill all information");
         }
         //$to = get_option('admin_email');
         $to = array("blairlxt@gmail.com");
         $subject = "User Request:";
-        $message = $_POST["Message"]." \n\r From: ".$_POST["Number"]. "\n\r Contact number:". $_POST["Email"]." \n\r UserName :". getNameByMemberID($mid)." UserId :". $mid;
+        $message = $_POST["Message"] . " \n\r From: " . $_POST["Number"] . "\n\r Contact number:" . $_POST["Email"] . " \n\r UserName :" . getNameByMemberID($mid) . " UserId :" . $mid;
 
-        sendEmail($subject." ". $_POST["Subject"], $to, strip_tags($message), False);
+        sendEmail($subject . " " . $_POST["Subject"], $to, strip_tags($message), False);
 
         alert("Sent Successfully. We will get back to you soon");
     }
@@ -174,7 +172,7 @@
             background-color: #8C2A05;
         }
 
-        
+
         textarea {
             width: 100%;
             height: 150px;
@@ -194,16 +192,15 @@
         <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
     </div>
 
-
     <div class="topWel">
         <form action="#" method="get">
-            <button name="logout" value=1>Logout</button>
+            <button name="logout" value=1>登出</button>
         </form>
         <?php
         session_start();
         $userId = $_SESSION['username'];
         $name = getNameByMemberID($userId);
-        echo "<p>Welcome back: $name</p>";
+        echo "<p>欢迎: $name</p>";
         ?>
     </div>
 
@@ -213,38 +210,38 @@
             session_start();
             $userId = $_SESSION['username'];
             $name = getNameByMemberID($userId);
-            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $name</a>";
+            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/zh/userhome_cn/\" > $name</a>";
             ?>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/userinformation/">Information</a>
-                <a href="https://www.melodysac.com.sg/en/userhistory/">History</a>
-                <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Setting</a>
+                <a href="https://www.melodysac.com.sg/zh/userinformation_cn/">个人详情</a>
+                <a href="https://www.melodysac.com.sg/zh/userhistory_cn/">历史记录</a>
+                <a href="https://www.melodysac.com.sg/zh/updateinfo_cn/">设置</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">About Us</a>
+            <a class="dropbtn">关于我们</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_memberbenifits_cn/">会员福利</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">YuanFen@ info</a>
+            <a class="dropbtn">蔓联会员说明</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
-                <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
-                <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
-                echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
+                echo "<a href=\"$contract\" download=\"contract\">会员表格下载</a>";
                 ?>
-                <a href="http://www.melodysac.com.sg/index.php/en/terms/">Term and Condition</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="http://www.melodysac.com.sg/index.php/en/contact/">CONTACT US</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系方式</a>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_melodysacproducts_cn/">价格表</a>
         </li>
     </ul>
 
@@ -253,22 +250,22 @@
     <br>
     <br>
     <div class="update">
-			<form action="#" name="send_email" method="post">
-				<label for="Email">电子邮箱</label>
-                <input type="text" id="Email" name="Email"></text>
-                
-                <label for="Number">联系方式</label>
-				<input type="text" id="Number" name="Number"></text>
+        <form action="#" name="send_email" method="post">
+            <label for="Email">电子邮箱</label>
+            <input type="text" id="Email" name="Email"></text>
 
-				<label for="Subject">主题</label>
-				<input type="text" id="Subject" name="Subject"></text>
+            <label for="Number">联系方式</label>
+            <input type="text" id="Number" name="Number"></text>
 
-				<label for="Message">内容</label>
-				<textarea  id="Message" name="Message"></textarea>
+            <label for="Subject">主题</label>
+            <input type="text" id="Subject" name="Subject"></text>
 
-				<input type="submit" value="Send">
-			</form>
-		</div>
+            <label for="Message">内容</label>
+            <textarea id="Message" name="Message"></textarea>
+
+            <input type="submit" value="提交">
+        </form>
+    </div>
 </body>
 
 </html>
