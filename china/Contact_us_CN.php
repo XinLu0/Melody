@@ -4,7 +4,7 @@
 <head>
     <?php
     /* 
-  		Template Name: Contact_Us
+  		Template Name: Contact_Us_CN
   		*/
     session_start();
     require('utils.php');
@@ -248,22 +248,22 @@
         </li>
     </ul>
 
-    <h3>Please Leave Your Message To Us</h3>
+    <h3>请留下您的信息</h3>
     <br>
     <br>
     <br>
     <div class="update">
 			<form action="#" name="send_email" method="post">
-				<label for="Email">Email</label>
+				<label for="Email">电子邮箱</label>
                 <input type="text" id="Email" name="Email"></text>
                 
-                <label for="Number">Best Contact Number</label>
+                <label for="Number">联系方式</label>
 				<input type="text" id="Number" name="Number"></text>
 
-				<label for="Subject">Subject</label>
+				<label for="Subject">主题</label>
 				<input type="text" id="Subject" name="Subject"></text>
 
-				<label for="Message">Message</label>
+				<label for="Message">内容</label>
 				<textarea  id="Message" name="Message"></textarea>
 
 				<input type="submit" value="Send">

@@ -275,7 +275,7 @@
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->Number . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->PricePerItem . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->props . "</td>";
-                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->Number * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props + $performanceInfo[$i]->Number * $performanceInfo[$i]->RentPricePerItem * $performanceInfo[$i]->props) . "</td>";
+                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->Number * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props ) . "</td>";
                     echo "</tr>";
                 }
 
