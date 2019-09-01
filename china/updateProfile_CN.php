@@ -3,11 +3,68 @@
 
 <head>
     <?php
-    /*
-* Template Name: yuanfenDefault
-*/
-    require('utils.php');
+    /* 
+  		Template Name: Update_CN
+  		*/
+    session_start();
+
+
+    $logout = @$_GET['logout'];
+    if ($logout == 1)
+        $_SESSION['loggedin'] = 0;
+    if ($_SESSION['loggedin'] != 1) {
+        header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
+        exit;
+    }
+    $mid = $_SESSION['username'];
+
+    function getNameByMemberID($memberID)
+    {
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
+        return $result[0]->Name;
+    }
+    
+    function updateEmailByMID($Mid, $email)
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Email=\"$email\" WHERE Member = $Mid"));
+    }
+    function updatePasswordByMID($Mid, $password)
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Password=\"$password\" WHERE Member = $Mid"));
+    }
+    function updateContactNoByMID($Mid, $Contact_no)
+    {
+        global $wpdb;
+        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Contact_no=\"$Contact_no\" WHERE Member = $Mid"));
+    }
+    function alert($msg)
+    {
+        echo "<script type='text/javascript'>alert('$msg');</script>";
+    }
+    if (isset($_POST["Number"])) {
+        if ($_POST["Number"] != "") {
+            updateContactNoByMID($mid, $_POST["Number"]);
+            alert("Successful!");
+        }
+        if ($_POST["NewPassword1"] != "") {
+
+            if ($_POST["NewPassword1"] != $_POST["NewPassword2"]) {
+                alert("Passwords don\'t match");
+            } else {
+                updatePasswordByMID($mid, $_POST["NewPassword1"]);
+                alert("Successful!");
+            }
+        }
+        if ($_POST["Email"] != "") {
+            updateEmailByMID($mid, $_POST["Email"]);
+            alert("Successful!");
+        }
+    }
     ?>
+    <meta charset="utf-8">
     <style>
         * {
             box-sizing: border-box;
@@ -15,6 +72,7 @@
 
         body {
             margin: 0;
+            height: 1000px;
         }
 
         /* Style the header */
@@ -111,6 +169,40 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
+        .update {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            max-width: 550px;
+            margin: auto;
+            border: 1px solid gray;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #A6502D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #8C2A05;
+        }
     </style>
 </head>
 
@@ -118,6 +210,7 @@
     <div class="header">
         <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
     </div>
+
 
     <div class="topWel">
         <form action="#" method="get">
@@ -130,8 +223,7 @@
             $userId = $_GET['userInfo'];
         }
         $name = getNameByMemberID($userId);
-        $hostName = getNameByMemberID($_SESSION['username']);
-        echo "<p>Welcome back: $hostName</p>";
+        echo "<p>Welcome back: $name</p>";
         ?>
     </div>
 
@@ -176,24 +268,35 @@
         </li>
     </ul>
 
-    <div id="container">
-        <div id="content" class="pageContent">
+    <br>
+    <br>
+    <br>
+    <div class="update">
+        <h2>Update Your Profile</h2>
+        <form action="#" name="update_profile" method="post">
+            <p>
+                <label for="Number">Contact Number</label>
+                <input type="text" id="Number" name="Number">
+            </p>
+            <p>
+                <label for="Email">Email</label>
+                <input type="text" id="Email" name="Email">
+            </p>
+            <p>
+                <label for="NPassword1">New Password</label>
+                <input type="text" id="NPassword1" name="NewPassword1">
+            </p>
+            <p>
 
-            <h1 class="entry-title" align="center"><?php the_title(); ?></h1> <!-- Page Title -->
+                <label for="NPassword2">Confirm New password</label>
+                <input type="text" id="NPassword2" name="NewPassword2">
 
-            <?php
-            // TO SHOW THE PAGE CONTENTS
-            while (have_posts()) : the_post(); ?>
-                <!--Because the_content() works only inside a WP Loop -->
-                <div class="entry-content-page">
-                    <?php the_content(); ?>
-                    <!-- Page Content -->
-                </div><!-- .entry-content-page -->
-
-            <?php
-            endwhile; //resetting the page loop
-            wp_reset_query(); //resetting the page query
-            ?>
-        </div><!-- #content -->
-    </div><!-- #container -->
+            </p>
+            <p>
+                <input type="submit" value="Submit">
+            </p>
+        </form>
+    </div>
 </body>
+
+</html>

@@ -387,7 +387,7 @@
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
                 echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
                 ?>
-                <a href="http://www.melodysac.com.sg/index.php/en/terms/">Term and Condition</a>
+                <a href="https://www.melodysac.com.sg/en/terms/">Term and Condition</a>
             </div>
         </li>
         <li class="dropdown">
@@ -445,7 +445,6 @@
             <h3 class="heading3">History </h3>
 
             <table id="Performance"  class="one">
-                <tr id="Performance">
                 <tr id="Performance">
                     <th id="Performance"  width="50%">Individual Points from Products Selling</th>
                     <td id="Performance"  width="50%"><?php echo getCreditEarnedWithoutRefSGByMemberID($userId); ?></td>
