@@ -309,7 +309,7 @@
                 <?php
                 $RefereeList = getRefereeListByMemberId($userId);
                 if (sizeof($RefereeList) == 0)
-                    echo "<tr id=\"Performance\"><td colspan=\"4\" id=\"Performance\">No Refer History</td></tr>";
+                    echo "<tr id=\"Performance\"><td colspan=\"4\" id=\"Performance\">无积分记录</td></tr>";
                 for ($x = 0; $x < sizeof($RefereeList); $x++) {
                     echo "<tr id=\"Performance\">";
                     echo "<td id=\"Performance\">" . substr($RefereeList[$x]->dDate, 0, 10) . "</td>";
