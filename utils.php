@@ -11,13 +11,19 @@
 
     function getPasswordByMemberEmail($memberEmail){
         global $wpdb;    
-        $result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Email=$memberEmail");
+        $result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Email=\"$memberEmail\"");
         if(sizeof($result)>1)
         {
             alert("there are more than one records about your email in our system, please contact system admin");
         }
         return $result[0]->Password;
 
+    }
+
+    function getMemberIdByMemberEmail($memberEmail){
+        global $wpdb;
+        $result = $wpdb->get_results( "SELECT Member FROM Teacher_infor WHERE Email=\"$memberEmail\"");
+        return $result[0]->Member;
     }
 
     function comparePassword($input,$fromDatabase){
@@ -211,7 +217,14 @@
         return $results[sizeof($results)-1]->Grade_Major_Prop_SG;
     }
 
-    function getCreditEarnedWithRefByMemberID($memberID)
+    function getGradePropCNByCredit($credit)
+    {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT Grade_Major_Prop_CN FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $results[sizeof($results)-1]->Grade_Major_Prop_CN;
+    }
+
+    function getCreditEarnedWithRefSGByMemberID($memberID)
     {
         global $wpdb;
         $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
@@ -258,6 +271,52 @@
 
     }
 
+    function getCreditEarnedWithRefCNByMemberID($memberID)
+    {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+        FROM `Melody_performance`
+        LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        UNION
+        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+        FROM `Melody_performance`
+        RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+        ORDER BY FinalDate ASC");
+
+
+        $map = array();
+        $prop = getGradePropCNByCredit(0);
+        for($x = 0; $x < sizeof($results); $x++){
+            if(!is_null($results[$x]->Item_no))
+            {
+                //sell performance
+                $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+                $currentSum =0;
+                for($y = 0; $y < sizeof($sublist); $y++){
+                    $subMemberId = getMemberIDFromName($sublist[$y]);
+                    if(is_null($map[$subMemberId]))
+                    {
+                        $map[$subMemberId] = 0;
+                    }
+                    $currentSum += $map[$subMemberId];
+                }
+                $currentSum += $map[$results[$x]->FinalMember];
+                $prop = getGradePropCNByCredit($currentSum);
+                if($results[$x]->props == 0)
+                {
+                    $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+                }
+                $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+            }
+            else
+            {
+                $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+            }
+        }
+        return $map[$memberID];
+
+    }
+
     function getReferringCreditEarnedByMemberId($memberID)
     {
         global $wpdb;
@@ -269,24 +328,43 @@
         return $sum;
     }
 
-    function getAllCreditIncSubByMemberId($memberID)
+    function getAllCreditIncSubSGByMemberId($memberID)
     {
         $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
         $CreditEarnedBysubMember = 0;
         for($x = 0; $x < sizeof($belowTeacherList); $x++)
         {
             $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
-            $CreditEarnedBysubMember += getCreditEarnedWithRefByMemberID($subMemberID);
+            $CreditEarnedBysubMember += getCreditEarnedWithRefSGByMemberID($subMemberID);
         }
-        $total = $CreditEarnedBysubMember + getCreditEarnedWithRefByMemberID($memberID);
+        $total = $CreditEarnedBysubMember + getCreditEarnedWithRefSGByMemberID($memberID);
+        return $total;
+    }
+    function getAllCreditIncSubCNByMemberId($memberID)
+    {
+        $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+        $CreditEarnedBysubMember = 0;
+        for($x = 0; $x < sizeof($belowTeacherList); $x++)
+        {
+            $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
+            $CreditEarnedBysubMember += getCreditEarnedWithRefCNByMemberID($subMemberID);
+        }
+        $total = $CreditEarnedBysubMember + getCreditEarnedWithRefCNByMemberID($memberID);
         return $total;
     }
 
     function getGradeNameSGByCredit($credit)
     {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT Grade_Name FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
-        return $result[sizeof($result)-1]->Grade_Name;
+        $result = $wpdb->get_results("SELECT Grade_Name_SG FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $result[sizeof($result)-1]->Grade_Name_SG;
+    }
+
+    function getGradeNameCNByCredit($credit)
+    {
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT Grade_Name_CN FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        return $result[sizeof($result)-1]->Grade_Name_CN;
     }
 
     function getAllTeacherMemberID(){
@@ -324,14 +402,21 @@
         echo "<script type='text/javascript'>window.history.back();</script>";
     }
 
-    function getAllPerformanceInfoByMemberID($memberId)
+    function getAllPerformanceInfoSGByMemberID($memberId)
     {
       global $wpdb;
       $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_SG, Melody_items_New.Model_SG, Melody_performance.Number, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
       return $results;
     }
 
-    function getCreditEarnedWithoutRefByMemberID($memberID)
+    function getAllPerformanceInfoCNByMemberID($memberId)
+    {
+      global $wpdb;
+      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_CN, Melody_items_New.Model_CN, Melody_performance.Number, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
+      return $results;
+    }
+
+    function getCreditEarnedWithoutRefSGByMemberID($memberID)
 	{
 		global $wpdb;
 		$results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
@@ -371,6 +456,54 @@
 				$submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
 				$map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
 				$submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
+			}
+			else
+			{
+				$map[$results[$x]->FinalMember] += $results[$x]->Credit;
+			}
+		}
+		return $submap[$memberID];
+
+    }
+    
+    function getCreditEarnedWithoutRefCNByMemberID($memberID)
+	{
+		global $wpdb;
+		$results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+		FROM `Melody_performance`
+		LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+		UNION
+		SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+		FROM `Melody_performance`
+		RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+		ORDER BY FinalDate ASC");
+	
+
+		$map = array();
+		$submap = array();
+		$prop = getGradePropCNByCredit(0);
+		for($x = 0; $x < sizeof($results); $x++){
+			if(!is_null($results[$x]->Item_no))
+			{
+				//sell performance
+				$sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+				$currentSum =0;
+				for($y = 0; $y < sizeof($sublist); $y++){
+					$subMemberId = getMemberIDFromName($sublist[$y]);
+					if(is_null($map[$subMemberId]))
+					{
+						$map[$subMemberId] = 0;
+					}
+					$currentSum += $map[$subMemberId];
+				}
+				$currentSum += $map[$results[$x]->FinalMember];
+				$prop = getGradePropCNByCredit($currentSum);
+				if($results[$x]->props == 0)
+				{
+					$wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+				}
+				$map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+				$submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
 			}
 			else
 			{
@@ -419,24 +552,41 @@
       return $result;
     }
 
-    function getAllCreditFromSubByMemberId($memberID)
+    function getAllCreditFromSubSGByMemberId($memberID)
     {
       $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
       $CreditEarnedBysubMember = 0;
       for($x = 0; $x < sizeof($belowTeacherList); $x++)
       {
         $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
-        $CreditEarnedBysubMember += getCreditEarnedWithRefByMemberID($subMemberID);
+        $CreditEarnedBysubMember += getCreditEarnedWithRefSGByMemberID($subMemberID);
       }
       return $CreditEarnedBysubMember;
     }
 
-    function getBalanceByMemberId($memberID)
+    function getAllCreditFromSubCNByMemberId($memberID)
     {
-      return getAllCreditIncSubByMemberId($memberID) + getCreditChangeByMemberID($memberID);
+      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $CreditEarnedBysubMember = 0;
+      for($x = 0; $x < sizeof($belowTeacherList); $x++)
+      {
+        $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
+        $CreditEarnedBysubMember += getCreditEarnedWithRefCNByMemberID($subMemberID);
+      }
+      return $CreditEarnedBysubMember;
     }
 
-    function getCreditEarnedWithRefByMemberIDANDDateTo($memberID, $dateTo)
+    function getBalanceSGByMemberId($memberID)
+    {
+      return getAllCreditIncSubSGByMemberId($memberID) + getCreditChangeByMemberID($memberID);
+    }
+
+    function getBalanceCNByMemberId($memberID)
+    {
+      return getAllCreditIncSubCNByMemberId($memberID) + getCreditChangeByMemberID($memberID);
+    }
+
+    function getCreditEarnedWithRefSGByMemberIDANDDateTo($memberID, $dateTo)
     {
       global $wpdb;
       $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
@@ -480,16 +630,72 @@
       return $map[$memberID];
     }
 
-    function getAllCreditIncSubByMemberIdANDDateTo($memberID, $dateTo)
+    function getCreditEarnedWithRefCNByMemberIDANDDateTo($memberID, $dateTo)
+    {
+      global $wpdb;
+      $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+      FROM `Melody_performance`
+      LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+      HAVING FinalDate < \"$dateTo\"
+      UNION
+      SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+      FROM `Melody_performance`
+      RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
+      HAVING FinalDate < \"$dateTo\"
+      ORDER BY FinalDate ASC");
+
+      $map = array();
+      $prop = getGradePropCNByCredit(0);
+      for($x = 0; $x < sizeof($results); $x++){
+        if(!is_null($results[$x]->Item_no))
+        {
+          //sell performance
+          $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+          $currentSum =0;
+          for($y = 0; $y < sizeof($sublist); $y++){
+            $subMemberId = getMemberIDFromName($sublist[$y]);
+            if(is_null($map[$subMemberId]))
+            {
+              $map[$subMemberId] = 0;
+            }
+            $currentSum += $map[$subMemberId];
+          }
+          $currentSum += $map[$results[$x]->FinalMember];
+          $prop = getGradePropCNByCredit($currentSum);
+          $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+
+        }
+        else
+        {
+          $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+        }
+      }
+      return $map[$memberID];
+    }
+
+    function getAllCreditIncSubSGByMemberIdANDDateTo($memberID, $dateTo)
     {
       $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
       $CreditEarnedBysubMember = 0;
       for($x = 0; $x < sizeof($belowTeacherList); $x++)
       {
         $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
-        $CreditEarnedBysubMember += getCreditEarnedWithRefByMemberIDANDDateTo($subMemberID, $dateTo);
+        $CreditEarnedBysubMember += getCreditEarnedWithRefSGByMemberIDANDDateTo($subMemberID, $dateTo);
       }
-      $total = $CreditEarnedBysubMember + getCreditEarnedWithRefByMemberIDANDDateTo($memberID, $dateTo);
+      $total = $CreditEarnedBysubMember + getCreditEarnedWithRefSGByMemberIDANDDateTo($memberID, $dateTo);
+      return $total;
+    }
+
+    function getAllCreditIncSubCNByMemberIdANDDateTo($memberID, $dateTo)
+    {
+      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $CreditEarnedBysubMember = 0;
+      for($x = 0; $x < sizeof($belowTeacherList); $x++)
+      {
+        $subMemberID = getMemberIDFromName($belowTeacherList[$x]);
+        $CreditEarnedBysubMember += getCreditEarnedWithRefCNByMemberIDANDDateTo($subMemberID, $dateTo);
+      }
+      $total = $CreditEarnedBysubMember + getCreditEarnedWithRefCNByMemberIDANDDateTo($memberID, $dateTo);
       return $total;
     }
 

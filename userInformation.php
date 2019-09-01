@@ -249,7 +249,7 @@
         <div style="text-align:center">
             <?php
             $name = getNameByMemberID($userId);
-            $creditEarn = getAllCreditIncSubByMemberId($userId);
+            $creditEarn = getAllCreditIncSubSGByMemberId($userId);
             $gradeName = getGradeNameSGByCredit($creditEarn);
             echo "<h3 class=\"heading3\">Hi, $hostName, $gradeName</h3>";
             echo "<h3 class=\"heading3\" style=\"color:dark grey;\">Here is the information for your member $name </h3>";
@@ -271,7 +271,7 @@
                     <th id="Performance" width="10%">Point Earn</th>
                 </tr>
                 <?php
-                $performanceInfo = getAllPerformanceInfoByMemberID($userId);
+                $performanceInfo = getAllPerformanceInfoSGByMemberID($userId);
                 if (sizeof($performanceInfo) == 0)
                     echo "<tr id=\"Performance\"><td colspan=\"8\" id=\"Performance\">No Selling History</td></tr>";
                 for ($i = 0; $i < sizeof($performanceInfo); $i++) {
@@ -298,7 +298,7 @@
                     <th id="Performance"></th>
                     <th id="Performance"></th>
                     <?php
-                    echo "<th id=\"Performance\">" . getCreditEarnedWithoutRefByMemberID($userId) . "</th>";
+                    echo "<th id=\"Performance\">" . getCreditEarnedWithoutRefSGByMemberID($userId) . "</th>";
                     ?>
                 </tr>
             </table>
