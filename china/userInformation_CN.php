@@ -294,7 +294,6 @@
                     <th id="Performance"></th>
                     <th id="Performance"></th>
                     <th id="Performance"></th>
-                    <th id="Performance"></th>
                     <?php
                     echo "<th id=\"Performance\">" . getCreditEarnedWithoutRefCNByMemberID($userId) . "</th>";
                     ?>

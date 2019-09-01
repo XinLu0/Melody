@@ -699,5 +699,59 @@
       return $total;
     }
 
+    function updateEmailByMID($Mid, $email)
+    {
+        global $wpdb;
+        $wpdb->update(Teacher_infor, array('Email' => $email), array('Member' =>$Mid));
+    }
+
+    function updatePasswordByMID($Mid, $password)
+    {
+        global $wpdb;
+        $wpdb->update(Teacher_infor, array('Password' => $password), array('Member' => $Mid));
+    }
+
+    function updateContactNoByMID($Mid, $Contact_no)
+    {
+        global $wpdb;
+        $wpdb->update(Teacher_infor, array('Contact_no' => $Contact_no), array('Member' => $Mid));
+    }
+
+    function sendEmail($subject, $emailList, $message, $isHTML)
+    {
+        
+        for($x = 0; $x<sizeof($emailList);$x++)
+        {
+            $to = $emailList[$x];
+        
+            $headers[] = 'MIME-Version: 1.0';
+            $headers[] = 'Content-type: text/html; charset=iso-8859-1';
+            $headers[] = 'From: Melody Strings Art Center <Melody@Melody.com>';
+            if($isHTML)
+            {
+                mail($to, $subject, $message,implode("\r\n", $headers));
+            }
+            else mail($to, $subject, $message);
+        }
+    }
+
+    function getEmailByMid($MId){
+        global $wpdb;
+        $sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor` WHERE Member = $MId");
+        return $sum[0]->Email;
+    }
+
+    function getListofEmail(){
+        global $wpdb;
+        $sum = $wpdb->get_results("SELECT Email FROM `Teacher_infor`");
+        $num = sizeof($sum);
+        $result = array();
+        for($x=0;$x<$num;$x++){
+            if($sum[$x]->Email!="")
+                $result[$x]=$sum[$x]->Email;
+        }
+        return $result;
+    }
+
 
 ?>

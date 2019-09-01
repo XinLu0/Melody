@@ -4,7 +4,7 @@
 <head>
     <?php
     /* 
-  		Template Name: Update
+  		Template Name: Contact_Us
   		*/
     session_start();
     require('utils.php');
@@ -17,26 +17,22 @@
         exit;
     }
     $mid = $_SESSION['username'];
+    if(isset($_POST["Message"]))
+    {
+        if(!isset($_POST["Number"]) || !isset($_POST["Email"]))
+        {
+            alertWithHistoryBack("Please fill all information");
+        }
+        //$to = get_option('admin_email');
+        $to = array("blairlxt@gmail.com");
+        $subject = "User Request:";
+        $message = $_POST["Message"]." \n\r From: ".$_POST["Number"]. "\n\r Contact number:". $_POST["Email"]." \n\r UserName :". getNameByMemberID($mid)." UserId :". $mid;
 
-    if (isset($_POST["Number"])) {
-        if ($_POST["Number"] != "") {
-            updateContactNoByMID($mid, $_POST["Number"]);
-            alert("Successful!");
-        }
-        if ($_POST["NewPassword1"] != "") {
+        sendEmail($subject." ". $_POST["Subject"], $to, strip_tags($message), True);
 
-            if ($_POST["NewPassword1"] != $_POST["NewPassword2"]) {
-                alert("Passwords don\'t match");
-            } else {
-                updatePasswordByMID($mid, $_POST["NewPassword1"]);
-                alert("Successful!");
-            }
-        }
-        if ($_POST["Email"] != "") {
-            updateEmailByMID($mid, $_POST["Email"]);
-            alert("Successful!");
-        }
+        alert("Sent Successfully. We will get back to you soon");
     }
+
     ?>
     <meta charset="utf-8">
     <style>
@@ -177,6 +173,19 @@
         input[type=submit]:hover {
             background-color: #8C2A05;
         }
+
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: auto;
+        }
     </style>
 </head>
 
@@ -193,9 +202,6 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
-        if (isset($_GET['userInfo'])) {
-            $userId = $_GET['userInfo'];
-        }
         $name = getNameByMemberID($userId);
         echo "<p>Welcome back: $name</p>";
         ?>
@@ -242,35 +248,27 @@
         </li>
     </ul>
 
+    <h3>Please Leave Your Message To Us</h3>
     <br>
     <br>
     <br>
     <div class="update">
-        <h2>Update Your Profile</h2>
-        <form action="#" name="update_profile" method="post">
-            <p>
-                <label for="Number">Contact Number</label>
-                <input type="text" id="Number" name="Number">
-            </p>
-            <p>
-                <label for="Email">Email</label>
-                <input type="text" id="Email" name="Email">
-            </p>
-            <p>
-                <label for="NPassword1">New Password</label>
-                <input type="text" id="NPassword1" name="NewPassword1">
-            </p>
-            <p>
+			<form action="#" name="send_email" method="post">
+				<label for="Email">Email</label>
+                <input type="text" id="Email" name="Email"></text>
+                
+                <label for="Number">Best Contact Number</label>
+				<input type="text" id="Number" name="Number"></text>
 
-                <label for="NPassword2">Confirm New password</label>
-                <input type="text" id="NPassword2" name="NewPassword2">
+				<label for="Subject">Subject</label>
+				<input type="text" id="Subject" name="Subject"></text>
 
-            </p>
-            <p>
-                <input type="submit" value="Submit">
-            </p>
-        </form>
-    </div>
+				<label for="Message">Message</label>
+				<textarea  id="Message" name="Message"></textarea>
+
+				<input type="submit" value="Send">
+			</form>
+		</div>
 </body>
 
 </html>
