@@ -8,51 +8,37 @@
       */ 
 
       session_start();
-
-      function alert($msg) {
-        echo "<script type='text/javascript'>alert('$msg');</script>";
-      }
-
-      function getPasswordByMemberID($memberID){
-        global $wpdb;    
-        $result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Member=".$memberID);
-        return $result[0]->Password;
-      }
-
-      function comparePassword($input,$fromDatabase){
-        return strcmp($input,$fromDatabase);
-      }
-      function isAdminByMemberId($mId){
-        global $wpdb;
-        $sum = $wpdb->get_results("SELECT isAdmin FROM `Teacher_infor` WHERE Member = $mId");
-        return ($sum[0]->isAdmin); 
-      }
-      function updateLoginTimesByMID($Mid,$login){
-      global $wpdb;
-      $wpdb->query($wpdb->prepare( "UPDATE `Teacher_infor` SET loginTimes=$login WHERE Member = $Mid"));
-      }
-      function getLoginTimesFromMID($mId){
-      global $wpdb;
-      $result = $wpdb->get_results("SELECT loginTimes FROM Teacher_infor WHERE Member=$mId");
-      return $result[0]->loginTimes;
-      }
-        
-      if(isset($_POST['user'])&&isset($_POST['Password'])){
-        $pa=getPasswordByMemberID($_POST['user']);
+      require('utils.php');
+      if(isset($_POST['user'])&&isset($_POST['Password']))
+      {
+        $useEmailLogin = 1;
+        $pa = getPasswordByMemberEmail($_POST['user']);
+        if(is_null($pa))
+        {
+          $pa=getPasswordByMemberID($_POST['user']);
+          $useEmailLogin = 0;
+        }
         
         $re=comparePassword($_POST['Password'],$pa);
         if($re==0){
-          $_SESSION['username']=$_POST['user'];
+          if($useEmailLogin == 1)
+          {
+            $_SESSION['username'] = getMemberIdByMemberEmail($_POST['user']);
+          }
+          else
+          {
+            $_SESSION['username']=$_POST['user'];
+          }
           $_SESSION['loggedin']=1;
           $times =getLoginTimesFromMID($_SESSION['username']);
           updateLoginTimesByMID($_SESSION['username'],$times+1);
 
           if(isAdminByMemberId($_POST['user'])==0)
-            header("Location: http://www.melodysac.com.sg/index.php/en/userHome/");
+            header("Location: http://www.melodysac.com.sg/index.php/en/userhome");
           else header("Location: http://www.melodysac.com.sg/index.php/en/admintable/"); 
         }
         else {
-          alert("Username does not match password");
+          alert("Username does not match password. 用户名与密码不符");
         }
       } 
 
@@ -252,16 +238,16 @@
           <div class="center_wrapper">
 
             <div class="center_header">
-              Login
+              Login/登陆
             </div>
             <div class="center_oneline">
-              <div class="center_left">User Name:</div> 
+              <div class="center_left">User Name/用户名:</div> 
               <div class="center_right">
                 <input class="center_box" type="text" name="user" id="User" value="">
               </div>
             </div>
             <div class="center_oneline">
-              <div class="center_left">Password: </div>
+              <div class="center_left">Password/密码: </div>
               <div class="center_right" >
                 <input  class="center_box" type="password" name="Password" id="pwd_val" value="" >
               </div>

@@ -9,6 +9,17 @@
         return $result[0]->Password;
     }
 
+    function getPasswordByMemberEmail($memberEmail){
+        global $wpdb;    
+        $result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Email=$memberEmail");
+        if(sizeof($result)>1)
+        {
+            alert("there are more than one records about your email in our system, please contact system admin");
+        }
+        return $result[0]->Password;
+
+    }
+
     function comparePassword($input,$fromDatabase){
         return strcmp($input,$fromDatabase);
     }
