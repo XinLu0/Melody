@@ -207,8 +207,10 @@
     <ul>
         <li class="dropdown">
             <?php
-            
-            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $hostName</a>";
+            session_start();
+            $userId = $_SESSION['username'];
+            $name = getNameByMemberID($userId);
+            echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $name</a>";
             ?>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/en/userinformation/">Information</a>
@@ -219,15 +221,15 @@
         <li class="dropdown">
             <a class="dropbtn">About Us</a>
             <div class="dropdown-content">
-                <a href="#">Member Benefits</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
             </div>
         </li>
         <li class="dropdown">
             <a class="dropbtn">YuanFen@ info</a>
             <div class="dropdown-content">
-                <a href="#">YanFen@ Level</a>
-                <a href="#">Point Collection</a>
-                <a href="#">Point Redemption</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
                 echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
@@ -239,7 +241,7 @@
             <a class="dropbtn" href="http://www.melodysac.com.sg/index.php/en/contact/">CONTACT US</a>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="#">MelodySAC Products</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
         </li>
     </ul>
 
@@ -270,7 +272,7 @@
                 </tr>
                 <?php
                 $performanceInfo = getAllPerformanceInfoByMemberID($userId);
-                if(sizeof($performanceInfo) == 0)
+                if (sizeof($performanceInfo) == 0)
                     echo "<tr id=\"Performance\"><td colspan=\"8\" id=\"Performance\">No Selling History</td></tr>";
                 for ($i = 0; $i < sizeof($performanceInfo); $i++) {
                     echo "<tr id=\"Performance\">";
@@ -314,7 +316,7 @@
                 </tr>
                 <?php
                 $RefereeList = getRefereeListByMemberId($userId);
-                if(sizeof($RefereeList) == 0)
+                if (sizeof($RefereeList) == 0)
                     echo "<tr id=\"Performance\"><td colspan=\"4\" id=\"Performance\">No Refer History</td></tr>";
                 for ($x = 0; $x < sizeof($RefereeList); $x++) {
                     echo "<tr id=\"Performance\">";

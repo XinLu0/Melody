@@ -244,15 +244,15 @@
         <li class="dropdown">
             <a class="dropbtn">About Us</a>
             <div class="dropdown-content">
-                <a href="#">Member Benefits</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
             </div>
         </li>
         <li class="dropdown">
             <a class="dropbtn">YuanFen@ info</a>
             <div class="dropdown-content">
-                <a href="#">YanFen@ Level</a>
-                <a href="#">Point Collection</a>
-                <a href="#">Point Redemption</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
                 echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
@@ -264,7 +264,7 @@
             <a class="dropbtn" href="http://www.melodysac.com.sg/index.php/en/contact/">CONTACT US</a>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="#">MelodySAC Products</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
         </li>
     </ul>
 
