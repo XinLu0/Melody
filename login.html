@@ -34,9 +34,18 @@
           $times =getLoginTimesFromMID($_SESSION['username']);
           updateLoginTimesByMID($_SESSION['username'],$times+1);
 
-          if(isAdminByMemberId($_POST['user'])==0)
-            header("Location: http://www.melodysac.com.sg/index.php/en/userhome");
-          else header("Location: http://www.melodysac.com.sg/index.php/en/admintable/"); 
+          if(isAdminByMemberId($_POST['user'])==1)
+          {
+            header("Location: http://www.melodysac.com.sg/index.php/en/admintable/");
+          } 
+          else if(getIsInChinaByMemberId($_SESSION['username'])==1)
+          {
+            header("Location: https://www.melodysac.com.sg/zh/userhome_cn/");
+          }
+          else 
+          {
+            header("Location: http://www.melodysac.com.sg/index.php/en/userhome/");
+          }
         }
         else {
           alert("Username does not match password. 用户名与密码不符");
