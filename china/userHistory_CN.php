@@ -347,13 +347,13 @@
 
     <div class="topWel">
         <form action="#" method="get">
-            <button name="logout" value=1>Logout</button>
+            <button name="logout" value=1>登出</button>
         </form>
         <?php
         session_start();
         $userId = $_SESSION['username'];
         $name = getNameByMemberID($userId);
-        echo "<p>Welcome back: $name</p>";
+        echo "<p>欢迎: $name</p>";
         ?>
     </div>
 
@@ -366,35 +366,35 @@
             echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/zh/userhome_cn/\" > $name</a>";
             ?>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/zh/userinformation_cn/">Information</a>
-                <a href="https://www.melodysac.com.sg/zh/userhistory_cn/">History</a>
-                <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Setting</a>
+                <a href="https://www.melodysac.com.sg/zh/userinformation_cn/">个人详情</a>
+                <a href="https://www.melodysac.com.sg/zh/userhistory_cn/">历史记录</a>
+                <a href="https://www.melodysac.com.sg/zh/updateinfo_cn/">设置</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">About Us</a>
+            <a class="dropbtn">关于我们</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_memberbenifits_cn/">会员福利</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">YuanFen@ info</a>
+            <a class="dropbtn">蔓联会员说明</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
-                <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
-                <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
-                echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
+                echo "<a href=\"$contract\" download=\"contract\">会员表格下载</a>";
                 ?>
-                <a href="http://www.melodysac.com.sg/index.php/en/terms/">Term and Condition</a>
+                <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="http://www.melodysac.com.sg/index.php/en/contact/">CONTACT US</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系方式</a>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_melodysacproducts_cn/">价格表</a>
         </li>
     </ul>
 
@@ -404,13 +404,17 @@
             session_start();
             $userId = $_SESSION['username'];
             $name = getNameByMemberID($userId);
-            echo "<h3 class=\"heading3\">Hi, $name, Level YuanFen@ Member</h3>";
+            $creditEarn = getAllCreditIncSubCNByMemberId($userId);
+            $gradeName = getGradeNameCNByCredit($creditEarn);
+            echo "<h3 class=\"heading3\">您好,</h3>";
+            echo "<br>";
+            echo "<h3 class=\"heading3\" style=\"color:dark grey;\">$name,  $gradeName 的历史记录</h3>";
             ?>
         </div>
 
 
         <p></p>
-        <p>Select Start Month</p>
+        <p>选择起始查询月份</p>
 
         <table id="right_table">
             <tr id="right_table">
@@ -434,21 +438,21 @@
                         }
                         ?>
                     </select>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="确认" />
                 </form>
             </tr>
         </table>
 
         <div style="text-align:center">
-            <br>
-            <br>
-            <h3 class="heading3">历史记录</h3>
 
-            <table id="Performance"  class="one">
+            <table id="Performance" class="one">
                 <tr id="Performance">
+                    <td id="Performance" width="50%">总纪录</td>
+                    <td id="Performance" width="50%"></td>
+                </tr>
                 <tr id="Performance">
-                    <th id="Performance"  width="50%">个人销售积分</th>
-                    <td id="Performance"  width="50%"><?php echo getCreditEarnedWithoutRefCNByMemberID($userId); ?></td>
+                    <th id="Performance" width="50%">个人销售积分</th>
+                    <td id="Performance" width="50%"><?php echo getCreditEarnedWithoutRefCNByMemberID($userId); ?></td>
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">蔓菻德思公众号会员推荐积分</th>
@@ -476,7 +480,7 @@
             <br>
             <h3 class="heading3">历史记录</h3>
 
-            <table id="Performance"  class="one">
+            <table id="Performance" class="one">
                 <tr id="Performance">
                 <tr id="Performance">
                     <th id="Performance">月份</th>
@@ -485,7 +489,7 @@
                     <th id="Performance">现积分余额</th>
                 </tr>
                 <tr id="Performance">
-                    <th id="Performance">Balance Brought Forward</th>
+                    <th id="Performance">上期积分余额</th>
                     <td id="Performance">
                         <?php
                         $balanceBroughtForward = 0;
