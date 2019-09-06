@@ -213,15 +213,15 @@
     function getGradePropSGByCredit($credit)
     {
         global $wpdb;
-        $results = $wpdb->get_results("SELECT Grade_Major_Prop_SG FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
-        return $results[sizeof($results)-1]->Grade_Major_Prop_SG;
+        $results = $wpdb->get_results("SELECT Grade_Major_Prop FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit_SG <= $credit");
+        return $results[sizeof($results)-1]->Grade_Major_Prop;
     }
 
     function getGradePropCNByCredit($credit)
     {
         global $wpdb;
-        $results = $wpdb->get_results("SELECT Grade_Major_Prop_CN FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
-        return $results[sizeof($results)-1]->Grade_Major_Prop_CN;
+        $results = $wpdb->get_results("SELECT Grade_Major_Prop FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit_CN <= $credit");
+        return $results[sizeof($results)-1]->Grade_Major_Prop;
     }
 
     function getCreditEarnedWithRefSGByMemberID($memberID)
@@ -356,14 +356,14 @@
     function getGradeNameSGByCredit($credit)
     {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT Grade_Name_SG FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        $result = $wpdb->get_results("SELECT Grade_Name_SG FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit_SG <= $credit");
         return $result[sizeof($result)-1]->Grade_Name_SG;
     }
 
     function getGradeNameCNByCredit($credit)
     {
         global $wpdb;
-        $result = $wpdb->get_results("SELECT Grade_Name_CN FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit <= $credit");
+        $result = $wpdb->get_results("SELECT Grade_Name_CN FROM Melody_Teacher_Grade WHERE Grade_Entry_Credit_CN <= $credit");
         return $result[sizeof($result)-1]->Grade_Name_CN;
     }
 
