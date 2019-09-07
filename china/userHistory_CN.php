@@ -360,9 +360,6 @@
     <ul>
         <li class="dropdown">
             <?php
-            session_start();
-            $userId = $_SESSION['username'];
-            $name = getNameByMemberID($userId);
             echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/zh/userhome_cn/\" > $name</a>";
             ?>
             <div class="dropdown-content">
@@ -372,13 +369,13 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">关于我们</a>
+            <a class="dropbtn" href="">关于我们</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_memberbenifits_cn/">会员福利</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">蔓联会员说明</a>
+            <a class="dropbtn" href="">蔓联会员说明</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>

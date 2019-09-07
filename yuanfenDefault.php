@@ -146,9 +146,6 @@
     <ul>
         <li class="dropdown">
             <?php
-            session_start();
-            $userId = $_SESSION['username'];
-            $name = getNameByMemberID($userId);
             echo "<a class=\"dropbtn\" href=\"https://www.melodysac.com.sg/en/userhome/\" > $name</a>";
             ?>
             <div class="dropdown-content">
@@ -158,13 +155,13 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">About Us</a>
+            <a class="dropbtn" href="">About Us</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn">YuanFen@ info</a>
+            <a class="dropbtn" href="">YuanFen@ info</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
