@@ -94,7 +94,7 @@
 
     function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
         global $wpdb;
-        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no");
+        $sum = $wpdb->get_results("SELECT qty FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no");
 
         
         if(sizeof($sum)==0)
@@ -103,7 +103,7 @@
         {
             $result;
             for($x=0;$x<sizeof($sum);$x++){
-                $result = $result+ $sum[$x]->Number;
+                $result = $result+ $sum[$x]->qty;
                 
             }
             return $result;
@@ -114,7 +114,7 @@
     {
         global $wpdb;
 
-        $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"");
+        $sum = $wpdb->get_results("SELECT qty FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"");
 
         if(sizeof($sum)==0)
             return 0;
@@ -122,16 +122,16 @@
         {
             $result;
             for($x=0;$x<sizeof($sum);$x++){
-            $result = $result+ $sum[$x]->Number;
+            $result = $result+ $sum[$x]->qty;
             
             }
             return $result;
         }	  
     }
 
-    function getBelowTeacherListFromName($Name){
+    function getBelowTeacherListFromMemberId($MemberID){
         global $wpdb;
-        $result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE Major=\"".$Name."\"");
+        $result = $wpdb->get_results( "SELECT Name FROM Teacher_infor WHERE MajorID=$MemberID");
 
         $nameArray;
         $size = sizeof($result);
@@ -243,7 +243,7 @@
             if(!is_null($results[$x]->Item_no))
             {
                 //sell performance
-                $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+                $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                 $currentSum =0;
                 for($y = 0; $y < sizeof($sublist); $y++){
                     $subMemberId = getMemberIDFromName($sublist[$y]);
@@ -255,12 +255,12 @@
                 }
                 $currentSum += $map[$results[$x]->FinalMember];
                 $prop = getGradePropSGByCredit($currentSum);
-                if($results[$x]->props == 0)
+                if($results[$x]->props != $prop)
                 {
                     $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                 }
-                $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
-                $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
+                $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
+                $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
             }
             else
             {
@@ -290,7 +290,7 @@
             if(!is_null($results[$x]->Item_no))
             {
                 //sell performance
-                $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+                $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                 $currentSum =0;
                 for($y = 0; $y < sizeof($sublist); $y++){
                     $subMemberId = getMemberIDFromName($sublist[$y]);
@@ -306,7 +306,7 @@
                 {
                     $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                 }
-                $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+                $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
             }
             else
             {
@@ -330,7 +330,7 @@
 
     function getAllCreditIncSubSGByMemberId($memberID)
     {
-        $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+        $belowTeacherList = getBelowTeacherListFromMemberId($memberID);
         $CreditEarnedBysubMember = 0;
         for($x = 0; $x < sizeof($belowTeacherList); $x++)
         {
@@ -342,7 +342,7 @@
     }
     function getAllCreditIncSubCNByMemberId($memberID)
     {
-        $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+        $belowTeacherList = getBelowTeacherListFromMemberId($memberID);
         $CreditEarnedBysubMember = 0;
         for($x = 0; $x < sizeof($belowTeacherList); $x++)
         {
@@ -391,7 +391,7 @@
         array(
             "Member" => $memberID,
             "CreditChange" => $creditChange,
-            "Date" => date('Y-m-d')
+            "dDate" => date('Y-m-d')
         )
         );
         return $result;
@@ -405,14 +405,14 @@
     function getAllPerformanceInfoSGByMemberID($memberId)
     {
       global $wpdb;
-      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_SG, Melody_items_New.Model_SG, Melody_performance.Number, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
+      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_SG, Melody_performance.qty, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
       return $results;
     }
 
     function getAllPerformanceInfoCNByMemberID($memberId)
     {
       global $wpdb;
-      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_CN, Melody_items_New.Model_CN, Melody_performance.Number, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
+      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_CN, Melody_performance.qty, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
       return $results;
     }
 
@@ -436,7 +436,7 @@
 			if(!is_null($results[$x]->Item_no))
 			{
 				//sell performance
-				$sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+				$sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
 				$currentSum =0;
 				for($y = 0; $y < sizeof($sublist); $y++){
 					$subMemberId = getMemberIDFromName($sublist[$y]);
@@ -452,16 +452,20 @@
 				{
 					$wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
 				}
-				$map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
-				$submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
-				$map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
-				$submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
+				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
+				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
+				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
+				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
 			}
 			else
 			{
 				$map[$results[$x]->FinalMember] += $results[$x]->Credit;
 			}
-		}
+        }
+        if(is_null($submap[$memberID]))
+        {
+            $submap[$memberID] = 0;
+        }
 		return $submap[$memberID];
 
     }
@@ -486,7 +490,7 @@
 			if(!is_null($results[$x]->Item_no))
 			{
 				//sell performance
-				$sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+				$sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
 				$currentSum =0;
 				for($y = 0; $y < sizeof($sublist); $y++){
 					$subMemberId = getMemberIDFromName($sublist[$y]);
@@ -498,18 +502,22 @@
 				}
 				$currentSum += $map[$results[$x]->FinalMember];
 				$prop = getGradePropCNByCredit($currentSum);
-				if($results[$x]->props == 0)
+				if($results[$x]->props != $prop)
 				{
 					$wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
 				}
-				$map[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
-				$submap[$results[$x]->FinalMember] += $results[$x]->Number * $results[$x]->PricePerItem * $prop;
+				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
+				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
 			}
 			else
 			{
 				$map[$results[$x]->FinalMember] += $results[$x]->Credit;
 			}
-		}
+        }
+        if(is_null($submap[$memberID]))
+        {
+            $submap[$memberID] = 0;
+        }
 		return $submap[$memberID];
 
 	}
@@ -554,7 +562,7 @@
 
     function getAllCreditFromSubSGByMemberId($memberID)
     {
-      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $belowTeacherList = getBelowTeacherListFromMemberId($memberID);
       $CreditEarnedBysubMember = 0;
       for($x = 0; $x < sizeof($belowTeacherList); $x++)
       {
@@ -566,7 +574,7 @@
 
     function getAllCreditFromSubCNByMemberId($memberID)
     {
-      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $belowTeacherList = getBelowTeacherListFromMemberId($memberID);
       $CreditEarnedBysubMember = 0;
       for($x = 0; $x < sizeof($belowTeacherList); $x++)
       {
@@ -606,7 +614,7 @@
         if(!is_null($results[$x]->Item_no))
         {
           //sell performance
-          $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+          $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
           $currentSum =0;
           for($y = 0; $y < sizeof($sublist); $y++){
             $subMemberId = getMemberIDFromName($sublist[$y]);
@@ -618,8 +626,8 @@
           }
           $currentSum += $map[$results[$x]->FinalMember];
           $prop = getGradePropSGByCredit($currentSum);
-          $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
-          $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->RentPricePerItem * $prop;
+          $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
+          $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
 
         }
         else
@@ -650,7 +658,7 @@
         if(!is_null($results[$x]->Item_no))
         {
           //sell performance
-          $sublist = getBelowTeacherListFromName(getNameByMemberID($results[$x]->FinalMember));
+          $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
           $currentSum =0;
           for($y = 0; $y < sizeof($sublist); $y++){
             $subMemberId = getMemberIDFromName($sublist[$y]);
@@ -662,7 +670,7 @@
           }
           $currentSum += $map[$results[$x]->FinalMember];
           $prop = getGradePropCNByCredit($currentSum);
-          $map[$results[$x]->FinalMember] +=$results[$x]->Number * $results[$x]->PricePerItem * $prop;
+          $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
 
         }
         else
@@ -675,7 +683,7 @@
 
     function getAllCreditIncSubSGByMemberIdANDDateTo($memberID, $dateTo)
     {
-      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $belowTeacherList = getBelowTeacherListFromMemberId($memberID);
       $CreditEarnedBysubMember = 0;
       for($x = 0; $x < sizeof($belowTeacherList); $x++)
       {
@@ -688,7 +696,7 @@
 
     function getAllCreditIncSubCNByMemberIdANDDateTo($memberID, $dateTo)
     {
-      $belowTeacherList = getBelowTeacherListFromName(getNameByMemberID($memberID));
+      $belowTeacherList = getBelowTeacherListFromMemberId($memberID);
       $CreditEarnedBysubMember = 0;
       for($x = 0; $x < sizeof($belowTeacherList); $x++)
       {

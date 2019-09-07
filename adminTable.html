@@ -6,7 +6,7 @@
   		Template Name: adminTable
   		*/ 
   		session_start();
-
+      require('utils.php');
       $logout=@$_GET['logout'];
       if($logout ==1)
         $_SESSION['loggedin']=0;
@@ -15,176 +15,8 @@
         header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
         exit;
       }
-
-      function getAllTeacherMemberID(){
-      	global $wpdb;
-      	$result = $wpdb->get_results("SELECT Member FROM Teacher_infor ");
-      	$mList;
-      	$size = sizeof($result);
-      	for($x = 0; $x < $size; $x++){
-      		$mList[$x] = $result[$x]->Member;
-      	}
-      	return $mList;
-      }
-
-      function getNameByMemberID($memberID){
-      	global $wpdb;
-      	$result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
-      	return $result[0]->Name;
-      }
-
-      function getTotalItemNumber(){
-      	global $wpdb;
-      	$sum = $wpdb->get_results("SELECT * FROM Melody_items_New ");
-
-      	return sizeof($sum);
-      }
-
-      function getNumOfItemByItemIDAndMemeberID($memberID, $item_no){
-				global $wpdb;
-				global $dateFrom;
-				global $dateTo;
-				$sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"AND dDate <=\" $dateTo\"");
-
-				if(sizeof($sum) == 0)
-					return 0;
-				else {
-					$result;
-					for($x = 0; $x < sizeof($sum); $x++){
-						$result = $result+ $sum[$x]->Number;
-						
-					}
-					return $result;
-				}
-      }
-
-      function getIsInChinaByMemberId($memberId){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT isInChina FROM Teacher_infor WHERE Member=$memberId");
-        return $result[0]->isInChina;
-      }
-
-      function getIsAGroupByMemberId($memberId){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT isAGroup FROM Teacher_infor WHERE Member=$memberId");
-        return $result[0]->isAGroup;
-      }
-
-	  function getPriceCNByItemNo($itemNo){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT Price_CN FROM Melody_items_New WHERE Item_no=$itemNo");
-        return $result[0]->Price_CN;
-      }
-
-	  function getPriceSGByItemNo($itemNo){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT Price_SG FROM Melody_items_New WHERE Item_no=$itemNo");
-        return $result[0]->Price_SG;
-      }
-
       $dateFrom;
       $dateTo;
-      function getDatefromToByCurrent(){
-          $currentDate = date('Y-m-d');
-          $currentMonth = substr($currentDate,5,2);
-          $nextMonth = $currentMonth+1;
-          $year = substr($currentDate,0,4);
-          if($nextMonth>12)
-            {
-              $nextMonth="01";
-              $year++;
-            }
-          else if($nextMonth<10)
-            $nextMonth = "0".$nextMonth;
-          global $dateFrom;
-          global $dateTo;
-          $dateFrom = substr($currentDate,0,7)."-01";
-          $dateTo = $year."-".$nextMonth."-01";
-        }
-
-      $totalItemNumber = getTotalItemNumber();
-      if(isset($_POST["linkToMID"])){
-      	$_SESSION[username] = $_POST["linkToMID"];
-      	header("Location: http://www.melodysac.com.sg/index.php/en/table2/");
-      }
-
-      function getItemNameByItemID($item_id){
-        global $wpdb;
-        $sum = $wpdb->get_results("SELECT Item_Name_SG FROM Melody_items_New WHERE item_no=$item_id");
-        return $sum[0]->Item_Name_SG;
-      }
-      function getLoginTimesFromMID($mId){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT loginTimes FROM Teacher_infor WHERE Member=$mId");
-        return $result[0]->loginTimes;
-      }
-
-      function getDatefromToByMonth($yyyymm){
-          $month = substr($yyyymm, -2);
-          $year = substr($yyyymm,0, 4);
-          $toyear = substr($yyyymm,0, 4);
-          $nextMonth = $month+1;
-          if($nextMonth>12)
-            {
-              $nextMonth="01";
-              $toyear++;
-            }
-          else if($nextMonth<10)
-            $nextMonth = "0".$nextMonth;
-          global $dateFrom;
-          $dateFrom = $year."-".$month."-01";
-          global $dateTo;
-          $dateTo = $toyear."-".$nextMonth."-01";
-        }
-
-        function getDatefromToByCurrent(){
-          $currentDate = date('Y-m-d');
-          $currentMonth = substr($currentDate,5,2);
-          $nextMonth = $currentMonth+1;
-          $year = substr($currentDate,0,4);
-          if($nextMonth>12)
-            {
-            $nextMonth="01";
-            $year++;
-            }
-          else if($nextMonth<10)
-            $nextMonth = "0".$nextMonth;
-          global $dateFrom;
-          global $dateTo;
-          $dateFrom = substr($currentDate,0,7)."-01";
-          $dateTo = $year."-".$nextMonth."-01";
-        }
-
-        function getDatefromByCurrentYear(){
-          $currentDate = date('Y-m-d');
-          $currentYear = substr($currentDate,0,4);
-          global $dateFrom;
-          $dateFrom = $currentYear."-01-01";
-        }
-
-        function getDateToByCurrentMonth(){
-          $currentDate = date('Y-m-d');
-          global $dateTo;
-          $dateTo = $currentDate;
-        }
-
-        function getIsModifiedPerformanceUsedByMemberId($memberId){
-            global $wpdb;
-            $result = $wpdb->get_results("SELECT isModifiedPerformanceUsed FROM Teacher_infor WHERE Member = $memberId");
-            return $result[0]->isModifiedPerformanceUsed;
-        }
-
-        function getModifiedPerformanceByMemberId($memberId){
-            global $wpdb;
-            $result = $wpdb->get_results("SELECT modifiedPerformance FROM Teacher_infor WHERE Member = $memberId");
-            return $result[0]->modifiedPerformance;
-        }
-
-        function getModifiedPerformanceDateByMemberId($memberId){
-            global $wpdb;
-            $result = $wpdb->get_results("SELECT modifiedPerformanceDate FROM Teacher_infor WHERE Member = $memberId");
-            return $result[0]->modifiedPerformanceDate;
-        }
 
       if(isset($_POST['Month'])){
         getDatefromToByMonth($_POST['Month']);
@@ -192,6 +24,24 @@
       else{
         getDatefromToByCurrent();
       }
+
+      if(isset($_POST['creditUpdate'])){
+        $credit = $_POST["credit"];
+        if($_POST["creditUpdate"] == Clear)
+        {
+          $credit = -$credit;
+        }
+        if(insertAdminActionByMemberIdAndCreditChange($_POST["memId"], $credit))
+        {
+          //echo successful
+          alertWithHistoryBack("Successfully Add $credit to member ".getNameByMemberID($_POST["memId"]));
+        }
+        else{
+          //echo unsuccessful
+          alertWithHistoryBack("Unsuccessfully Add $credit to member ".getNameByMemberID($_POST["memId"]));
+        }
+      }
+
       $_SESSION['dateFrom'] = $dateFrom;
       $_SESSION['dateTo'] = $dateTo;
     ?>
@@ -303,7 +153,7 @@
         padding-top: 16px;
         padding-bottom: 16px;
         text-align: center;
-        background-color: #A6502D;
+        background-color: #FFE4C4;
         color: black;
       }
 
@@ -381,26 +231,32 @@
         </table>
         <p></p>
         <p></p>
+        <p> Set Member Credit</p>
+        <table id="right_table">
+          <tr id="right_table">
+          <form action="#" method="post" id="creditModification">
+            Member ID:<br><input type="text" name="memId"><br>
+            Credit:<br><input type="text" name="credit"><br>
+          </form>
+          <button type="submit" form="creditModification" value="Add" name="creditUpdate"> + </button>
+          <button type="submit" form="creditModification" value="Clear" name="creditUpdate"> - </button>
+          </tr>
+        </table>
         <p></p>
         <table id="right_table">
           <tr id="right_table">
             <th id="right_table">Item</th>
             <th id="right_table">Item_No</th>
-            <th id="right_table">Price_SG</th>
-            <th id="right_table">Price_CN</th>
           </tr>
 
           <?php
             $sum = getTotalItemNumber();
             for($i = 1; $i <= $sum; $i ++){
               $iName = getItemNameByItemID($i);
-              $iPriceSG = getPriceSGByItemNo($i);
-              $iPriceCN = getPriceCNByItemNo($i);
+
               echo "<tr id=\"right_table\">";
               echo "<td id=\"right_table\">$iName</td>";
               echo "<td id=\"right_table\">$i</td>";
-              echo "<td id=\"right_table\">$iPriceSG</td>";
-              echo "<td id=\"right_table\">$iPriceCN</td>";
               echo "</tr>";
             }
           ?>
@@ -423,9 +279,9 @@
             <th onclick="sortTableByInt(<?php echo $totalItemNumber+3; ?>)" href="javascript:void(0);"><a href="#">Login_Times</a></th>
             <th onclick="sortTableByString(<?php echo $totalItemNumber+4; ?>)" href="javascript:void(0);"><a href="#">Region</a></th>
             <th onclick="sortTableByString(<?php echo $totalItemNumber+5; ?>)" href="javascript:void(0);"><a href="#">Category</a></th>
-            <th onclick="sortTableByString(<?php echo $totalItemNumber+6; ?>)" href="javascript:void(0);"><a href="#">Modified</a></th>
-            <th onclick="sortTableByInt(<?php echo $totalItemNumber+7; ?>)" href="javascript:void(0);"><a href="#">Modified Credit</a></th>
-            <th onclick="sortTableByString(<?php echo $totalItemNumber+8; ?>)" href="javascript:void(0);"><a href="#">Modified Date</a></th>
+            <th onclick="sortTableByInt(<?php echo $totalItemNumber+6; ?>)" href="javascript:void(0);"><a href="#">Credit Change</a></th>
+            <th onclick="sortTableByInt(<?php echo $totalItemNumber+7; ?>)" href="javascript:void(0);"><a href="#">Earned Credit</a></th>
+            <th onclick="sortTableByInt(<?php echo $totalItemNumber+8; ?>)" href="javascript:void(0);"><a href="#">Balance</a></th>
           </tr>
 
           <?php
@@ -467,19 +323,17 @@
                   $category = "INSTITUTION";
               }
               echo "<td>$category</td>";
-              //modified
-              $modified = "No";
-              $modifiedCredit = 0;
-              $modifiedDate = "";
-              if(getIsModifiedPerformanceUsedByMemberId($list[$x]) == 1)
+              //credit change
+              $creditChange = getCreditChangeByMemberIDANDDateFromANDDateTo($list[$x], $dateFrom, $dateTo);
+              echo "<td>$creditChange</td>";
+              $earnedCredit = getAllCreditIncSubSGByMemberIdANDDateTo($list[$x], $dateTo) - getAllCreditIncSubSGByMemberIdANDDateTo($list[$x], $dateFrom);
+              if(getIsInChinaByMemberId($list[$x]) == 1)
               {
-                $modified = "Yes";
-                $modifiedCredit = getModifiedPerformanceByMemberId($list[$x]);
-                $modifiedDate = getModifiedPerformanceDateByMemberId($list[$x]);
+                $earnedCredit = getAllCreditIncSubCNByMemberIdANDDateTo($list[$x], $dateTo) - getAllCreditIncSubCNByMemberIdANDDateTo($list[$x], $dateFrom);
               }
-              echo "<td>$modified</td>";
-              echo "<td>$modifiedCredit</td>";
-              echo "<td>$modifiedDate</td>";
+              echo "<td>$earnedCredit</td>";
+              $balance = $earnedCredit + $creditChange;
+              echo "<td>$balance</td>";
 
               echo "</tr>";
             }

@@ -257,8 +257,7 @@
             <table id="Performance" class="one">
                 <tr id="Performance">
                     <th id="Performance" width="8%">日期</th>
-                    <th id="Performance" width="18%">商品/尺寸</th>
-                    <th id="Performance" width="18%">型号</th>
+                    <th id="Performance" width="18%">产品/ 尺寸/ 型号</th>
                     <th id="Performance" width="5%">数量</th>
                     <th id="Performance" width="8%">销售价格</th>
                     <th id="Performance" width="5%">积分比例 %</th>
@@ -272,11 +271,10 @@
                     echo "<tr id=\"Performance\">";
                     echo "<td id=\"Performance\">" . substr($performanceInfo[$i]->dDate, 0, 10) . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->Product_Or_Size_CN . "</td>";
-                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->Model_CN . "</td>";
-                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->Number . "</td>";
+                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->qty . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->PricePerItem . "</td>";
-                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->props . "</td>";
-                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->Number * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props ) . "</td>";
+                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->props*100) . "%</td>";
+                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->qty * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->qty ) . "</td>";
                     echo "</tr>";
                 }
 

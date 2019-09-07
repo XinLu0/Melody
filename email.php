@@ -186,7 +186,7 @@
 		<div class="topnav">
 			<a href="http://www.melodysac.com.sg/index.php/en/table2/">MyTable</a>
 			<a href="http://www.melodysac.com.sg/index.php/en/admintable/">WholeTable</a>
-			<a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
+			<a href="http://www.melodysac.com.sg/index.php/en/user_contact_us/">Contact Us</a>
 			<form action="#" method="get">
 				<button name="logout" value = 1>Logout</button>
 			</form>

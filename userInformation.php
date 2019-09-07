@@ -260,8 +260,7 @@
             <table id="Performance" class="one">
                 <tr id="Performance">
                     <th id="Performance" width="8%">Date</th>
-                    <th id="Performance" width="18%">Product/Size</th>
-                    <th id="Performance" width="18%">Model</th>
+                    <th id="Performance" width="18%">Product/ Size/ Model</th>
                     <th id="Performance" width="5%">Quantity</th>
                     <th id="Performance" width="8%">Selling Price</th>
                     <th id="Performance" width="8%">Rental Price</th>
@@ -276,12 +275,11 @@
                     echo "<tr id=\"Performance\">";
                     echo "<td id=\"Performance\">" . substr($performanceInfo[$i]->dDate, 0, 10) . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->Product_Or_Size_SG . "</td>";
-                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->Model_SG . "</td>";
-                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->Number . "</td>";
+                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->qty . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->PricePerItem . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->RentPricePerItem . "</td>";
-                    echo "<td id=\"Performance\">" . $performanceInfo[$i]->props . "</td>";
-                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->Number * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props + $performanceInfo[$i]->Number * $performanceInfo[$i]->RentPricePerItem * $performanceInfo[$i]->props) . "</td>";
+                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->props*100) . "%</td>";
+                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->qty * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props + $performanceInfo[$i]->qty * $performanceInfo[$i]->RentPricePerItem * $performanceInfo[$i]->props) . "</td>";
                     echo "</tr>";
                 }
 

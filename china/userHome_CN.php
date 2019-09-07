@@ -286,7 +286,7 @@
 
                 <?php
                 $userid = $_SESSION['username'];
-                $belowList = getBelowTeacherListFromName(getNameByMemberID($userid));
+                $belowList = getBelowTeacherListFromMemberId($userid);
                 for ($x = 0; $x < sizeof($belowList); $x++) {
                     // name of sub teacher
                     echo "<tr id=\"Performance\">";
