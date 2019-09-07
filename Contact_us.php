@@ -24,7 +24,7 @@
             alertWithHistoryBack("Please fill all information");
         }
         //$to = get_option('admin_email');
-        $to = array("blairlxt@gmail.com");
+        $to = array("admin@melodysac.com.sg");
         $subject = "User Request:";
         $message = $_POST["Message"]." \n\r From: ".$_POST["Number"]. "\n\r Contact number:". $_POST["Email"]." \n\r UserName :". getNameByMemberID($mid)." UserId :". $mid;
 
