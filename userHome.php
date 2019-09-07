@@ -230,9 +230,9 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">YuanFen@ info</a>
+            <a class="dropbtn" href="">Man Lian@ info</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">YanFen@ Level</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian@ Level</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
                 <?php

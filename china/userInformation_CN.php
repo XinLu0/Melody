@@ -294,7 +294,7 @@
 
             <br>
             <br>
-            <h3 class="heading3">蔓菻德思公众员注册会员的积分详情: </h3>
+            <h3 class="heading3">蔓联会员的积分详情: </h3>
 
             <table id="Performance" class="one">
                 <tr id="Performance">
