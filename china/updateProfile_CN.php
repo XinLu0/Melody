@@ -90,7 +90,7 @@
 
         /* Style the topWel links */
         .topWel p {
-            float: right;
+            float: center;
             display: block;
             color: #f2f2f2;
             text-align: center;

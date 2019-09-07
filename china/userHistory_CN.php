@@ -63,7 +63,7 @@
 
         /* Style the topWel links */
         .topWel p {
-            float: right;
+            float: center;
             display: block;
             color: #f2f2f2;
             text-align: center;
@@ -443,10 +443,6 @@
         <div style="text-align:center">
 
             <table id="Performance" class="one">
-                <tr id="Performance">
-                    <td id="Performance" width="50%">总记录</td>
-                    <td id="Performance" width="50%"></td>
-                </tr>
                 <tr id="Performance">
                     <th id="Performance" width="50%">个人销售积分</th>
                     <td id="Performance" width="50%"><?php echo getCreditEarnedWithoutRefCNByMemberID($userId); ?></td>
