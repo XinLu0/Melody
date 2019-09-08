@@ -185,7 +185,7 @@
 
 <body>
     <div class="header">
-        <img src="<?php echo get_template_directory_uri(); ?>/test/ArtCenterFederation.jpg">
+        <img src="<?php echo get_template_directory_uri(); ?>/test/manlianlogo2.png" width="161" height="137">
     </div>
 
     <div class="topWel">
@@ -281,7 +281,6 @@
 
                 <tr id="Performance">
                     <th id="Performance">总积分</th>
-                    <th id="Performance"></th>
                     <th id="Performance"></th>
                     <th id="Performance"></th>
                     <th id="Performance"></th>
