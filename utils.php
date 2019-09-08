@@ -761,5 +761,20 @@
         return $result;
     }
 
+    function kickOutCNUserbyMemberId($memberId)
+    {
+        if(getIsInChinaByMemberId($memberId) == 1)
+        {
+            header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
+        }
+    }
+
+    function kickOutSGUserbyMemberId($memberId)
+    {
+        if(getIsInChinaByMemberId($memberId) == 0)
+        {
+            header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
+        }
+    }
 
 ?>

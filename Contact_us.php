@@ -202,6 +202,7 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        kickOutCNUserbyMemberId($userId);
         $name = getNameByMemberID($userId);
         echo "<p>Welcome back: $name</p>";
         ?>
@@ -254,7 +255,7 @@
 				<label for="Email">Email</label>
                 <input type="text" id="Email" name="Email"></text>
                 
-                <label for="Number">Best Contact Number</label>
+                <label for="Number">Contact Number</label>
 				<input type="text" id="Number" name="Number"></text>
 
 				<label for="Subject">Subject</label>

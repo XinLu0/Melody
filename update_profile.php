@@ -17,6 +17,7 @@
         exit;
     }
     $mid = $_SESSION['username'];
+    kickOutCNUserbyMemberId($mid);
 
     if (isset($_POST["Number"])) {
         if ($_POST["Number"] != "") {

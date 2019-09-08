@@ -134,6 +134,7 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        kickOutCNUserbyMemberId($userId);
         if (isset($_GET['userInfo'])) {
             $userId = $_GET['userInfo'];
         }

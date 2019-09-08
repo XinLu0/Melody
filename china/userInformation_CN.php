@@ -195,6 +195,7 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        kickOutSGUserbyMemberId($userId);
         if (isset($_GET['userInfo'])) {
             $userId = $_GET['userInfo'];
         }
@@ -235,7 +236,7 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系方式</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系我们</a>
         </li>
         <li class="dropdown">
             <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_melodysacproducts_cn/">价格表</a>

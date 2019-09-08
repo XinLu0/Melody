@@ -243,7 +243,7 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系方式</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系我们</a>
         </li>
         <li class="dropdown">
             <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_melodysacproducts_cn/">价格表</a>
@@ -255,6 +255,7 @@
             <?php
             session_start();
             $userId = $_SESSION['username'];
+            kickOutSGUserbyMemberId($userId);
             $name = getNameByMemberID($userId);
             echo "<h3 class=\"heading3\">您好, $name</h3>";
             echo "<h3 class=\"heading3\">恭喜！</h3>";

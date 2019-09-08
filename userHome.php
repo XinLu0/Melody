@@ -18,6 +18,7 @@
         header("Location:http://www.melodysac.com.sg/index.php/zh/melodymemberlogin/");
         exit;
     }
+    
 
     //$username = $_SESSION['username'];
     if (isset($_POST['Month'])) {
@@ -207,6 +208,7 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        kickOutCNUserbyMemberId($userId);
         $name = getNameByMemberID($userId);
         echo "<p>Welcome back: $name</p>";
         ?>

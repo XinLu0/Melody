@@ -7,7 +7,7 @@
   		Template Name: Update_CN
   		*/
     session_start();
-
+    require('utils.php');
 
     $logout = @$_GET['logout'];
     if ($logout == 1)
@@ -18,32 +18,6 @@
     }
     $mid = $_SESSION['username'];
 
-    function getNameByMemberID($memberID)
-    {
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Member=$memberID");
-        return $result[0]->Name;
-    }
-
-    function updateEmailByMID($Mid, $email)
-    {
-        global $wpdb;
-        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Email=\"$email\" WHERE Member = $Mid"));
-    }
-    function updatePasswordByMID($Mid, $password)
-    {
-        global $wpdb;
-        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Password=\"$password\" WHERE Member = $Mid"));
-    }
-    function updateContactNoByMID($Mid, $Contact_no)
-    {
-        global $wpdb;
-        $wpdb->query($wpdb->prepare("UPDATE `Teacher_infor` SET Contact_no=\"$Contact_no\" WHERE Member = $Mid"));
-    }
-    function alert($msg)
-    {
-        echo "<script type='text/javascript'>alert('$msg');</script>";
-    }
     if (isset($_POST["Number"])) {
         if ($_POST["Number"] != "") {
             updateContactNoByMID($mid, $_POST["Number"]);
@@ -218,6 +192,7 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        kickOutSGUserbyMemberId($userId);
         $name = getNameByMemberID($userId);
         echo "<p>欢迎: $name</p>";
         ?>
@@ -254,7 +229,7 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系方式</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_contactus_cn/">联系我们</a>
         </li>
         <li class="dropdown">
             <a class="dropbtn" href="https://www.melodysac.com.sg/zh/yuanfen_melodysacproducts_cn/">价格表</a>

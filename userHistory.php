@@ -352,6 +352,7 @@
         <?php
         session_start();
         $userId = $_SESSION['username'];
+        kickOutCNUserbyMemberId($userId);
         $name = getNameByMemberID($userId);
         echo "<p>Welcome back: $name</p>";
         ?>
@@ -403,7 +404,7 @@
             $name = getNameByMemberID($userId);
             $creditEarn = getAllCreditIncSubSGByMemberId($userId);
             $gradeName = getGradeNameSGByCredit($creditEarn);
-            echo "<h3 class=\"heading3\">Hi, $name, $gradeName Man Lian@ Member</h3>";
+            echo "<h3 class=\"heading3\">Hi, $name, $gradeName </h3>";
             ?>
         </div>
 

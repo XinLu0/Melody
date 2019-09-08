@@ -23,9 +23,9 @@
 	}
 
 	// get Below Teacher List from Name
-	function getBelowTeacherListFromName($Name){
+	function getBelowTeacherListFromMemberId($memberId){
 		global $wpdb;
-		$result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE Major=\"".$Name."\"");
+		$result = $wpdb->get_results("SELECT Name FROM Teacher_infor WHERE MajorID=$memberId");
 		$nameArray;
 		$size = sizeof($result);
 		for($x = 0; $x < $size; $x++){
