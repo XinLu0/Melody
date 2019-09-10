@@ -152,13 +152,13 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">关于我们</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/manlian_about_us_cn/">关于我们</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_memberbenifits_cn/">会员福利</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">蔓联会员说明</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/zh/manlian_info_cn/">蔓联会员说明</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>

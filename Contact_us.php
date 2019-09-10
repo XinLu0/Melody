@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    /* 
+    /*
   		Template Name: Contact_Us
   		*/
     session_start();
@@ -174,7 +174,7 @@
             background-color: #8C2A05;
         }
 
-        
+
         textarea {
             width: 100%;
             height: 150px;
@@ -220,26 +220,26 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">About Us</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/manlian_about_us/">About Us</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">Man Lian@ info</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/manlian_info/">Man Lian info</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian@ Level</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian Level</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
                 echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
                 ?>
-                <a href="http://www.melodysac.com.sg/index.php/en/terms/">Term and Condition</a>
+                <a href="http://www.melodysac.com.sg/index.php/en/terms/">Terms and Conditions</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/en/user_contact_us/">CONTACT US</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/user_contact_us/">Contact us</a>
         </li>
         <li class="dropdown">
             <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
@@ -254,7 +254,7 @@
 			<form action="#" name="send_email" method="post">
 				<label for="Email">Email</label>
                 <input type="text" id="Email" name="Email"></text>
-                
+
                 <label for="Number">Contact Number</label>
 				<input type="text" id="Number" name="Number"></text>
 

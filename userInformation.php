@@ -3,8 +3,8 @@
 
 <head>
     <?php
-    /* 
-  		Template Name: userInformation 
+    /*
+  		Template Name: userInformation
   		*/
     ?>
 
@@ -217,26 +217,26 @@
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">About Us</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/manlian_about_us/">About Us</a>
             <div class="dropdown-content">
                 <a href="https://www.melodysac.com.sg/en/yuanfen_memberbenifits/">Member Benefits</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="">Man Lian@ info</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/manlian_info/">Man Lian info</a>
             <div class="dropdown-content">
-                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian@ Level</a>
+                <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian Level</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
                 <?php
                 $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
                 echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
                 ?>
-                <a href="https://www.melodysac.com.sg/en/terms/">Term and Condition</a>
+                <a href="https://www.melodysac.com.sg/en/terms/">Terms and Conditions</a>
             </div>
         </li>
         <li class="dropdown">
-            <a class="dropbtn" href="https://www.melodysac.com.sg/en/user_contact_us/">CONTACT US</a>
+            <a class="dropbtn" href="https://www.melodysac.com.sg/en/user_contact_us/">Contact us</a>
         </li>
         <li class="dropdown">
             <a class="dropbtn" href="https://www.melodysac.com.sg/en/yuanfen_melodysacproducts/">MelodySAC Products</a>
