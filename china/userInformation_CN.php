@@ -274,7 +274,7 @@
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->qty . "</td>";
                     echo "<td id=\"Performance\">" . $performanceInfo[$i]->PricePerItem . "</td>";
                     echo "<td id=\"Performance\">" . ($performanceInfo[$i]->props*100) . "%</td>";
-                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->qty * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->qty ) . "</td>";
+                    echo "<td id=\"Performance\">" . ($performanceInfo[$i]->qty * $performanceInfo[$i]->PricePerItem * $performanceInfo[$i]->props) . "</td>";
                     echo "</tr>";
                 }
 

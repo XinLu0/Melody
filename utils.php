@@ -4,13 +4,13 @@
     }
 
     function getPasswordByMemberID($memberID){
-        global $wpdb;    
+        global $wpdb;
         $result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Member=".$memberID);
         return $result[0]->Password;
     }
 
     function getPasswordByMemberEmail($memberEmail){
-        global $wpdb;    
+        global $wpdb;
         $result = $wpdb->get_results( "SELECT Password FROM Teacher_infor WHERE Email=\"$memberEmail\"");
         if(sizeof($result)>1)
         {
@@ -33,7 +33,7 @@
     function isAdminByMemberId($mId){
         global $wpdb;
         $sum = $wpdb->get_results("SELECT isAdmin FROM `Teacher_infor` WHERE Member = $mId");
-        return ($sum[0]->isAdmin); 
+        return ($sum[0]->isAdmin);
     }
 
     function updateLoginTimesByMID($Mid,$login){
@@ -52,7 +52,7 @@
 		$result = $wpdb->get_results("SELECT Price_CN FROM Melody_items_New WHERE Item_no=$itemNo");
 		return $result[0]->Price_CN;
         }
-        
+
     function getPriceSGByItemNo($itemNo){
 		global $wpdb;
 		$result = $wpdb->get_results("SELECT Price_SG FROM Melody_items_New WHERE Item_no=$itemNo");
@@ -96,15 +96,15 @@
         global $wpdb;
         $sum = $wpdb->get_results("SELECT qty FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no");
 
-        
+
         if(sizeof($sum)==0)
             return 0;
-        else 
+        else
         {
             $result;
             for($x=0;$x<sizeof($sum);$x++){
                 $result = $result+ $sum[$x]->qty;
-                
+
             }
             return $result;
         }
@@ -118,15 +118,15 @@
 
         if(sizeof($sum)==0)
             return 0;
-        else 
+        else
         {
             $result;
             for($x=0;$x<sizeof($sum);$x++){
             $result = $result+ $sum[$x]->qty;
-            
+
             }
             return $result;
-        }	  
+        }
     }
 
     function getBelowTeacherListFromMemberId($MemberID){
@@ -191,7 +191,7 @@
     function getIsInChinaByMemberId($memberId){
         global $wpdb;
         $result = $wpdb->get_results("SELECT isInChina FROM Teacher_infor WHERE Member=$memberId");
-        return $result[0]->isInChina;   
+        return $result[0]->isInChina;
     }
 
     function getCreditChangeByMemberID($memberID)
@@ -302,7 +302,7 @@
                 }
                 $currentSum += $map[$results[$x]->FinalMember];
                 $prop = getGradePropCNByCredit($currentSum);
-                if($results[$x]->props == 0)
+                if($results[$x]->props != $prop)
                 {
                     $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                 }
@@ -387,7 +387,7 @@
     function insertAdminActionByMemberIdAndCreditChange($memberID, $creditChange)
     {
         global $wpdb;
-        $result = $wpdb->insert('Melody_Admin_Actions', 
+        $result = $wpdb->insert('Melody_Admin_Actions',
         array(
             "Member" => $memberID,
             "CreditChange" => $creditChange,
@@ -427,7 +427,7 @@
 		FROM `Melody_performance`
 		RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
 		ORDER BY FinalDate ASC");
-	
+
 
 		$map = array();
 		$submap = array();
@@ -448,7 +448,7 @@
 				}
 				$currentSum += $map[$results[$x]->FinalMember];
 				$prop = getGradePropSGByCredit($currentSum);
-				if($results[$x]->props == 0)
+				if($results[$x]->props != $prop)
 				{
 					$wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
 				}
@@ -469,7 +469,7 @@
 		return $submap[$memberID];
 
     }
-    
+
     function getCreditEarnedWithoutRefCNByMemberID($memberID)
 	{
 		global $wpdb;
@@ -481,7 +481,7 @@
 		FROM `Melody_performance`
 		RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
 		ORDER BY FinalDate ASC");
-	
+
 
 		$map = array();
 		$submap = array();
@@ -528,7 +528,7 @@
 		$results = $wpdb->get_results("SELECT Referee, dDate, Credit FROM Melody_Referring_Performance WHERE Member = $memberID");
 		return $results;
     }
-    
+
     function getDatefromByMonth($yyyymm){
         $month = substr($yyyymm, -2);
         $year = substr($yyyymm,0, 4);
@@ -727,11 +727,11 @@
 
     function sendEmail($subject, $emailList, $message, $isHTML)
     {
-        
+
         for($x = 0; $x<sizeof($emailList);$x++)
         {
             $to = $emailList[$x];
-        
+
             $headers[] = 'MIME-Version: 1.0';
             $headers[] = 'Content-type: text/html; charset=iso-8859-1';
             $headers[] = 'From: Melody Strings Art Center <Melody@Melody.com>';
