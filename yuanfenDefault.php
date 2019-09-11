@@ -168,8 +168,8 @@
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
                 <?php
-                $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
-                echo "<a href=\"$contract\" download=\"contract\">Member form download</a>";
+                $contract = getMembershipFormByMemberId($_SESSION['username']);
+                echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">Member form download</a>";
                 ?>
                 <a href="https://www.melodysac.com.sg/en/terms/">Terms and Conditions</a>
             </div>

@@ -777,4 +777,32 @@
         }
     }
 
+    function getMembershipFormByMemberId($memberId)
+    {
+      $contract;
+        //individual
+        if(getIsAGroupByMemberId($memberId) == 0)
+        {
+          //sg
+          if(getIsInChinaByMemberId($memberId) == 0)
+          {
+            $contract = get_template_directory_uri() . "/MemberInfo/" . "/MembershipWord/" . "ManLian membership form - SG个人.docx";
+          }
+          else{
+            $contract = get_template_directory_uri() . "/MemberInfo/" . "/MembershipWord/" . "ManLian membership form - CN个人.docx";
+          }
+        }
+        else {
+          //sg
+          if(getIsInChinaByMemberId($memberId) == 0)
+          {
+            $contract = get_template_directory_uri() . "/MemberInfo/" . "/MembershipWord/" . "ManLian membership form - SG 机构.docx";
+          }
+          else{
+            $contract = get_template_directory_uri() . "/MemberInfo/" . "/MembershipWord/" . "ManLian membership form - CN机构.docx";
+          }
+        }
+        return $contract;
+    }
+
 ?>

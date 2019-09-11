@@ -3,8 +3,8 @@
 
 <head>
     <?php
-    /* 
-  		Template Name: userHome_CN 
+    /*
+  		Template Name: userHome_CN
   		*/
     ?>
 
@@ -236,7 +236,7 @@
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
                 <?php
-                $contract = get_template_directory_uri() . "/MemberInfo/" . "/ContractPDF/" . $_SESSION['username'] . ".pdf";
+                $contract = getMembershipFormByMemberId($_SESSION['username']);
                 echo "<a href=\"$contract\" download=\"contract\">会员表格下载</a>";
                 ?>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
