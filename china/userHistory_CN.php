@@ -26,6 +26,7 @@
         getDatefromByCurrentYear();
     }
     getDateToByCurrentMonth();
+    $dateNextMonthFirstDate = getNextMonthFirstDate();
     $_SESSION['dateFrom'] = $dateFrom;
     $_SESSION['dateTo'] = $dateTo;
     ?>
@@ -462,7 +463,11 @@
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">所兑现积分</th>
-                    <td id="Performance"><?php echo getCreditChangeByMemberID($userId); ?></td>
+                    <td id="Performance"><?php echo getRedeemedCreditChangeByMemberID($userId); ?></td>
+                </tr>
+                <tr id="Performance">
+                    <th id="Performance">奖励积分</th>
+                    <td id="Performance"><?php echo getBonusCreditChangeByMemberID($userId); ?></td>
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">积分余额</th>
@@ -480,6 +485,7 @@
                     <th id="Performance">月份</th>
                     <th id="Performance">总积分数额</th>
                     <th id="Performance">已兑换的总积分</th>
+                    <th id="Performance">奖励总积分</th>
                     <th id="Performance">现积分余额</th>
                 </tr>
                 <tr id="Performance">
@@ -503,21 +509,26 @@
                 $currentMonth = substr($dateTo, 5, 2);
                 $months = array(1 => '一月', 2 => '二月', 3 => '三月', 4 => '四月', 5 => '五月', 6 => '六月', 7 => '七月', 8 => '八月', 9 => '九月', 10 => '十月', 11 => '十一月', 12 => '十二月');
                 $AllCreditTotalSum = getAllCreditIncSubCNByMemberId($userId) - getAllCreditIncSubCNByMemberIdANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01");
-                $AllCreditChangeTotalSum = getCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $dateTo);
+                $AllRedeemedCreditChangeTotalSum = getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $dateNextMonthFirstDate);
+                $AllBonusCreditChangeTotalSum = getBonusCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $dateNextMonthFirstDate);
                 $AccumulativeCreditSum = $balanceBroughtForward;
-                $AccumulativeCreditChange = $CreditChangeBroughtForward;
+                $AccumulativeRedeemedCreditChange = $RedeemedCreditChangeBroughtForward;
+                $AccumulativeBonusCreditChange = $BonusCreditChangeBroughtForward;
                 while ($startYear < $currentYear || $startMonth <= $currentMonth) {
 
                     $AllCreditByMonth = getAllCreditIncSubCNByMemberIdANDDateTo($userId, $startYear . "-" . sprintf("%02d", ($startMonth + 1)) . "-01") - getAllCreditIncSubCNByMemberIdANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01");
-                    $AllCreditChangeByMonth = getCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $startYear . "-" . sprintf("%02d", ($startMonth + 1)) . "-01");
+                    $AllRedeemedCreditChangeByMonth = getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $startYear . "-" . sprintf("%02d", ($startMonth + 1)) . "-01");
+                    $AllBonusCreditChangeByMonth = getBonusCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $startYear . "-" . sprintf("%02d", ($startMonth + 1)) . "-01");
                     $AccumulativeCreditSum += $AllCreditByMonth;
-                    $AccumulativeCreditChange += $AllCreditChangeByMonth;
+                    $AccumulativeRedeemedCreditChange += $AllRedeemedCreditChangeByMonth;
+                    $AccumulativeBonusCreditChange += $AllBonusCreditChangeByMonth;
 
                     echo "<tr id=\"Performance\">";
                     echo "<th id=\"Performance\">" . $startYear . "-" . $months[intval($startMonth)] . "</th>";
                     echo "<td id=\"Performance\">" . $AllCreditByMonth . "</td>";
-                    echo "<td id=\"Performance\">" . $AllCreditChangeByMonth . "</td>";
-                    echo "<td id=\"Performance\">" . ($AccumulativeCreditSum + $AccumulativeCreditChange) . "</td>";
+                    echo "<td id=\"Performance\">" . $AllRedeemedCreditChangeByMonth . "</td>";
+                    echo "<td id=\"Performance\">" . $AllBonusCreditChangeByMonth . "</td>";
+                    echo "<td id=\"Performance\">" . ($AccumulativeCreditSum + $AccumulativeRedeemedCreditChange + $AccumulativeBonusCreditChange) . "</td>";
                     echo "</tr>";
                     $startMonth++;
                     if ($startMonth > 12) {
@@ -528,10 +539,10 @@
                 echo "<tr id=\"Performance\">";
                 echo "<th id=\"Performance\">总计</th>";
                 echo "<th id=\"Performance\">" . ($AllCreditTotalSum + $balanceBroughtForward) . "</th>";
-                echo "<th id=\"Performance\">" . ($AllCreditChangeTotalSum + $CreditChangeBroughtForward). "</th>";
-                echo "<th id=\"Performance\">" . ($AllCreditTotalSum + $balanceBroughtForward + $AllCreditChangeTotalSum + $CreditChangeBroughtForward) . "</th>";
+                echo "<th id=\"Performance\">" . ($AllRedeemedCreditChangeTotalSum + $RedeemedCreditChangeBroughtForward) . "</th>";
+                echo "<th id=\"Performance\">" . ($AllBonusCreditChangeTotalSum + $BonusCreditChangeBroughtForward) . "</th>";
+                echo "<th id=\"Performance\">" . ($AllCreditTotalSum + $balanceBroughtForward + $AllRedeemedCreditChangeTotalSum + $AllBonusCreditChangeTotalSum + $RedeemedCreditChangeBroughtForward + $BonusCreditChangeBroughtForward) . "</th>";
                 echo "</tr>";
-
 
                 ?>
 

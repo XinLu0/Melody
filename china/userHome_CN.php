@@ -259,12 +259,14 @@
             $name = getNameByMemberID($userId);
             echo "<h3 class=\"heading3\">您好, $name</h3>";
             echo "<h3 class=\"heading3\">恭喜！</h3>";
-            $creditEarnedOfMainUser = getCreditEarnedWithRefCNByMemberID($userId);
-            $creditEarnedByAll = getAllCreditIncSubCNByMemberId($userId);
+            $creditEarnedOfMainUser = 0;
+            $creditEarnedByAll = 0;
+            $creditEarnedOfMainUser += getCreditEarnedWithRefCNByMemberID($userId);
+            $creditEarnedByAll += getAllCreditIncSubCNByMemberId($userId);
             $creditEarnedByAll += getCreditChangeByMemberID($userId);
 
-            echo "<a href=\"https://www.melodysac.com.sg/zh/userinformation_cn/\" >您的积分: $creditEarnedOfMainUser points</a>";
-            echo "<h3 class=\"heading3\" >总积分(包括您的直属会员): $creditEarnedByAll points</a>";
+            echo "<a href=\"https://www.melodysac.com.sg/zh/userinformation_cn/\" >您的积分: $creditEarnedOfMainUser 分</a>";
+            echo "<h3 class=\"heading3\" >总积分(包括您的直属会员): $creditEarnedByAll 分</a>";
             echo "<br>";
             $img = get_template_directory_uri() . "/MemberInfo/ProfileImgJPG/" . $_SESSION['username'] . ".jpg";
             $relativeImg = "wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/" . $_SESSION['username'] . ".jpg";

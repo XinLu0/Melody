@@ -194,6 +194,34 @@
         return $result[0]->isInChina;
     }
 
+    function getBonusCreditChangeByMemberID($memberID)
+    {
+        global $wpdb;
+        $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID");
+        $result = 0;
+        for($x = 0; $x < sizeof($sum); $x++){
+            if($sum[$x]->CreditChange > 0)
+            {
+                $result = $result + $sum[$x]->CreditChange;
+            }
+        }
+        return $result;
+    }
+
+    function getRedeemedCreditChangeByMemberID($memberID)
+    {
+        global $wpdb;
+        $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID");
+        $result = 0;
+        for($x = 0; $x < sizeof($sum); $x++){
+            if($sum[$x]->CreditChange < 0)
+            {
+                $result = $result + $sum[$x]->CreditChange;
+            }
+        }
+        return $result;
+    }
+
     function getCreditChangeByMemberID($memberID)
     {
         global $wpdb;
@@ -547,6 +575,49 @@
         $currentDate = date('Y-m-d');
         global $dateTo;
         $dateTo = $currentDate;
+    }
+
+    function getTomorrowDate(){
+        $dateTime = new DateTime('tomorrow');
+        return $dateTime->format('Y-m-d');
+    }
+
+    function getNextMonthFirstDate(){
+        $currentDate = date('Y-m-d');
+        $currentYear = substr($currentDate,0,4);
+        $currentMonth = substr($currentDate,5,7);
+        $currentMonth = $currentMonth+1;
+        if($currentMonth>12)
+            $currentMonth = 1;
+        return $currentYear."-".sprintf("%02d", $currentMonth)."-01";
+    }
+
+    function getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($memberID, $dateFrom, $dateTo)
+    {
+      global $wpdb;
+      $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID AND dDate >= \"$dateFrom\" AND dDate< \"$dateTo\"");
+      $result = 0;
+      for($x = 0; $x < sizeof($sum); $x++){
+          if($sum[$x]->CreditChange<0)
+          {
+            $result = $result + $sum[$x]->CreditChange;
+          }
+      }
+      return $result;
+    }
+
+    function getBonusCreditChangeByMemberIDANDDateFromANDDateTo($memberID, $dateFrom, $dateTo)
+    {
+      global $wpdb;
+      $sum = $wpdb->get_results("SELECT CreditChange FROM Melody_Admin_Actions WHERE Member = $memberID AND dDate >= \"$dateFrom\" AND dDate< \"$dateTo\"");
+      $result = 0;
+      for($x = 0; $x < sizeof($sum); $x++){
+          if($sum[$x]->CreditChange>0)
+          {
+            $result = $result + $sum[$x]->CreditChange;
+          }
+      }
+      return $result;
     }
 
     function getCreditChangeByMemberIDANDDateFromANDDateTo($memberID, $dateFrom, $dateTo)

@@ -260,8 +260,10 @@
             $name = getNameByMemberID($userId);
             echo "<h3 class=\"heading3\">Hi, $name</h3>";
             echo "<h3 class=\"heading3\">Congratulations!</h3>";
-            $creditEarnedOfMainUser = getCreditEarnedWithRefSGByMemberID($userId);
-            $creditEarnedByAll = getAllCreditIncSubSGByMemberId($userId);
+            $creditEarnedOfMainUser = 0;
+            $creditEarnedByAll = 0;
+            $creditEarnedOfMainUser += getCreditEarnedWithRefSGByMemberID($userId);
+            $creditEarnedByAll += getAllCreditIncSubSGByMemberId($userId);
             $creditEarnedByAll += getCreditChangeByMemberID($userId);
 
             echo "<a href=\"http://www.melodysac.com.sg/index.php/en/userinformation/\" >You had collect: $creditEarnedOfMainUser points</a>";
