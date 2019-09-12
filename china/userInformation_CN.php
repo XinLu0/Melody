@@ -259,7 +259,7 @@
                     <th id="Performance" width="8%">日期</th>
                     <th id="Performance" width="18%">产品/ 尺寸/ 型号</th>
                     <th id="Performance" width="5%">数量</th>
-                    <th id="Performance" width="8%">销售价格</th>
+                    <th id="Performance" width="8%">单价</th>
                     <th id="Performance" width="5%">积分比例 %</th>
                     <th id="Performance" width="10%">所获积分</th>
                 </tr>
