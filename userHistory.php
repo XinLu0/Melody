@@ -500,11 +500,11 @@
                     </th>
                     <th id="Performance"><?php 
                     $RedeemedCreditChangeBroughtForward = getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
-                    echo $RedeemedCreditChangeBroughtForward; ?></td>
+                    echo $RedeemedCreditChangeBroughtForward; ?></th>
                     <th id="Performance"><?php 
                     $BonusCreditChangeBroughtForward = getBonusCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
-                    echo $BonusCreditChangeBroughtForward; ?></td>
-                    <th id="Performance"><?php echo (getAllCreditIncSubSGByMemberIdANDDateTo($userId, $dateFrom) + getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom)); ?></th>
+                    echo $BonusCreditChangeBroughtForward; ?></th>
+                    <th id="Performance"><?php echo $balanceBroughtForward + $RedeemedCreditChangeBroughtForward +$BonusCreditChangeBroughtForward; ?></th>
                 </tr>
                 <?php
                 $startYear = substr($dateFrom, 0, 4);

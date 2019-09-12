@@ -486,7 +486,7 @@
                     <th id="Performance">总积分数额</th>
                     <th id="Performance">已兑换的总积分</th>
                     <th id="Performance">奖励总积分</th>
-                    <th id="Performance">现积分余额</th>
+                    <th id="Performance">积分余额</th>
                 </tr>
                 <tr id="Performance">
                     <th id="Performance">上期积分余额</th>
@@ -497,10 +497,13 @@
                         echo $balanceBroughtForward;
                         ?>
                     </th>
-                    <th id="Performance"><?php
-                    $CreditChangeBroughtForward = getCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
-                    echo $CreditChangeBroughtForward; ?></td>
-                    <th id="Performance"><?php echo $balanceBroughtForward + $CreditChangeBroughtForward; ?></td>
+                    <th id="Performance"><?php 
+                    $RedeemedCreditChangeBroughtForward = getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
+                    echo $RedeemedCreditChangeBroughtForward; ?></th>
+                    <th id="Performance"><?php 
+                    $BonusCreditChangeBroughtForward = getBonusCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
+                    echo $BonusCreditChangeBroughtForward; ?></th>
+                    <th id="Performance"><?php echo $balanceBroughtForward + $RedeemedCreditChangeBroughtForward +$BonusCreditChangeBroughtForward; ?></td>
                 </tr>
                 <?php
                 $startYear = substr($dateFrom, 0, 4);
