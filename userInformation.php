@@ -255,7 +255,7 @@
 
             <br>
             <br>
-            <h3 class="heading3">Points Collection details: </h3>
+            <h3 class="heading3">Selling Points Collection Details: </h3>
 
             <table id="Performance" class="one">
                 <tr id="Performance">
@@ -300,7 +300,7 @@
 
             <br>
             <br>
-            <h3 class="heading3">Points Collection as Referral for Melody's Membership: </h3>
+            <h3 class="heading3">Points Collection as Referral for Melody Strings Membership: </h3>
 
             <table id="Performance" class="one">
                 <tr id="Performance">

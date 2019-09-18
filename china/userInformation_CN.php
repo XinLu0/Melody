@@ -251,7 +251,7 @@
             $gradeName = getGradeNameCNByCredit($creditEarn);
             echo "<h3 class=\"heading3\">您好,</h3>";
             echo "<br>";
-            echo "<h3 class=\"heading3\" style=\"color:dark grey;\">$name,  $gradeName 的个人积分详情</h3>";
+            echo "<h3 class=\"heading3\" style=\"color:dark grey;\">$name $gradeName 个人销售积分详情</h3>";
             ?>
 
             <table id="Performance" class="one">
@@ -294,7 +294,7 @@
 
             <br>
             <br>
-            <h3 class="heading3">蔓联会员的积分详情: </h3>
+            <h3 class="heading3">蔓菻德思公众号会员推荐积分详情</h3>
 
             <table id="Performance" class="one">
                 <tr id="Performance">
