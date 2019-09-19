@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <?php 
-  		/* 
+    <?php
+  		/*
   		Template Name: adminTable
-  		*/ 
+  		*/
   		session_start();
       require('utils.php');
       $logout=@$_GET['logout'];
@@ -295,16 +295,12 @@
           		echo "<input type=\"hidden\" name=\"linkToMID\" value=\"$list[$x]\">";
           		echo "</form>";
           		echo "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\">$list[$x]</td>";
-          		for($i = 1; $i <= $totalItemNumber; $i++){
-          		  $num = getNumOfItemByItemIDAndMemeberID($list[$x],$i);
-          		  echo "<td>$num</td>";
-                  $price = getPriceSGByItemNo($i);
-                  if(getIsInChinaByMemberId($list[$x]) == 1)  
-                  {
-                    $price = getPriceCNByItemNo($i);
-                  }
-          		  $sale = $sale+$price*$num;
-            	}
+
+              $sale = getBalanceSGByMemberId($list[$x]);
+              if(getIsInChinaByMemberId($list[$x]) == 1)
+              {
+                $sale = getBalanceCNByMemberId($list[$x]);
+              }
                 echo "<td>$sale</td>";
               //loginTimes
               $times = getLoginTimesFromMID($list[$x]);
@@ -338,7 +334,7 @@
               echo "</tr>";
             }
           ?>
-      
+
         </table>
       </div>
     </div>
