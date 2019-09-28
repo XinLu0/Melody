@@ -293,8 +293,11 @@
           		echo "</form>";
           		echo "<td href=\"javascript:{}\" onclick=\"document.getElementById('form$list[$x]').submit(); return false;\">$list[$x]</td>";
 
-              $sale = getBalanceSGByMemberId($list[$x]);
-              if(getIsInChinaByMemberId($list[$x]) == 1)
+              if(getIsInChinaByMemberId($list[$x]) == 0)
+              {
+                $sale = getBalanceSGByMemberId($list[$x]);
+              }
+              else
               {
                 $sale = getBalanceCNByMemberId($list[$x]);
               }

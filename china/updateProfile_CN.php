@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    /* 
+    /*
   		Template Name: Update_CN
   		*/
     session_start();
@@ -221,10 +221,6 @@
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
-                <?php
-                $contract = getMembershipFormByMemberId($_SESSION['username']);
-                echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">会员表格下载</a>";
-                ?>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
