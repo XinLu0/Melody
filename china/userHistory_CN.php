@@ -382,10 +382,6 @@
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
-                <?php
-                $contract = getMembershipFormByMemberId($_SESSION['username']);
-                echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">会员表格下载</a>";
-                ?>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
@@ -466,7 +462,7 @@
                     <td id="Performance"><?php echo getRedeemedCreditChangeByMemberID($userId); ?></td>
                 </tr>
                 <tr id="Performance">
-                    <th id="Performance">奖励积分</th>
+                    <th id="Performance">额外奖励积分</th>
                     <td id="Performance"><?php echo getBonusCreditChangeByMemberID($userId); ?></td>
                 </tr>
                 <tr id="Performance">
@@ -497,10 +493,10 @@
                         echo $balanceBroughtForward;
                         ?>
                     </th>
-                    <th id="Performance"><?php 
+                    <th id="Performance"><?php
                     $RedeemedCreditChangeBroughtForward = getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
                     echo $RedeemedCreditChangeBroughtForward; ?></th>
-                    <th id="Performance"><?php 
+                    <th id="Performance"><?php
                     $BonusCreditChangeBroughtForward = getBonusCreditChangeByMemberIDANDDateFromANDDateTo($userId, "0000-00-00", $dateFrom);
                     echo $BonusCreditChangeBroughtForward; ?></th>
                     <th id="Performance"><?php echo $balanceBroughtForward + $RedeemedCreditChangeBroughtForward +$BonusCreditChangeBroughtForward; ?></td>

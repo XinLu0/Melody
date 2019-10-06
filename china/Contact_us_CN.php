@@ -184,6 +184,27 @@
             font-size: 16px;
             resize: auto;
         }
+
+        /* Create three equal columns that floats next to each other */
+        .column_left {
+            float: left;
+            width: 20%;
+            padding: 15px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column_center {
+            float: left;
+            width: 60%;
+            padding: 15px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column_right {
+            float: left;
+            width: 20%;
+            padding: 15px;
+        }
     </style>
 </head>
 
@@ -228,10 +249,6 @@
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
-                <?php
-                $contract = getMembershipFormByMemberId($_SESSION['username']);
-                echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">会员表格下载</a>";
-                ?>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
@@ -243,7 +260,24 @@
         </li>
     </ul>
 
-    <h3>请留下您的信息</h3>
+    <div class="column_left">
+    </div>
+
+    <div class="column_center">
+      <h3>订购请联系：</h3>
+      <br>
+      <br>
+      <h4>中国北方大区市场负责人：</h4>
+      <h5>靳老师：13051691257（微信同号）</h5>
+      <br>
+      <h4>中国南方大区市场负责人：</h4>
+      <h5>高老师：17345774673（微信同号）</h5>
+      <br> 
+    </div>
+
+    <div class="column_right">
+    </div>
+    <!--<h3>请留下您的信息</h3>
     <br>
     <br>
     <br>
@@ -263,7 +297,7 @@
 
             <input type="submit" value="提交">
         </form>
-    </div>
+    </div>-->
 </body>
 
 </html>

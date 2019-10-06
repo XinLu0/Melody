@@ -235,10 +235,6 @@
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_level_cn/">会员级别</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointcollection_cn/">会员积分</a>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_pointredemption_cn/">积分兑换</a>
-                <?php
-                $contract = getMembershipFormByMemberId($_SESSION['username']);
-                echo "<a href=\"$contract\" download=\"contract\">会员表格下载</a>";
-                ?>
                 <a href="https://www.melodysac.com.sg/zh/yuanfen_terms_cn/">条件与条款</a>
             </div>
         </li>
@@ -259,14 +255,12 @@
             $name = getNameByMemberID($userId);
             echo "<h3 class=\"heading3\">您好, $name</h3>";
             echo "<h3 class=\"heading3\">恭喜！</h3>";
-            $creditEarnedOfMainUser = 0;
-            $creditEarnedByAll = 0;
-            $creditEarnedOfMainUser += getCreditEarnedWithRefCNByMemberID($userId);
-            $creditEarnedByAll += getAllCreditIncSubCNByMemberId($userId);
+            $creditEarnedOfMainUser = getCreditEarnedWithRefCNByMemberID($userId);
+            $creditEarnedByAll = getAllCreditIncSubCNByMemberId($userId);
             $creditEarnedByAll += getCreditChangeByMemberID($userId);
 
-            echo "<a href=\"https://www.melodysac.com.sg/zh/userinformation_cn/\" >您的积分: $creditEarnedOfMainUser 分</a>";
-            echo "<h3 class=\"heading3\" >总积分(包括您的直属会员): $creditEarnedByAll 分</a>";
+            echo "<a href=\"https://www.melodysac.com.sg/zh/userinformation_cn/\" >您的积分: $creditEarnedOfMainUser points</a>";
+            echo "<h3 class=\"heading3\" >总积分(包括您的直属会员): $creditEarnedByAll points</a>";
             echo "<br>";
             $img = get_template_directory_uri() . "/MemberInfo/ProfileImgJPG/" . $_SESSION['username'] . ".jpg";
             $relativeImg = "wp-content/themes/top3themes/MemberInfo/ProfileImgJPG/" . $_SESSION['username'] . ".jpg";

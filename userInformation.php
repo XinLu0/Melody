@@ -228,10 +228,6 @@
                 <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian Level</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
-                <?php
-                $contract = getMembershipFormByMemberId($_SESSION['username']);
-                echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">Member form download</a>";
-                ?>
                 <a href="https://www.melodysac.com.sg/en/terms/">Terms and Conditions</a>
             </div>
         </li>
@@ -255,7 +251,7 @@
 
             <br>
             <br>
-            <h3 class="heading3">Points Collection details: </h3>
+            <h3 class="heading3">Selling Points Collection Details: </h3>
 
             <table id="Performance" class="one">
                 <tr id="Performance">
@@ -300,7 +296,7 @@
 
             <br>
             <br>
-            <h3 class="heading3">Points Collection as Referral for Melody's Membership: </h3>
+            <h3 class="heading3">Points Collection as Referral for Melody Strings Membership: </h3>
 
             <table id="Performance" class="one">
                 <tr id="Performance">

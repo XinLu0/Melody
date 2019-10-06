@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    /* 
+    /*
   		Template Name: Update
   		*/
     session_start();
@@ -229,10 +229,6 @@
                 <a href="https://www.melodysac.com.sg/en/yuanfen_level/">Man Lian Level</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointcollection/">Point Collection</a>
                 <a href="https://www.melodysac.com.sg/en/yuanfen_pointredemption/">Point Redemption</a>
-                <?php
-                $contract = getMembershipFormByMemberId($_SESSION['username']);
-                echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">Member form download</a>";
-                ?>
                 <a href="https://www.melodysac.com.sg/en/terms/">Terms and Conditions</a>
             </div>
         </li>

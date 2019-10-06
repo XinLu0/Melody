@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <?php
-  		/* 
-  		Template Name: table3 
-  		*/ 
+  		/*
+  		Template Name: table3
+  		*/
     ?>
-    
+
   	<?php
   		session_start();
   		$logout=@$_GET['logout'];
@@ -20,7 +20,7 @@
   		//$username = $_SESSION['username'];
 		if(isset($_POST['Month'])){
 			getDatefromToByMonth($_POST['Month']);
-			
+
 		}else{
 			getDatefromToByCurrent();
 		}
@@ -78,15 +78,15 @@
 				global $wpdb;
 				$sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no");
 
-				
+
 				if(sizeof($sum)==0)
 					return 0;
-				else 
+				else
 				{
 					$result;
 					for($x=0;$x<sizeof($sum);$x++){
 						$result = $result+ $sum[$x]->Number;
-						
+
 					}
 					return $result;
 				}
@@ -95,20 +95,20 @@
       function getNumOfItemByItemIDAndMemeberIDAndDate($memberID, $item_no, $dateFrom)
       {
         global $wpdb;
-  
+
         $sum = $wpdb->get_results("SELECT Number FROM Melody_performance WHERE Member =$memberID AND Item_no=$item_no AND dDate >=\" $dateFrom \"");
-  
+
         if(sizeof($sum)==0)
           return 0;
-        else 
+        else
         {
           $result;
           for($x=0;$x<sizeof($sum);$x++){
             $result = $result+ $sum[$x]->Number;
-            
+
           }
           return $result;
-        }	  
+        }
       }
 
       function getBelowTeacherListFromName($Name){
@@ -191,7 +191,7 @@
         $result = $wpdb->get_results("SELECT isInChina FROM Teacher_infor WHERE Member=$memberId");
         return $result[0]->isInChina;
       }
-      
+
       function getCreditChangeByMemberID($memberID)
       {
         global $wpdb;
@@ -305,7 +305,7 @@
         text-align: center;
         margin-top:20px;
         margin-bottom:20px;
-        width: 220px; 
+        width: 220px;
         height: 200px;
       }
 
@@ -335,7 +335,7 @@
       .left_img{
         text-align: center;
         margin-top:50px;
-        width: 150px; 
+        width: 150px;
         height: 200px;
       }
 
@@ -499,10 +499,6 @@
       <a href="http://www.melodysac.com.sg/index.php/en/orchestra/">Orchestra</a>
       <a href="http://www.melodysac.com.sg/index.php/en/layout1/">Chart</a>
       <a href="http://www.melodysac.com.sg/index.php/en/update_information/">Update Profile</a>
-      <?php
-       $contract = get_template_directory_uri()."/MemberInfo/"."/ContractPDF/".$_SESSION['username'].".pdf";
-       echo "<a href=\"$contract\" download=\"ManLian_Membership_Form\">Contract Download</a>";
-      ?>
       <a href="http://www.melodysac.com.sg/index.php/en/contact/">Contact Us</a>
       <a href="http://www.melodysac.com.sg/index.php/en/terms/">Terms&Conditions</a>
       <a HREF="javascript:window.print()">Print</a>
@@ -527,7 +523,7 @@
           else echo "<img class=\"img_left\" src=\"$defaultImg\">";
         ?>
 
-        <br> 
+        <br>
         <br>
         <h3 class="heading3">YOUR TOTAL DIRECT MEMBER: </h3>
 
@@ -567,10 +563,10 @@
           </tr>
 
           <tr id="Major">
-            <?php 
+            <?php
 			//major's Data
               session_start();
-			
+
         			$userId = $_SESSION['username'];
         			$name = getNameByMemberID($userId);
         			echo "<td id=\"Major\">$name</td>";
@@ -580,7 +576,7 @@
 			$majorincome=0;
       for ($i = 1; $i <= $sum; $i ++){
 				$num =getNumOfItemByItemIDAndMemeberID($userId,$i);
-				
+
         $price = getPriceCNByItemNo($i);
         $prop = getMajorPropsSGByItemNo($i);
 				if(getIsInChinaByMemberId($userId) == 0)
@@ -618,7 +614,7 @@
               {
                 $minor1 = getMinorPropsCNByItemNo($i);
               }
-						
+
       					$minor1 = $minor1*100;
       					echo "<th id=\"Minor1\">$minor1%</th>";
       				}
@@ -649,7 +645,7 @@
 				$totalIncome = $totalIncome+$subincome;
 				$subincome=0;
       				$subNameList = getBelowTeacherListFromName($nameList[$x]);
-      				
+
             }//End of Minor
             //Credit Change
             $creditChange = getCreditChangeByMemberID($userId);
