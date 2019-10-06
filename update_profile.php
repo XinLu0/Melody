@@ -28,7 +28,11 @@
 
             if ($_POST["NewPassword1"] != $_POST["NewPassword2"]) {
                 alert("Passwords don\'t match");
-            } else {
+            }
+            else if(strlen($_POST["NewPassword1"]) < 8 || strlen($_POST["NewPassword1"]) > 64){
+                alert("Passwords length should be between 8 - 64");
+            } 
+            else {
                 updatePasswordByMID($mid, $_POST["NewPassword1"]);
                 alert("Successful!");
             }
