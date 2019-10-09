@@ -271,7 +271,7 @@
             if(!is_null($results[$x]->Item_no))
             {
                 //sell performance
-                if($results[$x]->isFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0)
                 {
                     //get props
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
@@ -290,6 +290,10 @@
                     {
                         $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                     }
+                }
+                else
+                {
+                    $prop = $results[$x]->props;
                 }
                 $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
                 $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
@@ -323,7 +327,7 @@
             if(!is_null($results[$x]->Item_no))
             {
                 //sell performance
-                if($results[$x]->isFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0)
                 {
                     //get props
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
@@ -342,6 +346,10 @@
                     {
                         $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                     }
+                }
+                else
+                {
+                    $prop = $results[$x]->props;
                 }
                 $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
             }
@@ -442,14 +450,14 @@
     function getAllPerformanceInfoSGByMemberID($memberId)
     {
       global $wpdb;
-      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_SG, Melody_performance.qty, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props, Melody_performance.isFixedProps FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
+      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_SG, Melody_performance.qty, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props, Melody_performance.IsFixedProps FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
       return $results;
     }
 
     function getAllPerformanceInfoCNByMemberID($memberId)
     {
       global $wpdb;
-      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_CN, Melody_performance.qty, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props, Melody_performance.isFixedProps FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
+      $results = $wpdb->get_results("SELECT Melody_performance.dDate, Melody_items_New.Product_Or_Size_CN, Melody_performance.qty, Melody_performance.PricePerItem, Melody_performance.RentPricePerItem, Melody_performance.props, Melody_performance.IsFixedProps FROM Melody_performance INNER JOIN Melody_items_New ON Melody_items_New.Item_no=Melody_performance.Item_no WHERE Member = $memberId ORDER BY dDate");
       return $results;
     }
 
@@ -473,7 +481,7 @@
 			if(!is_null($results[$x]->Item_no))
 			{
                 //sell performance
-                if($results[$x]->isFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0)
                 {
                     //get props
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
@@ -492,6 +500,10 @@
                     {
                         $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                     }
+                }
+                else
+                {
+                    $prop = $results[$x]->props;
                 }
 				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
 				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
@@ -531,7 +543,7 @@
 			if(!is_null($results[$x]->Item_no))
 			{
                 //sell performance
-                if($results[$x]->isFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0)
                 {
                     //get props
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
@@ -550,6 +562,10 @@
                     {
                         $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                     }
+                }
+                else
+                {
+                    $prop = $results[$x]->props;
                 }
 				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
 				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
@@ -702,7 +718,7 @@
         if(!is_null($results[$x]->Item_no))
         {
             //sell performance
-            if($results[$x]->isFixedProps == 0)
+            if($results[$x]->IsFixedProps == 0)
             {
                 //get props
                 $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
@@ -717,6 +733,10 @@
                 }
                 $currentSum += $map[$results[$x]->FinalMember];
                 $prop = getGradePropSGByCredit($currentSum);
+            }
+            else
+            {
+                $prop = $results[$x]->props;
             }
             $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
             $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
@@ -750,7 +770,7 @@
         if(!is_null($results[$x]->Item_no))
         {
           //sell performance
-            if($results[$x]->isFixedProps == 0)
+            if($results[$x]->IsFixedProps == 0)
             {
                 //get props
                 $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
@@ -765,6 +785,10 @@
                 }
                 $currentSum += $map[$results[$x]->FinalMember];
                 $prop = getGradePropCNByCredit($currentSum);
+            }
+            else
+            {
+                $prop = $results[$x]->props;
             }
             $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
 
