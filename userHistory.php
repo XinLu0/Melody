@@ -525,10 +525,10 @@
 
                     echo "<tr id=\"Performance\">";
                     echo "<th id=\"Performance\">" . $startYear . "-" . $months[intval($startMonth)] . "</th>";
-                    echo "<td id=\"Performance\">" . $AllCreditByMonth . "</td>";
-                    echo "<td id=\"Performance\">" . $AllRedeemedCreditChangeByMonth . "</td>";
-                    echo "<td id=\"Performance\">" . $AllBonusCreditChangeByMonth . "</td>";
-                    echo "<td id=\"Performance\">" . ($AccumulativeCreditSum + $AccumulativeRedeemedCreditChange + $AccumulativeBonusCreditChange) . "</td>";
+                    echo "<td id=\"Performance\">" . round($AllCreditByMonth, 2) . "</td>";
+                    echo "<td id=\"Performance\">" . round($AllRedeemedCreditChangeByMonth, 2) . "</td>";
+                    echo "<td id=\"Performance\">" . round($AllBonusCreditChangeByMonth, 2) . "</td>";
+                    echo "<td id=\"Performance\">" . round(($AccumulativeCreditSum + $AccumulativeRedeemedCreditChange + $AccumulativeBonusCreditChange), 2) . "</td>";
                     echo "</tr>";
                     $startMonth++;
                     if ($startMonth > 12) {
