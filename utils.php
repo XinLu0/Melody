@@ -288,7 +288,7 @@
                     }
                     $currentSum += $map[$results[$x]->FinalMember];
                     $prop = getGradePropSGByCredit($currentSum);
-                    if($results[$x]->props != $prop)
+                    if($results[$x]->props != $prop && (getIsInChinaByMemberId($results[$x]->FinalMember) == 0))
                     {
                         $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                     }
@@ -346,7 +346,7 @@
                     }
                     $currentSum += $map[$results[$x]->FinalMember];
                     $prop = getGradePropCNByCredit($currentSum);
-                    if($results[$x]->props != $prop)
+                    if($results[$x]->props != $prop && (getIsInChinaByMemberId($results[$x]->FinalMember) == 1))
                     {
                         $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
                     }
@@ -502,10 +502,6 @@
                     }
                     $currentSum += $map[$results[$x]->FinalMember];
                     $prop = getGradePropSGByCredit($currentSum);
-                    if($results[$x]->props != $prop)
-                    {
-                        $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
-                    }
                 }
                 else
                 {
@@ -566,10 +562,6 @@
                     }
                     $currentSum += $map[$results[$x]->FinalMember];
                     $prop = getGradePropCNByCredit($currentSum);
-                    if($results[$x]->props != $prop)
-                    {
-                        $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
-                    }
                 }
                 else
                 {
