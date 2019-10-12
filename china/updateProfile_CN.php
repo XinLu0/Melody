@@ -21,20 +21,24 @@
     if (isset($_POST["Number"])) {
         if ($_POST["Number"] != "") {
             updateContactNoByMID($mid, $_POST["Number"]);
-            alert("Successful!");
+            alert("成功");
         }
         if ($_POST["NewPassword1"] != "") {
 
             if ($_POST["NewPassword1"] != $_POST["NewPassword2"]) {
-                alert("Passwords don\'t match");
-            } else {
+                alert("两次输入密码不匹配");
+            }
+            else if(strlen($_POST["NewPassword1"]) < 8 || strlen($_POST["NewPassword1"]) > 64){
+                alert("密码长度需在8-64位之间");
+            } 
+            else {
                 updatePasswordByMID($mid, $_POST["NewPassword1"]);
-                alert("Successful!");
+                alert("成功");
             }
         }
         if ($_POST["Email"] != "") {
             updateEmailByMID($mid, $_POST["Email"]);
-            alert("Successful!");
+            alert("成功");
         }
     }
     ?>

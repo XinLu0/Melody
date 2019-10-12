@@ -58,13 +58,13 @@
         function onSubmitForm() {
             x = document.getElementById("User");
             y = document.getElementById("pwd_val");
-            if (x.value.length > 32) {
-                alert("User Name is too long!(1-32)");
+            if (x.value.length > 64) {
+                alert("User Name is too long!(1-64)/用户名长度超出范围（1-64）");
                 return false;
             }
 
-            if ((y.value.length < 6) || (y.value.length > 64)) {
-                alert("Password length is between 6 to 64");
+            if ((y.value.length < 8) || (y.value.length > 64)) {
+                alert("Password length is between 8 to 64/ 密码长度需在8-64位之间");
                 return false;
             }
         }
