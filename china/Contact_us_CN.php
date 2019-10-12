@@ -188,21 +188,21 @@
         /* Create three equal columns that floats next to each other */
         .column_left {
             float: left;
-            width: 20%;
+            width: 35%;
             padding: 15px;
         }
 
         /* Create three equal columns that floats next to each other */
         .column_center {
             float: left;
-            width: 60%;
+            width: 30%;
             padding: 15px;
         }
 
         /* Create three equal columns that floats next to each other */
         .column_right {
             float: left;
-            width: 20%;
+            width: 35%;
             padding: 15px;
         }
     </style>
@@ -272,7 +272,7 @@
       <br>
       <h4>中国南方大区市场负责人：</h4>
       <h5>高老师：17345774673（微信同号）</h5>
-      <br> 
+      <br>
     </div>
 
     <div class="column_right">

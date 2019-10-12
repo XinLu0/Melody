@@ -876,4 +876,32 @@
         return $contract;
     }
 
+    function updateDate()
+    {
+      global $wpdb;
+      $sum = $wpdb->get_results("SELECT id, dDate FROM Melody_performance ORDER BY dDate");
+      $num = sizeof($sum);
+      $map = array();
+      for($i = 0; $i<$num; $i++)
+      {
+        $currentDate = $sum[$i]->dDate;
+        while(!is_null($map[$currentDate]))
+        {
+          echo $sum[$i]->id;
+          echo "<br>";
+          echo $currentDate;
+          echo "<br>";
+          $seconds = 1;
+
+          $currentDate = date("Y-m-d H:i:s", (strtotime(date($currentDate)) + $seconds));
+          echo $currentDate;
+          echo "<br>";
+        }
+        $map[$currentDate] = $sum[$i]->id;
+        $wpdb->update(Melody_performance, array('dDate'=>$currentDate), array('id' => $sum[$i]->id ));
+
+      }
+
+    }
+
 ?>
