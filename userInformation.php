@@ -258,8 +258,8 @@
                     <th id="Performance" width="8%">Date</th>
                     <th id="Performance" width="18%">Product/ Size/ Model</th>
                     <th id="Performance" width="5%">Quantity</th>
-                    <th id="Performance" width="8%">Selling Price</th>
-                    <th id="Performance" width="8%">Rental Price</th>
+                    <th id="Performance" width="8%">Sale($)</th>
+                    <th id="Performance" width="8%">Rent($)</th>
                     <th id="Performance" width="5%">Percentage %</th>
                     <th id="Performance" width="10%">Point Earn</th>
                 </tr>
