@@ -267,13 +267,15 @@
 
         $map = array();
         $prop = getGradePropSGByCredit(0);
+        $startCaculate = false;
         for($x = 0; $x < sizeof($results); $x++){
             if(!is_null($results[$x]->Item_no))
             {
                 //sell performance
-                if($results[$x]->IsFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
                 {
                     //get props
+                    $startCaculate = true;
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                     $currentSum =0;
                     for($y = 0; $y < sizeof($sublist); $y++){
@@ -323,13 +325,15 @@
 
         $map = array();
         $prop = getGradePropCNByCredit(0);
+        $startCaculate = false;
         for($x = 0; $x < sizeof($results); $x++){
             if(!is_null($results[$x]->Item_no))
             {
                 //sell performance
-                if($results[$x]->IsFixedProps == 0)
+                if(($results[$x]->IsFixedProps == 0) && (is_null($results[$x]->props) || ($results[$x]->props == 0) || $startCaculate))
                 {
                     //get props
+                    $startCaculate = true;
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                     $currentSum =0;
                     for($y = 0; $y < sizeof($sublist); $y++){
@@ -478,13 +482,15 @@
 		$map = array();
 		$submap = array();
 		$prop = getGradePropSGByCredit(0);
+    $startCaculate = false;
 		for($x = 0; $x < sizeof($results); $x++){
 			if(!is_null($results[$x]->Item_no))
 			{
                 //sell performance
-                if($results[$x]->IsFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
                 {
                     //get props
+                    $startCaculate = true;
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                     $currentSum =0;
                     for($y = 0; $y < sizeof($sublist); $y++){
@@ -536,13 +542,15 @@
 		$map = array();
 		$submap = array();
 		$prop = getGradePropCNByCredit(0);
+    $startCaculate = false;
 		for($x = 0; $x < sizeof($results); $x++){
 			if(!is_null($results[$x]->Item_no))
 			{
                 //sell performance
-                if($results[$x]->IsFixedProps == 0)
+                if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
                 {
                     //get props
+                    $startCaculate = true;
                     $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                     $currentSum =0;
                     for($y = 0; $y < sizeof($sublist); $y++){
@@ -707,13 +715,15 @@
 
       $map = array();
       $prop = getGradePropSGByCredit(0);
+      $startCaculate = false;
       for($x = 0; $x < sizeof($results); $x++){
         if(!is_null($results[$x]->Item_no))
         {
             //sell performance
-            if($results[$x]->IsFixedProps == 0)
+            if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
             {
                 //get props
+                $startCaculate = true;
                 $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                 $currentSum =0;
                 for($y = 0; $y < sizeof($sublist); $y++){
@@ -759,13 +769,15 @@
 
       $map = array();
       $prop = getGradePropCNByCredit(0);
+      $startCaculate = false;
       for($x = 0; $x < sizeof($results); $x++){
         if(!is_null($results[$x]->Item_no))
         {
           //sell performance
-            if($results[$x]->IsFixedProps == 0)
+            if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
             {
                 //get props
+                $startCaculate = true;
                 $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
                 $currentSum =0;
                 for($y = 0; $y < sizeof($sublist); $y++){
