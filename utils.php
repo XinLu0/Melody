@@ -255,11 +255,11 @@
     function getCreditEarnedWithRefSGByMemberID($memberID)
     {
         global $wpdb;
-        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember, IFNULL(Melody_performance.id, \"\") AS FinalId
         FROM `Melody_performance`
         LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
         UNION
-        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember, IFNULL( Melody_Referring_Performance.id, \"\" ) AS FinalId
         FROM `Melody_performance`
         RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
         ORDER BY FinalDate ASC");
@@ -288,7 +288,7 @@
                     $prop = getGradePropSGByCredit($currentSum);
                     if($results[$x]->props != $prop && (getIsInChinaByMemberId($results[$x]->FinalMember) == 0))
                     {
-                        $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+                        $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->FinalId ));
                     }
                 }
                 else
@@ -311,11 +311,11 @@
     function getCreditEarnedWithRefCNByMemberID($memberID)
     {
         global $wpdb;
-        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
+        $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember, IFNULL(Melody_performance.id, \"\") AS FinalId
         FROM `Melody_performance`
         LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
         UNION
-        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
+        SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember, IFNULL( Melody_Referring_Performance.id, \"\" ) AS FinalId 
         FROM `Melody_performance`
         RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
         ORDER BY FinalDate ASC");
@@ -344,7 +344,7 @@
                     $prop = getGradePropCNByCredit($currentSum);
                     if($results[$x]->props != $prop && (getIsInChinaByMemberId($results[$x]->FinalMember) == 1))
                     {
-                        $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->id ));
+                        $wpdb->update(Melody_performance, array('props'=>$prop), array('id' => $results[$x]->FinalId ));
 
                     }
                 }
