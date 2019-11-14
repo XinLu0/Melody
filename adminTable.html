@@ -279,6 +279,7 @@
             <th onclick="sortTableByInt(<?php echo $totalItemNumber+3; ?>)" href="javascript:void(0);"><a href="#">Login_Times</a></th>
             <th onclick="sortTableByString(<?php echo $totalItemNumber+4; ?>)" href="javascript:void(0);"><a href="#">Region</a></th>
             <th onclick="sortTableByString(<?php echo $totalItemNumber+5; ?>)" href="javascript:void(0);"><a href="#">Category</a></th>
+            <th onclick="sortTableByString(<?php echo $totalItemNumber+6; ?>)" href="javascript:void(0);"><a href="#">Teacher Grade</a></th>
           </tr>
 
           <?php
@@ -306,10 +307,14 @@
               $times = getLoginTimesFromMID($list[$x]);
               echo "<td>$times</td>";
               //region
+              $teacherCredit = getAllCreditIncSubSGByMemberId($list[$x]);
+              $gradeName = getGradeNameSGByCredit($teacherCredit);
               $region = "SINGAPORE";
               if(getIsInChinaByMemberId($list[$x]) == 1)
               {
                   $region = "CHINA";
+                  $teacherCredit = getAllCreditIncSubCNByMemberId($list[$x]);
+                  $gradeName = getGradeNameCNByCredit($teacherCredit);
               }
               echo "<td>$region</td>";
               //category
@@ -320,6 +325,8 @@
               }
               echo "<td>$category</td>";
 
+              //teacher grade
+              //echo "<td>$gradeName</td>";
               echo "</tr>";
             }
           ?>
