@@ -513,7 +513,7 @@
                 $AccumulativeCreditSum = $balanceBroughtForward;
                 $AccumulativeRedeemedCreditChange = $RedeemedCreditChangeBroughtForward;
                 $AccumulativeBonusCreditChange = $BonusCreditChangeBroughtForward;
-                while ($startYear < $currentYear || $startMonth <= $currentMonth) {
+                while ($startYear < $currentYear || ($startMonth <= $currentMonth && $startYear == $currentYear)) {
 
                     $AllCreditByMonth = getAllCreditIncSubCNByMemberIdANDDateTo($userId, $startYear . "-" . sprintf("%02d", ($startMonth + 1)) . "-01") - getAllCreditIncSubCNByMemberIdANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01");
                     $AllRedeemedCreditChangeByMonth = getRedeemedCreditChangeByMemberIDANDDateFromANDDateTo($userId, $startYear . "-" . sprintf("%02d", $startMonth) . "-01", $startYear . "-" . sprintf("%02d", ($startMonth + 1)) . "-01");
