@@ -1,4 +1,8 @@
 <?php
+    $globalMapSG =array();
+    $globalSubMapSG = array();
+    $globalMapCN =array();
+    $globalSubMapCN = array();
     function alert($msg) {
         echo "<script type='text/javascript'>alert('$msg');</script>";
     }
@@ -252,9 +256,11 @@
         return $results[sizeof($results)-1]->Grade_Major_Prop;
     }
 
-    function getCreditEarnedWithRefSGByMemberID($memberID)
+    function UpdatePropsSG()
     {
         global $wpdb;
+        global $globalMapSG;
+        global $globalSubMapSG;
         $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember, IFNULL(Melody_performance.id, \"\") AS FinalId
         FROM `Melody_performance`
         LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
@@ -264,8 +270,8 @@
         RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
         ORDER BY FinalDate ASC");
 
-
-        $map = array();
+        $globalMapSG = array();
+        $globalSubMapSG = array();
         $prop = getGradePropSGByCredit(0);
         $startCaculate = false;
         for($x = 0; $x < sizeof($results); $x++){
@@ -280,13 +286,13 @@
                     $currentSum =0;
                     for($y = 0; $y < sizeof($sublist); $y++){
                         $subMemberId = getMemberIDFromName($sublist[$y]);
-                        if(is_null($map[$subMemberId]))
+                        if(is_null($globalMapSG[$subMemberId]))
                         {
-                            $map[$subMemberId] = 0;
+                            $globalMapSG[$subMemberId] = 0;
                         }
-                        $currentSum += $map[$subMemberId];
+                        $currentSum += $globalMapSG[$subMemberId];
                     }
-                    $currentSum += $map[$results[$x]->FinalMember];
+                    $currentSum += $globalMapSG[$results[$x]->FinalMember];
                     $prop = getGradePropSGByCredit($currentSum);
                     if($results[$x]->props != $prop && (getIsInChinaByMemberId($results[$x]->FinalMember) == 0))
                     {
@@ -297,22 +303,24 @@
                 {
                     $prop = $results[$x]->props;
                 }
-                $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
-                $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
+                $globalMapSG[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
+                $globalSubmapSG[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
+                $globalMapSG[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
+                $globalSubmapSG[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
             }
             else
             {
                 //referring
-                $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+                $globalMapSG[$results[$x]->FinalMember] += $results[$x]->Credit;
             }
         }
-        return $map[$memberID];
-
     }
 
-    function getCreditEarnedWithRefCNByMemberID($memberID)
+    function UpdatePropsCN($memberID)
     {
         global $wpdb;
+        global $globalMapCN;
+        global $globalSubMapCN;
         $results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember, IFNULL(Melody_performance.id, \"\") AS FinalId
         FROM `Melody_performance`
         LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
@@ -322,8 +330,8 @@
         RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
         ORDER BY FinalDate ASC");
 
-
-        $map = array();
+        $globalMapCN = array();
+        $globalSubMapCN = array();
         $prop = getGradePropCNByCredit(0);
         $startCaculate = false;
         for($x = 0; $x < sizeof($results); $x++){
@@ -338,13 +346,13 @@
                     $currentSum =0;
                     for($y = 0; $y < sizeof($sublist); $y++){
                         $subMemberId = getMemberIDFromName($sublist[$y]);
-                        if(is_null($map[$subMemberId]))
+                        if(is_null($globalMapCN[$subMemberId]))
                         {
-                            $map[$subMemberId] = 0;
+                            $globalMapCN[$subMemberId] = 0;
                         }
-                        $currentSum += $map[$subMemberId];
+                        $currentSum += $globalMapCN[$subMemberId];
                     }
-                    $currentSum += $map[$results[$x]->FinalMember];
+                    $currentSum += $globalMapCN[$results[$x]->FinalMember];
                     $prop = getGradePropCNByCredit($currentSum);
                     if($results[$x]->props != $prop && (getIsInChinaByMemberId($results[$x]->FinalMember) == 1))
                     {
@@ -356,14 +364,36 @@
                 {
                     $prop = $results[$x]->props;
                 }
-                $map[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
+                $globalMapCN[$results[$x]->FinalMember] +=$results[$x]->qty * $results[$x]->PricePerItem * $prop;
+                $globalSubMapCN[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
             }
             else
             {
-                $map[$results[$x]->FinalMember] += $results[$x]->Credit;
+                $globalMapCN[$results[$x]->FinalMember] += $results[$x]->Credit;
             }
         }
-        return $map[$memberID];
+
+    }
+
+    function getCreditEarnedWithRefSGByMemberID($memberID)
+    {
+        global $globalMapSG;
+        if(is_null($globalMapSG[$memberID]))
+        {
+            $globalMapSG[$memberID] = 0;
+        }
+        return $globalMapSG[$memberID];
+
+    }
+
+    function getCreditEarnedWithRefCNByMemberID($memberID)
+    {
+        global $globalMapCN;
+        if(is_null($globalMapCN[$memberID]))
+        {
+            $globalMapCN[$memberID] = 0;
+        }
+        return $globalMapCN[$memberID];
 
     }
 
@@ -468,119 +498,24 @@
 
     function getCreditEarnedWithoutRefSGByMemberID($memberID)
 	{
-		global $wpdb;
-		$results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
-		FROM `Melody_performance`
-		LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
-		UNION
-		SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
-		FROM `Melody_performance`
-		RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
-		ORDER BY FinalDate ASC");
-
-
-		$map = array();
-		$submap = array();
-		$prop = getGradePropSGByCredit(0);
-    $startCaculate = false;
-		for($x = 0; $x < sizeof($results); $x++){
-			if(!is_null($results[$x]->Item_no))
-			{
-                //sell performance
-                if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
-                {
-                    //get props
-                    $startCaculate = true;
-                    $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
-                    $currentSum =0;
-                    for($y = 0; $y < sizeof($sublist); $y++){
-                        $subMemberId = getMemberIDFromName($sublist[$y]);
-                        if(is_null($map[$subMemberId]))
-                        {
-                            $map[$subMemberId] = 0;
-                        }
-                        $currentSum += $map[$subMemberId];
-                    }
-                    $currentSum += $map[$results[$x]->FinalMember];
-                    $prop = getGradePropSGByCredit($currentSum);
-                }
-                else
-                {
-                    $prop = $results[$x]->props;
-                }
-				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
-				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
-				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
-				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->RentPricePerItem * $prop;
-			}
-			else
-			{
-				$map[$results[$x]->FinalMember] += $results[$x]->Credit;
-			}
-        }
-        if(is_null($submap[$memberID]))
+		global $globalSubMapSG;
+        if(is_null($globalSubMapSG[$memberID]))
         {
-            $submap[$memberID] = 0;
+            $globalSubMapSG[$memberID] = 0;
         }
-		return $submap[$memberID];
+		return $globalSubMapSG[$memberID];
 
     }
 
     function getCreditEarnedWithoutRefCNByMemberID($memberID)
 	{
-		global $wpdb;
-		$results = $wpdb->get_results("SELECT *, IFNULL(Melody_performance.dDate,\"\") AS FinalDate, IFNULL(Melody_performance.Member, \"\") AS FinalMember
-		FROM `Melody_performance`
-		LEFT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
-		UNION
-		SELECT *, IFNULL(Melody_Referring_Performance.dDate, \"\") AS FinalDate, IFNULL(Melody_Referring_Performance.Member, \"\") AS FinalMember
-		FROM `Melody_performance`
-		RIGHT JOIN `Melody_Referring_Performance` ON Melody_performance.dDate = Melody_Referring_Performance.dDate
-		ORDER BY FinalDate ASC");
-
-
-		$map = array();
-		$submap = array();
-		$prop = getGradePropCNByCredit(0);
-    $startCaculate = false;
-		for($x = 0; $x < sizeof($results); $x++){
-			if(!is_null($results[$x]->Item_no))
-			{
-                //sell performance
-                if($results[$x]->IsFixedProps == 0 && (is_null($results[$x]->props) || $results[$x]->props == 0 || $startCaculate))
-                {
-                    //get props
-                    $startCaculate = true;
-                    $sublist = getBelowTeacherListFromMemberId($results[$x]->FinalMember);
-                    $currentSum =0;
-                    for($y = 0; $y < sizeof($sublist); $y++){
-                        $subMemberId = getMemberIDFromName($sublist[$y]);
-                        if(is_null($map[$subMemberId]))
-                        {
-                            $map[$subMemberId] = 0;
-                        }
-                        $currentSum += $map[$subMemberId];
-                    }
-                    $currentSum += $map[$results[$x]->FinalMember];
-                    $prop = getGradePropCNByCredit($currentSum);
-                }
-                else
-                {
-                    $prop = $results[$x]->props;
-                }
-				$map[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
-				$submap[$results[$x]->FinalMember] += $results[$x]->qty * $results[$x]->PricePerItem * $prop;
-			}
-			else
-			{
-				$map[$results[$x]->FinalMember] += $results[$x]->Credit;
-			}
-        }
-        if(is_null($submap[$memberID]))
+		global $globalSubMapCN;
+		
+        if(is_null($globalSubMapCN[$memberID]))
         {
-            $submap[$memberID] = 0;
+            $globalSubMapCN[$memberID] = 0;
         }
-		return $submap[$memberID];
+		return $globalSubMapCN[$memberID];
 
 	}
 
