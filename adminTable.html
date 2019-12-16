@@ -302,7 +302,7 @@
               {
                 $sale = getBalanceCNByMemberId($list[$x]);
               }
-                echo "<td>$sale</td>";
+                echo "<td>".round($sale,2)."</td>";
               //loginTimes
               $times = getLoginTimesFromMID($list[$x]);
               echo "<td>$times</td>";

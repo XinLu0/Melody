@@ -24,18 +24,21 @@
         if($re==0){
           if($useEmailLogin == 1)
           {
+            //get memberid
             $_SESSION['username'] = getMemberIdByMemberEmail($_POST['user']);
           }
           else
           {
+            //get memberid
             $_SESSION['username']=$_POST['user'];
           }
           $_SESSION['loggedin']=1;
           $times =getLoginTimesFromMID($_SESSION['username']);
           updateLoginTimesByMID($_SESSION['username'],$times+1);
 
-          if(isAdminByMemberId($_POST['user'])==1)
+          if(isAdminByMemberId($_SESSION['username'])==1)
           {
+            
             header("Location: http://www.melodysac.com.sg/index.php/en/admintable/");
           } 
           else if(getIsInChinaByMemberId($_SESSION['username'])==1)
